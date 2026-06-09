@@ -1,0 +1,1944 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Trip Is Ready — Mame Dee Travel World</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap');
+  :root{--cream:#F9F5F0;--sand:#E8DDD0;--gold:#C9A96E;--gl:#E8C98A;--charcoal:#2C2C2C;--muted:#8A8278;--green:#4A6741;--deep:#1A1A1A;--white:#FFFFFF;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--charcoal);overflow-x:hidden;padding-bottom:96px;}
+  h1,h2,h3{font-family:'DM Serif Display',serif;font-weight:400;}
+  /* BANNER */
+  #dream-banner{background:linear-gradient(135deg,var(--charcoal),#3D3028);color:var(--cream);text-align:center;padding:13px 20px;font-size:13px;position:sticky;top:0;z-index:1000;display:flex;align-items:center;justify-content:center;gap:10px;}
+  #dream-banner a{color:var(--gl);font-weight:500;text-decoration:underline;cursor:pointer;}
+  #dream-banner.hidden{display:none;}
+  /* HERO */
+  .hero{position:relative;height:100vh;min-height:560px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;overflow:hidden;}
+  .hero-bg{position:absolute;inset:0;background-size:cover;background-position:center;filter:brightness(.55);}
+  .hero-content{position:relative;z-index:2;padding:0 24px;max-width:760px;}
+  .hero-eyebrow{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gl);margin-bottom:18px;}
+  .hero h1{font-size:clamp(2.8rem,6vw,5.5rem);color:var(--white);line-height:1.08;margin-bottom:20px;}
+  .hero-sub{font-family:'Cormorant Garamond',serif;font-size:clamp(1.1rem,2.5vw,1.5rem);color:rgba(255,255,255,.88);font-style:italic;margin-bottom:36px;line-height:1.5;}
+  .hero-dates{display:inline-flex;align-items:center;gap:10px;background:rgba(255,255,255,.12);backdrop-filter:blur(8px);border:1px solid rgba(201,169,110,.4);color:var(--gl);padding:10px 24px;border-radius:50px;font-size:13px;letter-spacing:.1em;}
+  /* LAYOUT */
+  .section{padding:68px 20px;max-width:1000px;margin:0 auto;}
+  .section-bg{padding:68px 20px;background:var(--white);}
+  .section-bg .si{max-width:1000px;margin:0 auto;}
+  .section-label{font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
+  .section-title{font-size:clamp(1.8rem,4vw,2.8rem);color:var(--charcoal);margin-bottom:12px;line-height:1.15;}
+  .section-sub{font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--muted);font-style:italic;margin-bottom:32px;max-width:560px;line-height:1.6;}
+  .divider{width:48px;height:1px;background:var(--gold);margin:12px 0 32px;}
+  /* WISHES */
+  .wish-grid{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:32px;}
+  .wish-chip{background:var(--white);border:1px solid var(--sand);padding:7px 16px;border-radius:50px;font-size:13px;display:flex;align-items:center;gap:6px;}
+  .wish-chip::before{content:'✓';color:var(--gold);font-weight:600;}
+  /* WELCOME */
+  .welcome-card{background:var(--white);border-radius:20px;padding:42px;border:1px solid var(--sand);position:relative;overflow:hidden;}
+  .welcome-card::before{content:'"';font-family:'DM Serif Display',serif;font-size:180px;color:var(--sand);position:absolute;top:-20px;left:18px;line-height:1;opacity:.5;}
+  .welcome-text{font-family:'Cormorant Garamond',serif;font-size:1.3rem;line-height:1.75;position:relative;z-index:1;}
+  .welcome-sig{margin-top:24px;font-family:'DM Serif Display',serif;font-size:.95rem;color:var(--gold);font-style:italic;}
+  /* TASTE */
+  .taste-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:16px;}
+  .taste-card{background:var(--white);border:1px solid var(--sand);border-radius:14px;overflow:hidden;}
+  .taste-card img{width:100%;height:155px;object-fit:cover;display:block;}
+  .taste-body{padding:16px;}
+  .taste-label{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:5px;}
+  .taste-title{font-family:'DM Serif Display',serif;font-size:1rem;margin-bottom:5px;}
+  .taste-desc{font-size:13px;color:var(--muted);line-height:1.5;}
+  /* CARDS */
+  .card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;}
+  /* Accommodation GROUPS */
+  .accom-group{margin-bottom:40px;}
+  .accom-group-label{font-family:'DM Serif Display',serif;font-size:1.1rem;color:var(--charcoal);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--sand);display:flex;align-items:center;justify-content:space-between;}
+  .accom-group-nights{font-size:11px;color:var(--muted);font-family:'Inter',sans-serif;}
+  .accom-group .card-grid{grid-template-columns:repeat(3,1fr);}
+  @media(max-width:860px){.accom-group .card-grid{grid-template-columns:repeat(auto-fill,minmax(240px,1fr));}}
+  /* tier badges */
+  .tier-badge{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:500;letter-spacing:.06em;padding:3px 9px;border-radius:50px;margin-bottom:6px;}
+  .tier-budget {background:rgba(74,103,65,.12); color:var(--green);}
+  .tier-mid    {background:rgba(201,169,110,.15);color:#9A7A3E;}
+  .tier-premium{background:rgba(180,130,90,.18); color:#8B5E2A;}
+  .tier-icon-budget::before {content:'◎';}
+  .tier-icon-mid::before    {content:'◈';}
+  .tier-icon-premium::before{content:'✦';}
+  /* maps link */
+  .card-maps{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--muted);text-decoration:none;margin-top:4px;margin-left:10px;}
+  .card-maps:hover{color:var(--gold);}
+  .card-notes{font-size:11px;color:var(--muted);margin-top:7px;padding:6px 10px;background:var(--cream);border-radius:6px;border-left:2px solid var(--sand);font-style:italic;}
+  .card{background:var(--white);border-radius:14px;overflow:hidden;border:1px solid var(--sand);transition:transform .25s,box-shadow .25s;cursor:pointer;}
+  .card:hover{transform:translateY(-3px);box-shadow:0 14px 40px rgba(0,0,0,.1);}
+  .card.selected{border-color:var(--gold);box-shadow:0 0 0 2px var(--gold);}
+  .card-img-wrap{height:185px;overflow:hidden;background:var(--sand);position:relative;}
+  .card-img-wrap img{width:100%;height:100%;object-fit:cover;display:block;transition:filter .4s;}
+  .card-body{padding:18px;}
+  .card-tag{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:5px;}
+  .card-title{font-size:1.05rem;margin-bottom:5px;}
+  .card-sub{font-size:13px;color:var(--muted);margin-bottom:7px;line-height:1.5;}
+  .card-why{background:var(--cream);border-left:2px solid var(--gold);padding:7px 11px;font-size:12px;color:var(--muted);font-style:italic;margin-top:8px;border-radius:0 6px 6px 0;}
+  .card-why strong{color:var(--charcoal);font-style:normal;}
+  .card-price{font-weight:600;font-size:.95rem;margin:5px 0;}
+  .card-select-btn{margin-top:11px;width:100%;background:transparent;border:1.5px solid var(--gold);color:var(--gold);padding:8px;border-radius:7px;font-size:13px;cursor:pointer;transition:all .2s;font-family:'Inter',sans-serif;}
+  .card.selected .card-select-btn,.card-select-btn:hover{background:var(--gold);color:var(--white);}
+  .card-link{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--gold);text-decoration:none;margin-top:7px;}
+  .card-link:hover{text-decoration:underline;}
+  .dream-badge{position:absolute;top:10px;right:10px;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);color:var(--gl);font-size:11px;padding:4px 10px;border-radius:50px;border:1px solid rgba(201,169,110,.3);}
+  .blur-img{filter:blur(3px) brightness(.88);}
+  .blur-img:hover{filter:blur(1px) brightness(.95);}
+  /* TOUR TYPE TOGGLE */
+  .tour-toggle-wrap{background:var(--white);border:1px solid var(--sand);border-radius:14px;padding:24px;margin-bottom:24px;}
+  .tour-toggle-label{font-size:13px;color:var(--charcoal);font-weight:500;margin-bottom:14px;}
+  .tour-options{display:flex;gap:10px;flex-wrap:wrap;}
+  .tour-opt{flex:1;min-width:140px;border:1.5px solid var(--sand);border-radius:10px;padding:14px 16px;cursor:pointer;transition:all .2s;background:transparent;}
+  .tour-opt.active{border-color:var(--gold);background:rgba(201,169,110,.08);}
+  .tour-opt-title{font-family:'DM Serif Display',serif;font-size:.95rem;margin-bottom:4px;}
+  .tour-opt-price{font-size:12px;color:var(--muted);}
+  .tour-opt.active .tour-opt-title{color:var(--gold);}
+  /* ITINERARY */
+  .itin-grid{display:flex;flex-direction:column;gap:10px;}
+  .day-card{background:var(--white);border-radius:13px;border:1px solid var(--sand);overflow:hidden;}
+  .day-hdr{padding:16px 22px;display:flex;align-items:center;gap:13px;cursor:pointer;}
+  .day-hdr.no-click{cursor:default;}
+  .day-num{width:36px;height:36px;background:var(--gold);color:var(--white);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'DM Serif Display',serif;font-size:.9rem;flex-shrink:0;}
+  .day-num.dim{background:var(--sand);color:var(--muted);}
+  .day-title-text{font-size:.95rem;color:var(--charcoal);font-family:'DM Serif Display',serif;}
+  .day-date-text{font-size:11px;color:var(--muted);margin-top:1px;}
+  .lock-pill{margin-left:auto;font-size:11px;color:var(--muted);background:var(--cream);padding:3px 10px;border-radius:50px;border:1px solid var(--sand);flex-shrink:0;}
+  .prev-pill{margin-left:auto;font-size:11px;color:var(--gold);background:rgba(201,169,110,.1);padding:3px 10px;border-radius:50px;border:1px solid rgba(201,169,110,.3);flex-shrink:0;}
+  .expand-arrow{margin-left:auto;font-size:12px;color:var(--muted);transition:transform .2s;flex-shrink:0;}
+  .expand-arrow.open{transform:rotate(180deg);}
+  .day-body{padding:0 22px 22px;display:none;}
+  .day-body.open{display:block;}
+  .media-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;}
+  .media-item{border-radius:9px;overflow:hidden;position:relative;}
+  .media-item img{width:100%;height:140px;object-fit:cover;display:block;}
+  .media-cap{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(to top,rgba(0,0,0,.65),transparent);color:var(--white);font-size:11px;padding:10px 10px 7px;}
+  .act-list{display:flex;flex-direction:column;gap:13px;}
+  .act-item{display:flex;gap:13px;}
+  .act-time{font-size:11px;color:var(--gold);font-weight:600;min-width:56px;padding-top:2px;}
+  .act-text h4{font-size:.9rem;margin-bottom:3px;font-family:'DM Serif Display',serif;}
+  .act-text p{font-size:13px;color:var(--muted);line-height:1.5;}
+  .act-text a{color:var(--gold);font-size:12px;}
+  .day-lock-body{padding:14px 22px 18px;border-top:1px dashed var(--sand);display:flex;align-items:center;gap:12px;}
+  .lock-note{font-size:13px;color:var(--muted);line-height:1.55;}
+  .lock-note strong{color:var(--charcoal);display:block;margin-bottom:2px;font-family:'DM Serif Display',serif;font-size:.9rem;}
+  /* PRICING */
+  .pricing-card{background:var(--white);border-radius:18px;overflow:hidden;border:1px solid var(--sand);max-width:640px;margin:0 auto;}
+  .pricing-hdr{background:linear-gradient(135deg,var(--charcoal),#3D3028);padding:32px 36px;text-align:center;}
+  .pricing-hdr h2{color:var(--white);margin-bottom:6px;}
+  .pricing-hdr p{color:rgba(255,255,255,.65);font-size:13px;}
+  .pricing-total{font-family:'DM Serif Display',serif;font-size:2.8rem;color:var(--gl);margin:10px 0 2px;transition:all .3s;}
+  .pricing-body{padding:32px 36px;}
+  .p-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--sand);font-size:14px;}
+  .p-row:last-child{border-bottom:none;}
+  .p-row .lbl{color:var(--muted);}
+  .p-row .amt{font-weight:600;color:var(--charcoal);transition:all .3s;}
+  .p-row.total{padding-top:16px;}
+  .p-row.total .lbl{font-size:.95rem;font-weight:600;color:var(--charcoal);}
+  .p-row.total .amt{font-size:1.2rem;color:var(--green);}
+  /* Meals input */
+  .meals-input-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--sand);}
+  .meals-input-row .lbl{color:var(--muted);font-size:14px;flex:1;}
+  .meals-input{border:1px solid var(--sand);border-radius:7px;padding:6px 10px;font-size:14px;font-family:'Inter',sans-serif;width:90px;text-align:right;background:var(--cream);}
+  .meals-input:focus{outline:none;border-color:var(--gold);}
+  .pricing-disc{font-size:11px;color:var(--muted);line-height:1.6;margin-top:16px;padding:13px;background:var(--cream);border-radius:8px;}
+  /* VAULT */
+  .vault-section{background:var(--charcoal);padding:68px 20px;}
+  .vault-inner{max-width:800px;margin:0 auto;}
+  .vault-tabs{display:flex;gap:7px;margin-bottom:22px;flex-wrap:wrap;}
+  .vault-tab{padding:7px 16px;border-radius:50px;border:1px solid rgba(201,169,110,.4);color:rgba(255,255,255,.6);font-size:13px;cursor:pointer;background:transparent;font-family:'Inter',sans-serif;transition:all .2s;}
+  .vault-tab.active{background:var(--gold);border-color:var(--gold);color:var(--white);}
+  .vault-panel{display:none;}
+  .vault-panel.active{display:block;}
+  .vault-item{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:18px 20px;margin-bottom:10px;}
+  .vault-item-title{color:var(--white);font-size:.95rem;margin-bottom:3px;font-family:'DM Serif Display',serif;}
+  .vault-meta{color:rgba(255,255,255,.5);font-size:12px;margin-bottom:7px;}
+  .status{display:inline-block;padding:3px 10px;border-radius:50px;font-size:11px;font-weight:500;text-transform:uppercase;}
+  .status-confirmed{background:rgba(74,103,65,.3);color:#8BC47A;}
+  .status-pending{background:rgba(201,169,110,.2);color:var(--gl);}
+  .status-tbd{background:rgba(255,255,255,.1);color:rgba(255,255,255,.5);}
+  .vault-form{background:rgba(255,255,255,.04);border:1px dashed rgba(255,255,255,.2);border-radius:12px;padding:24px;margin-top:16px;}
+  .vault-form h4{color:var(--white);margin-bottom:14px;font-family:'DM Serif Display',serif;}
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:11px;}
+  .fi{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:var(--white);padding:9px 12px;border-radius:7px;font-size:14px;font-family:'Inter',sans-serif;width:100%;}
+  .fi::placeholder{color:rgba(255,255,255,.35);}
+  .fi:focus{outline:none;border-color:var(--gold);}
+  .fs{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:var(--white);padding:9px 12px;border-radius:7px;font-size:14px;font-family:'Inter',sans-serif;width:100%;appearance:none;}
+  .fs option{background:var(--charcoal);}
+  .btn-add{background:var(--gold);color:var(--white);border:none;padding:9px 24px;border-radius:7px;font-size:14px;cursor:pointer;font-family:'Inter',sans-serif;margin-top:5px;}
+  /* DECISION */
+  .decision-section{background:linear-gradient(135deg,var(--charcoal) 0%,#3D3028 60%,#2A1F14 100%);padding:68px 20px;text-align:center;}
+  .decision-section h2{color:var(--white);font-size:clamp(1.8rem,4vw,2.8rem);margin-bottom:12px;}
+  .decision-section>p{color:rgba(255,255,255,.7);max-width:500px;margin:0 auto 32px;font-size:15px;line-height:1.65;}
+  .decision-btns{display:flex;flex-direction:column;gap:12px;align-items:center;}
+  .btn-yes{background:var(--gold);color:var(--white);border:none;padding:15px 44px;border-radius:50px;font-size:15px;font-family:'DM Serif Display',serif;cursor:pointer;min-width:300px;transition:background .2s,transform .15s;}
+  .btn-yes:hover{background:var(--gl);transform:translateY(-2px);}
+  .btn-edits{background:transparent;color:var(--white);border:1.5px solid rgba(255,255,255,.5);padding:13px 44px;border-radius:50px;font-size:14px;cursor:pointer;min-width:300px;font-family:'Inter',sans-serif;transition:all .2s;}
+  .btn-edits:hover{border-color:var(--white);background:rgba(255,255,255,.08);}
+  .btn-no{background:transparent;color:rgba(255,255,255,.45);border:none;padding:10px;font-size:13px;cursor:pointer;text-decoration:underline;font-family:'Inter',sans-serif;}
+  .no-pressure{max-width:500px;margin:26px auto 0;color:rgba(255,255,255,.42);font-family:'Cormorant Garamond',serif;font-size:1rem;font-style:italic;line-height:1.65;}
+  /* UNLOCK GATE */
+  .unlock-gate{background:var(--white);border:1px solid var(--sand);border-radius:18px;padding:44px 32px;text-align:center;max-width:500px;margin:24px auto 0;}
+  .unlock-gate .li{font-size:2.2rem;margin-bottom:12px;}
+  .unlock-gate h3{margin-bottom:9px;}
+  .unlock-gate p{font-size:13px;color:var(--muted);max-width:340px;margin:0 auto 20px;line-height:1.6;}
+  .btn-unlock{background:var(--gold);color:var(--white);border:none;padding:12px 34px;border-radius:50px;font-size:14px;font-family:'DM Serif Display',serif;cursor:pointer;}
+  /* ADMIN */
+  #admin-panel{background:#1A1A2E;padding:52px 20px;display:none;}
+  #admin-panel.visible{display:block;}
+  .admin-inner{max-width:720px;margin:0 auto;}
+  #admin-panel h2{color:var(--white);margin-bottom:5px;}
+  .admin-meta{color:rgba(255,255,255,.5);font-size:13px;margin-bottom:26px;}
+  .ag{margin-bottom:24px;}
+  .ag label{display:block;color:rgba(255,255,255,.7);font-size:11px;margin-bottom:5px;letter-spacing:.08em;text-transform:uppercase;}
+  .ai{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);color:var(--white);padding:9px 12px;border-radius:7px;font-size:14px;width:100%;font-family:'Inter',sans-serif;}
+  .toggle-row{display:flex;align-items:center;gap:12px;}
+  .tog{width:44px;height:24px;background:rgba(255,255,255,.2);border-radius:50px;position:relative;cursor:pointer;transition:background .2s;flex-shrink:0;}
+  .tog.on{background:var(--green);}
+  .tog::after{content:'';position:absolute;width:18px;height:18px;background:var(--white);border-radius:50%;top:3px;left:3px;transition:left .2s;}
+  .tog.on::after{left:23px;}
+  .tl{color:var(--white);font-size:14px;}
+  .btn-ac{background:var(--gold);color:var(--white);border:none;padding:10px 28px;border-radius:7px;font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;margin-right:9px;}
+  .btn-ac2{background:transparent;color:var(--white);border:1px solid rgba(255,255,255,.3);padding:10px 20px;border-radius:7px;font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;}
+  .adm-table{width:100%;border-collapse:collapse;margin-top:9px;}
+  .adm-table td{padding:9px 12px;font-size:13px;border-bottom:1px solid rgba(255,255,255,.08);vertical-align:top;}
+  .adm-table td:first-child{color:rgba(255,255,255,.5);width:120px;}
+  .adm-table td:last-child{color:var(--white);}
+  .adm-table a{color:var(--gl);}
+  .adm-pane{animation:fadein .18s ease;}
+  @keyframes fadein{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+  /* PRINT BAR */
+  .print-bar{background:var(--sand);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #E8D5C4;}
+  .print-bar span{font-size:13px;color:var(--muted);}
+  .btn-print{background:var(--charcoal);color:var(--white);border:none;padding:8px 18px;border-radius:6px;font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;}
+  /* STICKY */
+  .sticky{position:fixed;bottom:0;left:0;right:0;z-index:999;background:var(--white);border-top:1px solid var(--sand);box-shadow:0 -8px 28px rgba(0,0,0,.09);padding:11px 20px;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:14px;}
+  .st-total .lbl{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:1px;}
+  .st-total .amt{font-family:'DM Serif Display',serif;font-size:1.35rem;color:var(--charcoal);transition:all .3s;}
+  .st-pills{display:flex;flex-wrap:wrap;gap:5px;}
+  .st-pill{background:var(--cream);border:1px solid var(--sand);padding:3px 10px;border-radius:50px;font-size:11px;color:var(--muted);white-space:nowrap;}
+  .st-pill strong{color:var(--charcoal);font-size:11px;}
+  .st-actions{display:flex;gap:7px;flex-shrink:0;}
+  .st-yes{background:var(--gold);color:var(--white);border:none;padding:9px 18px;border-radius:50px;font-size:13px;font-family:'DM Serif Display',serif;cursor:pointer;white-space:nowrap;}
+  .st-yes:hover{background:var(--gl);}
+  .st-edits{background:transparent;color:var(--charcoal);border:1.5px solid var(--sand);padding:8px 14px;border-radius:50px;font-size:12px;cursor:pointer;font-family:'Inter',sans-serif;white-space:nowrap;}
+  .st-no{background:transparent;color:var(--muted);border:none;padding:8px 8px;font-size:12px;cursor:pointer;text-decoration:underline;font-family:'Inter',sans-serif;}
+  /* MODAL */
+  .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);z-index:2000;display:none;align-items:center;justify-content:center;padding:20px;}
+  .modal-overlay.visible{display:flex;}
+  .modal{background:var(--white);border-radius:18px;padding:36px;max-width:520px;width:100%;position:relative;max-height:90vh;overflow-y:auto;}
+  .modal-close{position:absolute;top:13px;right:17px;background:none;border:none;font-size:22px;cursor:pointer;color:var(--muted);}
+  .modal h3{margin-bottom:9px;}
+  .modal p{font-size:14px;color:var(--muted);margin-bottom:16px;line-height:1.6;}
+  .modal textarea{width:100%;min-height:110px;border:1px solid var(--sand);border-radius:7px;padding:11px;font-family:'Inter',sans-serif;font-size:14px;resize:vertical;}
+  .modal textarea:focus{outline:none;border-color:var(--gold);}
+  .modal-btns{margin-top:16px;display:flex;gap:9px;justify-content:flex-end;}
+  .btn-ms{background:var(--gold);color:var(--white);border:none;padding:10px 24px;border-radius:7px;font-size:14px;cursor:pointer;font-family:'Inter',sans-serif;}
+  .btn-mc{background:transparent;color:var(--muted);border:1px solid var(--sand);padding:10px 20px;border-radius:7px;font-size:14px;cursor:pointer;font-family:'Inter',sans-serif;}
+  .toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:var(--charcoal);color:var(--white);padding:10px 20px;border-radius:50px;font-size:14px;z-index:3000;opacity:0;transition:opacity .3s;pointer-events:none;}
+  .toast.show{opacity:1;}
+  /* FOOTER */
+  footer{background:var(--deep);color:rgba(255,255,255,.45);text-align:center;padding:34px 20px 22px;font-size:12px;line-height:1.8;}
+  footer a{color:var(--gold);text-decoration:none;}
+  /* MODE */
+  .dream-only{display:block;}
+  .full-only{display:none;}
+  body.full-mode .dream-only{display:none;}
+  body.full-mode .full-only{display:block;}
+  body.admin-mode .blur-img{filter:none!important;}
+  /* RESPONSIVE */
+  @media(max-width:700px){
+    .sticky{grid-template-columns:1fr auto;grid-template-rows:auto auto;gap:7px;padding:9px 13px;}
+    .st-total{grid-row:1;grid-column:1;}
+    .st-actions{grid-row:1;grid-column:2;}
+    .st-pills{grid-row:2;grid-column:1/-1;}
+    .st-edits,.st-no{display:none;}
+    .st-yes{padding:8px 14px;font-size:12px;}
+    .welcome-card{padding:24px 18px;}
+    .card-grid,.taste-grid{grid-template-columns:1fr;}
+    .media-row{grid-template-columns:1fr;}
+    .form-row{grid-template-columns:1fr;}
+    .modal{padding:24px 16px;}
+    .decision-btns .btn-yes,.decision-btns .btn-edits,.decision-btns .btn-no{min-width:unset;width:100%;max-width:360px;}
+  }
+  @media(max-width:480px){.st-pills{display:none;}}
+  @media print{.sticky,.decision-section,.vault-section,#admin-panel,#dream-banner,.print-bar{display:none!important;}.hero{height:40vh;}body{padding-bottom:0;}}
+
+  /* ── PDF COVERS ─────────────────────────────── */
+  .pdf-cover{display:none;width:8.5in;min-height:11in;background:var(--cream);font-family:'Inter',sans-serif;position:relative;box-sizing:border-box;}
+  .pdf-cover-hero{width:100%;height:3.8in;background-size:cover;background-position:center;position:relative;flex-shrink:0;}
+  .pdf-cover-hero-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.18) 0%,rgba(0,0,0,.55) 100%);}
+  .pdf-cover-hero-text{position:absolute;bottom:0;left:0;right:0;padding:28px 40px;}
+  .pdf-cover-eyebrow{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--gl);margin-bottom:7px;}
+  .pdf-cover-client{font-family:'DM Serif Display',serif;font-size:2.2rem;color:var(--white);line-height:1.05;margin-bottom:6px;}
+  .pdf-cover-dest{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.15rem;color:rgba(255,255,255,.88);}
+  .pdf-cover-dates{margin-top:8px;display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.15);border:1px solid rgba(201,169,110,.5);color:var(--gl);padding:5px 14px;border-radius:50px;font-size:10px;letter-spacing:.1em;}
+  .pdf-cover-body{padding:32px 40px 28px;flex:1;}
+  .pdf-cover-rule{width:40px;height:1.5px;background:var(--gold);margin:0 0 20px;}
+  .pdf-section-lbl{font-size:8px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+  .pdf-tagline{font-family:'DM Serif Display',serif;font-size:1.15rem;color:var(--charcoal);line-height:1.4;margin-bottom:18px;}
+  .pdf-note{font-family:'Cormorant Garamond',serif;font-size:.92rem;color:var(--charcoal);line-height:1.65;margin-bottom:20px;font-style:italic;}
+  .pdf-checklist{display:grid;grid-template-columns:1fr 1fr;gap:5px 24px;margin-bottom:20px;}
+  .pdf-check-item{display:flex;align-items:flex-start;gap:7px;font-size:11px;color:var(--charcoal);line-height:1.45;}
+  .pdf-check-item::before{content:'✓';color:var(--gold);font-weight:700;flex-shrink:0;margin-top:1px;}
+  .pdf-two-col{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px;}
+  .pdf-box{background:var(--white);border:1px solid var(--sand);border-radius:8px;padding:14px 16px;}
+  .pdf-box-title{font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:6px;}
+  .pdf-box-text{font-size:11px;color:var(--charcoal);line-height:1.6;}
+  .pdf-price-row{display:flex;justify-content:space-between;align-items:center;padding:9px 14px;background:var(--white);border:1px solid var(--sand);border-radius:8px;margin-bottom:14px;}
+  .pdf-price-lbl{font-size:11px;color:var(--muted);}
+  .pdf-price-amt{font-family:'DM Serif Display',serif;font-size:1.1rem;color:var(--charcoal);}
+  .pdf-decisions{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:14px;}
+  .pdf-dec-btn{border-radius:50px;padding:7px 16px;font-size:10px;font-family:'DM Serif Display',serif;}
+  .pdf-dec-yes{background:var(--gold);color:var(--white);border:none;}
+  .pdf-dec-edit{background:transparent;color:var(--charcoal);border:1.5px solid var(--sand);}
+  .pdf-dec-no{background:transparent;color:var(--muted);border:1px solid var(--sand);}
+  .pdf-disc{font-size:9px;color:var(--muted);line-height:1.55;border-top:1px solid var(--sand);padding-top:12px;margin-top:auto;}
+  .pdf-footer{display:flex;justify-content:space-between;align-items:center;padding:14px 40px;background:var(--white);border-top:1px solid var(--sand);}
+  .pdf-footer-brand{font-family:'DM Serif Display',serif;font-size:.85rem;color:var(--charcoal);}
+  .pdf-footer-url{font-size:9px;color:var(--muted);letter-spacing:.05em;}
+
+  /* Print isolation — show ONLY the active cover when printing */
+  body.print-dream *{display:none!important;}
+  body.print-dream #pdf-dream-cover{display:flex!important;flex-direction:column!important;}
+  body.print-dream #pdf-dream-cover *{display:revert!important;}
+
+  body.print-reveal *{display:none!important;}
+  body.print-reveal #pdf-reveal-cover{display:flex!important;flex-direction:column!important;}
+  body.print-reveal #pdf-reveal-cover *{display:revert!important;}
+
+  @media print{
+    body.print-dream,body.print-reveal{padding:0!important;margin:0!important;background:var(--cream)!important;}
+    .pdf-cover{page-break-after:always;box-shadow:none!important;}
+  }
+</style>
+</head>
+<body>
+
+<script>
+// ═══════════════════════════════════════════════════
+//  CLIENT DATA  ← swap this block for each new client
+// ═══════════════════════════════════════════════════
+const CLIENT = {
+  firstName: "Ayanna",
+  destination: "The Philippines",
+  destinationShort: "Philippines",
+  dates: "October 3–14, 2026",
+  duration: 11,
+  travelers: 2,
+  departing: "Atlanta, GA",
+  notifyEmail: "mamedeeworld@gmail.com",
+  payment: { finalPaid: false },
+  tagline: "Eleven days. Crystal bays, island-hopping mornings, and the kind of warm that stays with you.",
+  heroImage: "https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?w=1800&q=80",
+  fallbackImage: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&q=80",
+
+  wishes: ["Island hop Palawan","Swim with whale sharks","Local food markets","Luxury on a budget","Beach & adventure mix","Private villa vibes"],
+  welcomeNote: `Ayanna, I've been building this one with you in mind from day one. The Philippines is one of those places that doesn't just look stunning on camera — it gets under your skin. I hand-picked everything here based on what you told me: you want to move, you want to taste things, and you want to feel like yourself doing it. This is eleven days of exactly that.`,
+
+  // ── TASTE TEASERS (dream section — different from sample day content) ──
+  experiences: [
+    { label: "Adventure", dreamTitle: "Island hopping through hidden lagoons", dreamDesc: "Limestone cliffs, turquoise water, and spots so quiet you'll think you found them first.", image: "https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?w=600&q=80" },
+    { label: "Wildlife", dreamTitle: "Sunrise encounter with whale sharks", dreamDesc: "In the water before 7am with the largest fish on earth. One of the world's great wildlife moments.", image: "https://images.unsplash.com/photo-1559494007-9f5847c49d94?w=600&q=80" },
+    { label: "Culture", dreamTitle: "Ancient city walking tour", dreamDesc: "The oldest city in the Philippines — Magellan's cross, colonial churches, and centuries of story.", image: "https://images.unsplash.com/photo-1508009603885-50cf7c579365?w=600&q=80" }
+  ],
+  restaurants: [
+    { label: "Fine Dining", dreamTitle: "Cliffside sunset dinner", dreamDesc: "Mediterranean meets Filipino above the sea. The kind of meal that ends a trip perfectly.", image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80" },
+    { label: "Local Market", dreamTitle: "Filipino street food experience", dreamDesc: "Dried mangoes, lechon, skewers, and local vinegar. Eat like you actually live here.", image: "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=600&q=80" },
+    { label: "Beach Dining", dreamTitle: "Catch-of-the-day by the water", dreamDesc: "Whole grilled fish, coconut rice, and a cold drink with your feet near the sand.", image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&q=80" }
+  ],
+
+  // ── FLIGHTS ──
+  flights: [
+    { id:"f1", selected:true,  dreamLabel:"Best-value route",       dreamDetail:"Multi-stop comfort route, great timing both ways, solid cabin quality.",         airline:"Philippine Airlines", route:"ATL→MNL via LAX", depart:"Oct 3 | 9:45am", arrive:"Oct 5 | 6:20am", ret:"Oct 14 | 11:30pm → Oct 15 | 10:15pm", pricePerPerson:1240, bookingUrl:"https://www.philippineairlines.com", why:"Best balance of price and comfort. LAX connection means fewer layovers." },
+    { id:"f2", selected:false, dreamLabel:"Premium comfort option",  dreamDetail:"Top-rated carrier, stunning layover airport, upgraded cabin, smoothest return timing.", airline:"Korean Air",          route:"ATL→MNL via ICN", depart:"Oct 3 | 12:30pm", arrive:"Oct 5 | 9:50am", ret:"Oct 14 | 3:15pm → Oct 15 | 8:45pm",    pricePerPerson:1580, bookingUrl:"https://www.koreanair.com",          why:"Highly rated cabin, Incheon is gorgeous, return timing is easiest on your body." }
+  ],
+
+  // ── ACCOMMODATIONS — grouped by trip leg, pick one option per leg ──
+  accomGroups: [
+    {
+      id: "leg1", leg: "Manila · 2 nights", nights: 2,
+      options: [
+        {
+          id:"a1a", selected:false, tier:"budget",
+          dreamLabel:"Budget-smart city stay",
+          dreamStyle:"Save in the city so your money goes further on the islands. Clean, well-located, no fluff.",
+          name:"Z Hostel Manila", area:"BGC, Manila",
+          pricePerNight:62,
+          image:"https://images.unsplash.com/photo-1590073242678-70ee3fc28e8e?w=600&q=80",
+          why:"Best way to keep Manila spend low. BGC is safe, walkable, full of good food.",
+          bookingUrl:"https://www.zhostel.com",
+          mapsUrl:"https://maps.google.com/?q=Z+Hostel+Manila+BGC",
+          notes:"Book early — fills fast on weekends."
+        },
+        {
+          id:"a1b", selected:true, tier:"mid",
+          dreamLabel:"Boutique design stay",
+          dreamStyle:"Walkable, design-forward hotel that eases you into Manila without feeling like a chain.",
+          name:"The Henry Hotel Manila", area:"Pasay, Manila",
+          pricePerNight:145,
+          image:"https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&q=80",
+          why:"Boutique property with character. Walking distance to restaurants and nightlife.",
+          bookingUrl:"https://www.thehenryhotel.com",
+          mapsUrl:"https://maps.google.com/?q=The+Henry+Hotel+Manila",
+          notes:"Ask for a room away from the street for quieter sleep on night 1."
+        },
+        {
+          id:"a1c", selected:false, tier:"premium",
+          dreamLabel:"Luxury city-center stay",
+          dreamStyle:"Full-service hotel, stunning views, and the kind of arrival that sets the tone for the whole trip.",
+          name:"Raffles Makati", area:"Makati CBD, Manila",
+          pricePerNight:420,
+          image:"https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=600&q=80",
+          why:"If you want to start this trip feeling like someone took care of every detail — this is it.",
+          bookingUrl:"https://www.raffles.com/makati",
+          mapsUrl:"https://maps.google.com/?q=Raffles+Makati",
+          notes:"Includes daily breakfast. The bar on the rooftop is worth one evening."
+        }
+      ]
+    },
+    {
+      id: "leg2", leg: "El Nido, Palawan · 4 nights", nights: 4,
+      options: [
+        {
+          id:"a2a", selected:false, tier:"budget",
+          dreamLabel:"Budget eco-lodge near town",
+          dreamStyle:"Simple, clean, and close to every tour departure point. Spend your money on the water, not the room.",
+          name:"Funtastic Beach Resort", area:"El Nido town, Palawan",
+          pricePerNight:55,
+          image:"https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?w=600&q=80",
+          why:"Walking distance to tour boats and the main strip. Great value for what you're doing here.",
+          bookingUrl:"https://www.airbnb.com/s/El-Nido",
+          mapsUrl:"https://maps.google.com/?q=El+Nido+town+Palawan",
+          notes:"Bring earplugs — town can be lively at night."
+        },
+        {
+          id:"a2b", selected:true, tier:"mid",
+          dreamLabel:"Beachfront glamping villa",
+          dreamStyle:"Waking up 30 steps from one of the most beautiful beaches in the world. That's the whole pitch.",
+          name:"Nacpan Beach Glamping", area:"Nacpan Beach, El Nido",
+          pricePerNight:110,
+          image:"https://images.unsplash.com/photo-1540541338287-41700207dee6?w=600&q=80",
+          why:"Nacpan Beach is one of the best in the Philippines. Being this close to it is the experience.",
+          bookingUrl:"https://www.airbnb.com/s/Nacpan-Beach",
+          mapsUrl:"https://maps.google.com/?q=Nacpan+Beach+El+Nido",
+          notes:"Requires a tricycle or transfer from town (~30 min). Book transport in advance."
+        },
+        {
+          id:"a2c", selected:false, tier:"premium",
+          dreamLabel:"Private cliffside villa",
+          dreamStyle:"Completely private. Infinity plunge pool overlooking the bay. This is the one people don't forget.",
+          name:"El Nido Resorts Lagen Island", area:"Lagen Island, Palawan",
+          pricePerNight:480,
+          image:"https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=600&q=80",
+          why:"All-inclusive eco-resort on a private island. If there's one splurge worth making in the Philippines, it's this one.",
+          bookingUrl:"https://www.elnidoresorts.com/resorts/lagen-island",
+          mapsUrl:"https://maps.google.com/?q=El+Nido+Resorts+Lagen+Island",
+          notes:"Boat transfer included. Rates are per person, fully all-inclusive."
+        }
+      ]
+    },
+    {
+      id: "leg3", leg: "Cebu · 3 nights", nights: 3,
+      options: [
+        {
+          id:"a3a", selected:false, tier:"budget",
+          dreamLabel:"Boutique guesthouse · Cebu City",
+          dreamStyle:"Centrally located, charming, and within walking distance of the best local food in Cebu.",
+          name:"Kukuk's Nest Cebu", area:"Cebu City",
+          pricePerNight:55,
+          image:"https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=600&q=80",
+          why:"Excellent location for exploring the city. Saved money here means a better final dinner.",
+          bookingUrl:"https://www.airbnb.com/s/Cebu-City",
+          mapsUrl:"https://maps.google.com/?q=Cebu+City+guesthouses",
+          notes:"Perfect if you're spending more time exploring the city than relaxing at the resort."
+        },
+        {
+          id:"a3b", selected:false, tier:"mid",
+          dreamLabel:"Boutique oceanview hotel",
+          dreamStyle:"Stylish boutique hotel steps from the shore. Where the city energy meets the coast.",
+          name:"Crimson Resort & Spa", area:"Mactan Island, Cebu",
+          pricePerNight:120,
+          image:"https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=600&q=80",
+          why:"Well-designed, beachfront, and close to the Mactan Marine Sanctuary for snorkeling.",
+          bookingUrl:"https://www.crimsonhotel.com",
+          mapsUrl:"https://maps.google.com/?q=Crimson+Resort+Mactan+Cebu",
+          notes:"Great breakfast spread. Ask for a garden-view room to avoid road noise."
+        },
+        {
+          id:"a3c", selected:true, tier:"premium",
+          dreamLabel:"Award-winning lagoon resort",
+          dreamStyle:"Saltwater lagoon pool, lush grounds, award-winning resort. The full exhale after days of adventure.",
+          name:"Plantation Bay Resort", area:"Mactan Island, Cebu",
+          pricePerNight:189,
+          image:"https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600&q=80",
+          why:"The lagoon is unlike anything else in the Philippines. You've earned a proper resort finale.",
+          bookingUrl:"https://www.plantationbay.com",
+          mapsUrl:"https://maps.google.com/?q=Plantation+Bay+Resort+Cebu",
+          notes:"Book directly for best rates. Request the lagoon-facing room."
+        }
+      ]
+    }
+  ],
+
+  // ── TRANSPORT ──
+  transport: [
+    { id:"t1", selected:true,  dreamLabel:"Island flights + private transfers", dreamDetail:"Short domestic hops between islands plus private bangka for island hopping. You arrive energized everywhere.", type:"Private Island Transfers + Inter-island Flights", detail:"Cebu Pacific Manila–El Nido + private bangka + airport transfers.", price:380, why:"Saves 6 hours of ferry time. You arrive fresh at every destination." },
+    { id:"t2", selected:false, dreamLabel:"Budget carriers + public ferry",      dreamDetail:"Low-cost domestic flights with public ferry options. Slower, but more local.",                                type:"Budget Carrier + Ferry Combo",                   detail:"AirAsia Manila–Puerto Princesa + public ferry El Nido–Coron.",      price:190, why:"Good if you want more immersive local travel and lower cost." }
+  ],
+
+  // ── ACTIVITIES (shared vs private, priced per group) ──
+  tourType: "shared",   // "shared" or "private"
+  activities: {
+    shared:  { label:"Shared group tours", price:320, desc:"Join small group tours — budget-friendly, social, and well-organized." },
+    private: { label:"Private tours",      price:680, desc:"All tours are just your group — flexible schedule, personal guide." }
+  },
+
+  // ── FIXED + VARIABLE COSTS ──
+  mealsDefault: 440,    // client can override this in the pricing section
+  buffer: 145,
+
+  pricing: {
+    disclaimer: "Prices are subject to change until booked. Mame Dee Travel World is not responsible for price changes by vendors, airlines, hotels, restaurants, tour operators, or third-party providers."
+  },
+
+  // ── ITINERARY ──
+  // type: 'travel' = never a sample day
+  // highlight: true = preferred sample days
+  // Day 1 is ALWAYS shown in dream preview
+  itinerary: [
+    {
+      day:1, date:"Saturday, October 3",
+      dreamTitle:"Departure Day · Atlanta",
+      fullTitle:"Atlanta → Manila · Departure",
+      type:"travel", highlight:false, alwaysShow:true,
+      activities:[
+        { time:"9:45am", dreamTitle:"Board your flight", dreamDesc:"Your journey to the Philippines begins. Long haul — eat, rest, and let the excitement carry you.",
+          title:"Flight Departs ATL", desc:"Check in 2 hours early. Terminal F, Philippine Airlines counter." }
+      ]
+    },
+    {
+      day:2, date:"Monday, October 5",
+      dreamTitle:"Arrive Manila · First Night",
+      fullTitle:"Arrive Manila · First Night",
+      type:"travel", highlight:false,
+      lockNote:"Arrival logistics, SIM card tips, and your first-night dinner spot are in your full guide.",
+      activities:[
+        { time:"6:20am", dreamTitle:"Touch down in Manila", dreamDesc:"First stamp in your passport. First humid breath of Philippine air. Pick up a SIM and get moving.",
+          title:"Land at NAIA Terminal 1", desc:"Immigration moves quickly. Get a SIM at the airport — Globe or Smart both work well." },
+        { time:"7:00pm", dreamTitle:"Filipino comfort dinner", dreamDesc:"Elevated local classics. Sinigang, crispy everything, and flavors that set the tone for the week.",
+          title:"Dinner at Manam", desc:"Try the sinigang and crispy dinuguan.", mapsLink:"https://maps.google.com/?q=Manam+Manila" }
+      ]
+    },
+    {
+      day:3, date:"Tuesday, October 6",
+      dreamTitle:"Fly to Palawan",
+      fullTitle:"Manila → El Nido · Palawan Begins",
+      type:"travel", highlight:false,
+      lockNote:"Your Palawan flight details and check-in notes are in your full guide.",
+      activities:[
+        { time:"7:00am", dreamTitle:"Short island flight to paradise", dreamDesc:"A quick domestic hop. The views on descent make every early alarm worth it.",
+          title:"Early flight to El Nido", desc:"Cebu Pacific. Be at NAIA T3 by 5:30am." }
+      ]
+    },
+    {
+      day:4, date:"Wednesday, October 7",
+      dreamTitle:"El Nido · A Private Beach You'll Keep Describing",
+      fullTitle:"El Nido · Hidden Beaches & Lagoons",
+      type:"experience", highlight:true,
+      activityImage:"https://images.unsplash.com/photo-1519046904884-53103b34b206?w=600&q=80",
+      activityCaption:"Secret lagoon, El Nido Palawan",
+      foodImage:"https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=600&q=80",
+      foodCaption:"Grilled fresh catch, beachside",
+      activities:[
+        { time:"All day", dreamTitle:"Hidden beach you won't find on Google", dreamDesc:"Jade-colored water, soft white sand, and the sound of almost nothing. One of those days you keep telling people about.",
+          title:"Tour C: Hidden Beach + Matinloc Shrine", desc:"Spots tourists barely find. Bring reef-safe sunscreen and snacks.", mapsLink:"https://maps.google.com/?q=Hidden+Beach+El+Nido+Palawan" },
+        { time:"Evening", dreamTitle:"Beachside dinner — whole grilled fish", dreamDesc:"The catch from that morning, grilled simply, with garlic rice and a cold San Miguel. Perfect.",
+          title:"Dinner at Altrove Restaurant El Nido", desc:"Order whatever they caught that morning.", mapsLink:"https://maps.google.com/?q=Altrove+El+Nido" }
+      ]
+    },
+    {
+      day:5, date:"Thursday, October 8",
+      dreamTitle:"El Nido · Empty Beach & Golden Hour",
+      fullTitle:"El Nido · Free Beach Day",
+      type:"experience", highlight:true,
+      activityImage:"https://images.unsplash.com/photo-1590523277543-a94d2e4eb00b?w=600&q=80",
+      activityCaption:"Nacpan Beach, El Nido",
+      foodImage:"https://images.unsplash.com/photo-1484723091739-30a097e8f929?w=600&q=80",
+      foodCaption:"Local breakfast, town proper",
+      activities:[
+        { time:"Morning", dreamTitle:"Four kilometers of empty white sand", dreamDesc:"No vendors, no music, no crowds. Just the longest beach in Palawan and golden morning light.",
+          title:"Nacpan Beach walk", desc:"Four kilometers of untouched beach." },
+        { time:"Breakfast", dreamTitle:"Local carenderia breakfast", dreamDesc:"Sinangag, tocino, and eggs from a roadside spot locals actually eat at. Under $3.",
+          title:"Anang's Carenderia", desc:"Garlic fried rice, cured pork, fried egg. Real Philippine breakfast.", mapsLink:"https://maps.google.com/?q=El+Nido+town+proper" },
+        { time:"Sunset", dreamTitle:"Cold drink, boats, golden hour", dreamDesc:"Watch the fishing boats drift in as the sky turns pink. The kind of moment that makes a trip.",
+          title:"Corong-Corong waterfront", desc:"Grab a drink and just be there.", mapsLink:"https://maps.google.com/?q=Corong+Corong+Beach+El+Nido" }
+      ]
+    },
+    {
+      day:6, date:"Friday, October 9",
+      dreamTitle:"Whale Sharks at Sunrise",
+      fullTitle:"Whale Sharks · Oslob + Cebu City",
+      type:"experience", highlight:true,
+      activityImage:"https://images.unsplash.com/photo-1559494007-9f5847c49d94?w=600&q=80",
+      activityCaption:"Whale shark encounter, Oslob",
+      foodImage:"https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600&q=80",
+      foodCaption:"Post-dive warung lunch",
+      activities:[
+        { time:"Pre-dawn", dreamTitle:"The alarm you'll be glad you set", dreamDesc:"Pre-dawn wake-up, drive in the dark. You'll understand the second you step into the water.",
+          title:"Pre-dawn drive to Oslob", desc:"Worth every early alarm." },
+        { time:"Sunrise", dreamTitle:"Floating with whale sharks at dawn", dreamDesc:"The largest fish on earth, gliding past you in golden light. Completely still. You'll forget to breathe.",
+          title:"Whale shark snorkeling, Oslob", desc:"No touching — just floating in awe. Best before 7am.", mapsLink:"https://maps.google.com/?q=Oslob+Whale+Shark+Watching+Cebu" },
+        { time:"Afternoon", dreamTitle:"Tropical lunch after the ocean", dreamDesc:"Fresh grilled fish, green mango salad, and rice while you come back to earth.",
+          title:"Warung lunch near Tumalog Falls", desc:"Simple local spot — fuel up before the drive back.", mapsLink:"https://maps.google.com/?q=Tumalog+Falls+Oslob+Cebu" }
+      ]
+    },
+    {
+      day:7, date:"Saturday, October 10",
+      dreamTitle:"Cebu City · Culture & Flavors",
+      fullTitle:"Cebu City · Culture & Flavors",
+      type:"experience", highlight:false,
+      lockNote:"Your full Cebu City guide with timings, maps, and market picks is in your full guide.",
+      activities:[
+        { time:"Morning", dreamTitle:"Ancient landmarks, centuries of story", dreamDesc:"Two of the most historically significant sites in the country — ten steps apart.",
+          title:"Magellan's Cross & Basilica del Santo Niño", desc:"Oldest religious sites in the Philippines.", mapsLink:"https://maps.google.com/?q=Basilica+del+Santo+Nino+Cebu" },
+        { time:"Afternoon", dreamTitle:"Local food market walk", dreamDesc:"Dried mangoes, lechon skin, and local vinegar. This is how you eat in Cebu.",
+          title:"Lahug food market walk", desc:"Dried mangoes, vinegar, lechon skin.", mapsLink:"https://maps.google.com/?q=Lahug+Market+Cebu" }
+      ]
+    },
+    {
+      day:8, date:"Sunday, October 11",
+      dreamTitle:"Resort Day — You Earned This",
+      fullTitle:"Resort Day · Plantation Bay",
+      type:"experience", highlight:false,
+      lockNote:"Your resort guide, spa menu, and pool hours are in your full guide.",
+      activities:[
+        { time:"All day", dreamTitle:"Saltwater lagoon pool and no agenda", dreamDesc:"Award-winning resort grounds and a full exhale after days of moving.",
+          title:"Plantation Bay Resort · full day", desc:"Check in and do nothing productive. You've earned it." }
+      ]
+    },
+    {
+      day:9, date:"Monday, October 12",
+      dreamTitle:"Mactan · Marine Sanctuary Diving",
+      fullTitle:"Mactan · Diving & Coral Gardens",
+      type:"experience", highlight:false,
+      lockNote:"Your dive operator recommendations and snorkel map are in your full guide.",
+      activities:[
+        { time:"Morning", dreamTitle:"World-class snorkel in a protected sanctuary", dreamDesc:"Neon fish, live coral, and underwater quiet. Even snorkeling from shore is something special.",
+          title:"PADI dive or snorkel, Mactan sanctuary", desc:"The marine sanctuary off Mactan is world-class.", mapsLink:"https://maps.google.com/?q=Mactan+Marine+Sanctuary+Cebu" }
+      ]
+    },
+    {
+      day:10, date:"Tuesday, October 13",
+      dreamTitle:"Cebu · Last Full Day",
+      fullTitle:"Cebu · Last Full Day",
+      type:"experience", highlight:false,
+      lockNote:"Your last-day itinerary and farewell dinner notes are in your full guide.",
+      activities:[
+        { time:"Morning", dreamTitle:"City panorama from a hilltop lookout", dreamDesc:"The whole city below you, early enough to have it to yourself.",
+          title:"Tops Lookout", desc:"Best early before the heat.", mapsLink:"https://maps.google.com/?q=Tops+Lookout+Cebu" },
+        { time:"Evening", dreamTitle:"Cliffside farewell dinner", dreamDesc:"Mediterranean meets Filipino above the sea. Save your appetite for this one.",
+          title:"Dinner at Anzani Restaurant", desc:"One of the best meals of the whole trip.", mapsLink:"https://maps.google.com/?q=Anzani+Restaurant+Cebu" }
+      ]
+    },
+    {
+      day:11, date:"Wednesday, October 14",
+      dreamTitle:"Departure Day · Home",
+      fullTitle:"Cebu → Atlanta · Journey Home",
+      type:"travel", highlight:false,
+      lockNote:"Airport transfer timing and packing reminders are in your full guide.",
+      activities:[
+        { time:"Full day", dreamTitle:"One last day before you fly", dreamDesc:"Late-night departure means a full bonus day. Sleep in, swim, or just sit with it.",
+          title:"Last day in Cebu", desc:"Flight departs 11:30pm — you have the full day." }
+      ]
+    }
+  ],
+
+  reservations: {
+    flights:[{name:"ATL → MNL via LAX",provider:"Philippine Airlines",date:"Oct 3, 2026",confirmation:"",status:"pending"}],
+    accommodations:[{name:"The Henry Hotel Manila",provider:"Direct",date:"Oct 5–7",confirmation:"",status:"tbd"},{name:"Nacpan Beach Glamping",provider:"Airbnb",date:"Oct 7–11",confirmation:"",status:"tbd"},{name:"Plantation Bay Resort",provider:"Direct",date:"Oct 11–14",confirmation:"",status:"tbd"}],
+    tours:[{name:"El Nido Tour C – Hidden Beach",provider:"Local operator",date:"Oct 7",confirmation:"",status:"tbd"},{name:"Whale Shark Snorkeling",provider:"Oslob guide",date:"Oct 9",confirmation:"",status:"tbd"}],
+    other:[]
+  }
+};
+
+// ── SAMPLE DAY LOGIC ──────────────────────────────
+function getSampleCount(dur){return dur<=3?1:dur<=8?2:3;}
+function pickSampleNums(itin,count){
+  const hl=itin.filter(d=>d.highlight&&d.type!=='travel');
+  const ot=itin.filter(d=>!d.highlight&&d.type!=='travel');
+  return [...hl,...ot].slice(0,count).map(d=>d.day);
+}
+
+// ── CALC TOTAL ────────────────────────────────────
+function getMealsVal(){
+  const el=document.getElementById('meals-input');
+  if(!el)return CLIENT.mealsDefault;
+  const v=parseInt(el.value.replace(/[^0-9]/g,''));
+  return isNaN(v)?CLIENT.mealsDefault:v;
+}
+function calcTotal(){
+  const f=CLIENT.flights.find(x=>x.selected);
+  const t=CLIENT.transport.find(x=>x.selected);
+  const accom=CLIENT.accomGroups.reduce((s,g)=>{
+    const sel=g.options.find(o=>o.selected);
+    return s+(sel?(sel.pricePerNight*g.nights):0);
+  },0);
+  const activities=CLIENT.activities[CLIENT.tourType].price;
+  const meals=getMealsVal();
+  return (f?f.pricePerPerson*CLIENT.travelers:0)+accom+(t?t.price:0)+activities+meals+CLIENT.buffer;
+}
+function fmt(n){return '$'+n.toLocaleString();}
+function imgFB(img){img.onerror=null;img.src=CLIENT.fallbackImage;}
+
+// ── MODE ──────────────────────────────────────────
+function isFullMode(){const p=new URLSearchParams(location.search);return!isAdminMode()&&(CLIENT.payment.finalPaid||p.get('unlock')==='1');}
+function isAdminMode(){return new URLSearchParams(location.search).get('admin')==='mdtw2024';}
+</script>
+
+<!-- DREAM BANNER -->
+<div id="dream-banner">
+  <span style="color:var(--gl)">✦</span>
+  This is your personalized trip preview — built just for you.
+  <a onclick="scrollToDecision()">Ready to make it official? →</a>
+</div>
+
+<!-- PRINT BAR (full mode) -->
+<div class="print-bar full-only">
+  <span>Your complete trip guide · Mame Dee Travel World</span>
+  <button class="btn-print" onclick="window.print()">⬇ Save as PDF</button>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg" id="hero-bg"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Mame Dee Travel World · Built for you</p>
+    <h1 id="hero-title"></h1>
+    <p class="hero-sub" id="hero-sub"></p>
+    <div class="hero-dates" id="hero-dates"></div>
+  </div>
+</section>
+
+<!-- WISHES + WELCOME -->
+<section class="section">
+  <p class="section-label">What you asked for</p>
+  <h2 class="section-title" id="wish-title"></h2>
+  <div class="wish-grid" id="wish-grid"></div>
+  <div class="welcome-card">
+    <p class="welcome-text" id="welcome-text"></p>
+    <p class="welcome-sig">— Deja, Mame Dee Travel World</p>
+  </div>
+</section>
+
+<!-- TASTE TEASERS (dream only) -->
+<div class="dream-only">
+<div class="section-bg">
+<div class="si">
+  <p class="section-label">A taste of what's waiting</p>
+  <h2 class="section-title">Experiences &amp; Flavors</h2>
+  <p class="section-sub">A few highlights to give you the feel. The full lineup is in your complete guide.</p>
+  <div class="divider"></div>
+  <p style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:14px">Experiences</p>
+  <div class="taste-grid" id="exp-grid"></div>
+  <p style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;margin-top:32px">Food &amp; Dining</p>
+  <div class="taste-grid" id="rest-grid"></div>
+</div>
+</div>
+</div>
+
+<!-- FLIGHTS -->
+<div class="section-bg">
+<div class="si">
+  <p class="section-label">Getting there</p>
+  <h2 class="section-title">Flight Options</h2>
+  <p class="section-sub">Your selection updates the estimated total in pricing below.</p>
+  <div class="divider"></div>
+  <div class="card-grid" id="flights-grid"></div>
+</div>
+</div>
+
+<!-- ACCOMMODATIONS -->
+<section class="section">
+  <p class="section-label">Where you'll sleep</p>
+  <h2 class="section-title">Your Stays</h2>
+  <p class="section-sub" id="accom-sub"></p>
+  <div class="divider"></div>
+  <div id="accom-groups"></div>
+</section>
+
+<!-- TRANSPORT -->
+<div class="section-bg">
+<div class="si">
+  <p class="section-label">Getting around</p>
+  <h2 class="section-title">Transportation</h2>
+  <p class="section-sub">Your selection updates the estimated total in pricing below.</p>
+  <div class="divider"></div>
+  <div class="card-grid" id="transport-grid"></div>
+</div>
+</div>
+
+<!-- ITINERARY -->
+<section class="section">
+  <p class="section-label">Day by day</p>
+  <h2 class="section-title" id="itin-title"></h2>
+  <p class="section-sub" id="itin-sub"></p>
+  <div class="divider"></div>
+  <div class="itin-grid" id="itin-grid"></div>
+  <div class="dream-only" id="itin-gate">
+    <div class="unlock-gate">
+      <div class="li">🗺</div>
+      <h3>The Full Itinerary Is Waiting</h3>
+      <p>Every day is planned. Every meal is picked. Every activity has a booking link and Google Maps pin. Unlock it all when you move forward.</p>
+      <button class="btn-unlock" onclick="scrollToDecision()">Book to Unlock Full Guide</button>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<div class="section-bg">
+<div class="si">
+  <p class="section-label">Your investment</p>
+  <h2 class="section-title">Trip Cost Estimate</h2>
+  <p class="section-sub">Updates live as you make selections above. Prices shown are total for <span id="travelers-label"></span>.</p>
+  <div class="divider"></div>
+  <div class="pricing-card">
+    <div class="pricing-hdr">
+      <h2 id="p-dest"></h2>
+      <p id="p-dates"></p>
+      <div class="pricing-total" id="p-total">—</div>
+      <p style="color:rgba(255,255,255,.6);font-size:13px" id="p-sub"></p>
+    </div>
+    <div class="pricing-body">
+      <!-- Tour type toggle in pricing -->
+      <div class="tour-toggle-wrap" id="tour-toggle-wrap">
+        <div class="tour-toggle-label">How would you like to experience activities?</div>
+        <div class="tour-options" id="tour-options"></div>
+      </div>
+      <div id="p-rows"></div>
+      <div class="pricing-disc" id="p-disc"></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- VAULT (full mode) -->
+<div class="full-only">
+<section class="vault-section">
+  <div class="vault-inner">
+    <p class="section-label" style="color:var(--gl)">Your travel documents</p>
+    <h2 class="section-title" style="color:var(--white)">Reservation Vault</h2>
+    <p style="color:rgba(255,255,255,.55);margin-bottom:22px;font-size:14px">Every confirmation in one place. Add them as they come in.</p>
+    <div class="divider" style="background:var(--gold)"></div>
+    <div class="vault-tabs" id="vault-tabs"></div>
+    <div id="vault-panels"></div>
+    <div class="vault-form">
+      <h4>+ Add a Reservation</h4>
+      <div class="form-row"><input class="fi" id="v-name" placeholder="Name"/><input class="fi" id="v-provider" placeholder="Booked via"/></div>
+      <div class="form-row"><input class="fi" id="v-date" placeholder="Date / Check-in"/><input class="fi" id="v-conf" placeholder="Confirmation #"/></div>
+      <div class="form-row">
+        <select class="fs" id="v-cat"><option value="flights">Flights</option><option value="accommodations">Accommodations</option><option value="tours">Tours</option><option value="other">Other</option></select>
+        <select class="fs" id="v-status"><option value="confirmed">Confirmed ✓</option><option value="pending">Pending</option><option value="tbd">TBD</option></select>
+      </div>
+      <button class="btn-add" onclick="addReservation()">Save Reservation</button>
+      <div style="color:rgba(255,255,255,.4);font-size:12px;text-align:center;margin-top:12px;padding:12px;border:1px dashed rgba(255,255,255,.15);border-radius:7px">📎 Document upload coming soon.</div>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- DECISION -->
+<section class="decision-section" id="decision-section">
+  <p class="section-label" style="color:var(--gl)">The moment of truth</p>
+  <h2 id="d-title"></h2>
+  <p id="d-sub"></p>
+  <div class="decision-btns">
+    <button class="btn-yes"   onclick="openModal('yes-modal')">Yes, this is the trip! Unlock it ✨</button>
+    <button class="btn-edits" onclick="openModal('edits-modal')">Looks amazing, but I need some edits made</button>
+    <button class="btn-no"    onclick="openModal('no-modal')">Not what I'm looking for, I will pass</button>
+  </div>
+  <p class="no-pressure">No pressure at all. I'm grateful I had the opportunity to help bring your travel vision to life and explore what this trip could become. Whatever you decide, thank you for allowing me to be part of the journey.</p>
+</section>
+
+<!-- ADMIN PANEL -->
+<div id="admin-panel">
+  <div class="admin-inner" style="max-width:860px">
+
+    <!-- HEADER -->
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:14px;margin-bottom:32px">
+      <div>
+        <h2 style="color:var(--white);margin-bottom:4px">🔧 Admin Panel · Deja Only</h2>
+        <p class="admin-meta">Access via <code style="color:var(--gl);font-size:12px">?admin=mdtw2024</code> &nbsp;·&nbsp; This panel is invisible to clients</p>
+      </div>
+      <div style="background:rgba(255,120,80,.12);border:1px solid rgba(255,120,80,.3);border-radius:9px;padding:11px 16px;font-size:12px;color:rgba(255,180,150,.9);max-width:340px;line-height:1.55">
+        ⚠️ <strong>Static site note:</strong> Toggles here preview changes only. To make them permanent, export the CLIENT object below and redeploy the HTML file.
+      </div>
+    </div>
+
+    <!-- ADMIN TABS -->
+    <div class="vault-tabs" style="margin-bottom:28px" id="adm-tabs">
+      <button class="vault-tab active" onclick="admTab('overview')">Overview</button>
+      <button class="vault-tab" onclick="admTab('content')">Trip Content</button>
+      <button class="vault-tab" onclick="admTab('export')">Export CLIENT</button>
+      <button class="vault-tab" onclick="admTab('wizard')">✦ New Client Wizard</button>
+      <button class="vault-tab" onclick="admTab('editflow')">Edit Workflow</button>
+      <button class="vault-tab" onclick="admTab('pdfcovers')">PDF Covers</button>
+    </div>
+
+    <!-- ── TAB: OVERVIEW ── -->
+    <div id="adm-overview" class="adm-pane">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:28px">
+        <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:20px">
+          <div style="color:rgba(255,255,255,.5);font-size:10px;letter-spacing:.15em;text-transform:uppercase;margin-bottom:6px">Client</div>
+          <div style="color:var(--white);font-family:'DM Serif Display',serif;font-size:1.2rem" id="adm-clientname"></div>
+          <div style="color:rgba(255,255,255,.5);font-size:12px;margin-top:3px" id="adm-clientdest"></div>
+        </div>
+        <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:20px">
+          <div style="color:rgba(255,255,255,.5);font-size:10px;letter-spacing:.15em;text-transform:uppercase;margin-bottom:6px">Estimated Total</div>
+          <div style="color:var(--gl);font-family:'DM Serif Display',serif;font-size:1.4rem" id="adm-total"></div>
+          <div style="color:rgba(255,255,255,.5);font-size:12px;margin-top:3px" id="adm-travelers"></div>
+        </div>
+      </div>
+
+      <div class="ag"><label>Payment Status</label>
+        <div class="toggle-row"><div class="tog" id="pay-tog" onclick="togglePayment()"></div><span class="tl" id="pay-lbl"></span></div>
+        <p style="color:rgba(255,255,255,.3);font-size:11px;margin-top:7px">Toggle to preview both modes. Set <code style="color:var(--gl)">finalPaid: true</code> + redeploy to make permanent.</p>
+      </div>
+
+      <div class="ag"><label>Client Preview URL</label><input class="ai" id="url-preview" readonly /></div>
+      <div class="ag"><label>Full Access URL (post-payment)</label><input class="ai" id="url-unlock" readonly /></div>
+      <div style="margin-bottom:28px;display:flex;gap:9px;flex-wrap:wrap">
+        <button class="btn-ac" onclick="copyUrl('url-preview')">Copy Preview URL</button>
+        <button class="btn-ac2" onclick="copyUrl('url-unlock')">Copy Unlock URL</button>
+        <button class="btn-ac2" onclick="window.open(document.getElementById('url-preview').value,'_blank')">Open Preview ↗</button>
+        <button class="btn-ac2" onclick="window.open(document.getElementById('url-unlock').value,'_blank')">Open Full Mode ↗</button>
+      </div>
+
+      <div class="ag"><label>Flights — Full Details</label><table class="adm-table" id="adm-flights"></table></div>
+      <div class="ag"><label>Accommodations — Full Details</label><table class="adm-table" id="adm-accoms"></table></div>
+    </div>
+
+    <!-- ── TAB: CONTENT ── -->
+    <div id="adm-content" class="adm-pane" style="display:none">
+      <p style="color:rgba(255,255,255,.5);font-size:13px;margin-bottom:20px">Edit key fields. Changes preview live on the page. Export → copy to file → redeploy to save permanently.</p>
+
+      <div class="ag"><label>Client First Name</label>
+        <input class="ai" id="ed-name" oninput="liveEdit('firstName',this.value);renderHero();renderWishes();renderDecision();renderFooter()"/>
+      </div>
+      <div class="ag"><label>Destination (full)</label>
+        <input class="ai" id="ed-dest" oninput="liveEdit('destination',this.value);renderHero()"/>
+      </div>
+      <div class="ag"><label>Destination (short, e.g. Philippines)</label>
+        <input class="ai" id="ed-destshort" oninput="liveEdit('destinationShort',this.value)"/>
+      </div>
+      <div class="ag"><label>Travel Dates</label>
+        <input class="ai" id="ed-dates" oninput="liveEdit('dates',this.value);renderHero();renderFooter()"/>
+      </div>
+      <div class="ag"><label>Departing From</label>
+        <input class="ai" id="ed-dep" oninput="liveEdit('departing',this.value);renderHero()"/>
+      </div>
+      <div class="ag"><label>Number of Travelers</label>
+        <input class="ai" type="number" id="ed-travelers" min="1" max="20" oninput="liveEdit('travelers',parseInt(this.value)||1);renderFlights();updatePricingDisplay()"/>
+      </div>
+      <div class="ag"><label>Tagline (hero subtitle)</label>
+        <input class="ai" id="ed-tag" oninput="liveEdit('tagline',this.value);renderHero()"/>
+      </div>
+      <div class="ag"><label>Personal Welcome Note</label>
+        <textarea class="ai" id="ed-note" rows="5" style="resize:vertical" oninput="liveEdit('welcomeNote',this.value);renderWelcome()"></textarea>
+      </div>
+      <div class="ag"><label>Client Wishes (comma separated)</label>
+        <input class="ai" id="ed-wishes" oninput="liveEdit('wishes',this.value.split(',').map(w=>w.trim()).filter(Boolean));renderWishes()"/>
+      </div>
+      <button class="btn-ac" onclick="admTab('export')" style="margin-top:8px">→ Export Updated CLIENT Object</button>
+    </div>
+
+    <!-- ── TAB: EXPORT ── -->
+    <div id="adm-export" class="adm-pane" style="display:none">
+      <p style="color:rgba(255,255,255,.7);font-size:14px;margin-bottom:7px;line-height:1.6">This is your complete <code style="color:var(--gl)">CLIENT</code> object with any live edits applied. Copy it, paste it into the HTML file replacing the existing CLIENT block, then redeploy to Surge.</p>
+      <div style="background:rgba(201,169,110,.1);border:1px solid rgba(201,169,110,.3);border-radius:9px;padding:12px 16px;font-size:12px;color:var(--gl);margin-bottom:18px;line-height:1.6">
+        <strong>Workflow:</strong> Edit fields in Content tab → Export → Copy → Open HTML in Claude Code → Paste CLIENT object → Redeploy
+      </div>
+      <textarea id="export-output" class="ai" rows="22" style="font-size:11px;font-family:monospace;resize:vertical" readonly></textarea>
+      <div style="display:flex;gap:9px;margin-top:12px;flex-wrap:wrap">
+        <button class="btn-ac" onclick="exportClient()">Refresh Export</button>
+        <button class="btn-ac2" onclick="copyExport()">Copy to Clipboard</button>
+        <button class="btn-ac2" onclick="downloadExport()">Download as .js</button>
+      </div>
+      <div style="margin-top:20px;padding:14px;background:rgba(255,255,255,.04);border-radius:9px;border:1px dashed rgba(255,255,255,.15)">
+        <p style="color:rgba(255,255,255,.5);font-size:12px;line-height:1.7"><strong style="color:rgba(255,255,255,.7)">Redeploy instructions:</strong><br>
+        1. In Claude Code, open <code style="color:var(--gl)">mdtw-client-template.html</code><br>
+        2. Find the <code style="color:var(--gl)">const CLIENT = {</code> block at the top of the JS<br>
+        3. Replace the entire CLIENT object with the exported version<br>
+        4. Run: <code style="color:var(--gl)">$env:SURGE_LOGIN="..."; $env:SURGE_TOKEN="..."; surge --project ... --domain clientname.surge.sh</code></p>
+      </div>
+    </div>
+
+    <!-- ── TAB: NEW CLIENT WIZARD ── -->
+    <div id="adm-wizard" class="adm-pane" style="display:none">
+      <p style="color:rgba(255,255,255,.7);font-size:14px;margin-bottom:20px;line-height:1.6">Fill in what you know. The wizard generates a ready-to-use <code style="color:var(--gl)">CLIENT</code> object. Paste it into Claude Code and say: <em style="color:rgba(255,255,255,.5)">"Build the client page for [name]."</em></p>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:13px">
+        <div class="ag" style="margin:0"><label>Client First Name</label><input class="ai" id="wz-name" placeholder="e.g. Taryn"/></div>
+        <div class="ag" style="margin:0"><label>Destination</label><input class="ai" id="wz-dest" placeholder="e.g. Oaxaca, Mexico"/></div>
+        <div class="ag" style="margin:0"><label>Travel Dates</label><input class="ai" id="wz-dates" placeholder="e.g. March 10–17, 2026"/></div>
+        <div class="ag" style="margin:0"><label>Duration (days)</label><input class="ai" type="number" id="wz-dur" placeholder="7" min="1"/></div>
+        <div class="ag" style="margin:0"><label>Travelers</label><input class="ai" type="number" id="wz-travelers" placeholder="2" min="1"/></div>
+        <div class="ag" style="margin:0"><label>Departing From</label><input class="ai" id="wz-dep" placeholder="e.g. Atlanta, GA"/></div>
+        <div class="ag" style="margin:0"><label>Budget (approx total)</label><input class="ai" id="wz-budget" placeholder="e.g. $4,500"/></div>
+        <div class="ag" style="margin:0"><label>Pace</label>
+          <select class="ai fs" id="wz-pace">
+            <option value="relaxed">Relaxed — fewer activities, more rest</option>
+            <option value="balanced" selected>Balanced — mix of adventure and ease</option>
+            <option value="packed">Packed — maximize every day</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="ag" style="margin-top:13px"><label>What the client wants most (comma separated)</label>
+        <input class="ai" id="wz-wishes" placeholder="e.g. local food, boutique hotels, hiking, no tourist traps"/>
+      </div>
+      <div class="ag"><label>Deal breakers / must avoids</label>
+        <input class="ai" id="wz-avoid" placeholder="e.g. no all-inclusive resorts, no hostels, avoid crowds"/>
+      </div>
+      <div class="ag"><label>Special occasion?</label>
+        <input class="ai" id="wz-occasion" placeholder="e.g. 30th birthday, anniversary, solo reset trip"/>
+      </div>
+      <div class="ag"><label>Hotel vibe preference</label>
+        <select class="ai fs" id="wz-hotel">
+          <option value="boutique">Boutique / design-forward</option>
+          <option value="luxury">Luxury resort</option>
+          <option value="budget">Budget-smart — save for experiences</option>
+          <option value="mix">Mix — splurge on 1-2 nights, save elsewhere</option>
+          <option value="airbnb">Private rental / Airbnb style</option>
+        </select>
+      </div>
+      <div class="ag"><label>Food priorities</label>
+        <select class="ai fs" id="wz-food">
+          <option value="local">Local only — no tourist restaurants</option>
+          <option value="mix">Mix of local and elevated dining</option>
+          <option value="fine">Fine dining is important</option>
+          <option value="budget">Keep food spend low</option>
+        </select>
+      </div>
+      <div class="ag"><label>Dietary restrictions or preferences</label>
+        <input class="ai" id="wz-diet" placeholder="e.g. vegetarian, no shellfish, gluten-free"/>
+      </div>
+      <div class="ag"><label>Any notes from the consultation?</label>
+        <textarea class="ai" id="wz-notes" rows="4" style="resize:vertical" placeholder="Paste any key quotes or context from the client call or questionnaire..."></textarea>
+      </div>
+
+      <button class="btn-ac" style="width:100%;padding:14px;font-size:15px;margin-top:8px" onclick="runWizard()">✦ Generate CLIENT Object</button>
+
+      <div id="wz-output" style="display:none;margin-top:20px">
+        <div style="background:rgba(74,103,65,.2);border:1px solid rgba(74,103,65,.4);border-radius:9px;padding:14px 16px;font-size:13px;color:#8BC47A;margin-bottom:14px;line-height:1.6">
+          ✓ CLIENT object generated. Copy it and tell Claude Code: <em>"Build the client travel page using this CLIENT data."</em>
+        </div>
+        <textarea id="wz-result" class="ai" rows="28" style="font-size:11px;font-family:monospace;resize:vertical" readonly></textarea>
+        <div style="display:flex;gap:9px;margin-top:12px">
+          <button class="btn-ac" onclick="copyWizard()">Copy CLIENT Object</button>
+          <button class="btn-ac2" onclick="downloadWizard()">Download as .js</button>
+        </div>
+        <div style="margin-top:16px;padding:14px;background:rgba(255,255,255,.04);border-radius:9px;border:1px dashed rgba(255,255,255,.15)">
+          <p style="color:rgba(255,255,255,.5);font-size:12px;line-height:1.8"><strong style="color:rgba(255,255,255,.7)">Next step in Claude Code:</strong><br>
+          1. Copy the CLIENT object above<br>
+          2. Open <code style="color:var(--gl)">mdtw-client-template.html</code><br>
+          3. Replace the existing CLIENT block at the top of the JS<br>
+          4. Fill in real prices, images, booking links, and itinerary details<br>
+          5. Deploy: <code style="color:var(--gl)">surge --domain [clientname]-[destination].surge.sh</code>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── TAB: EDIT WORKFLOW ── -->
+    <div id="adm-editflow" class="adm-pane" style="display:none">
+
+      <p style="color:rgba(255,255,255,.7);font-size:14px;margin-bottom:24px;line-height:1.7">When a client submits an edit request, this is the full loop — start to finish.</p>
+
+      <!-- STEP FLOW -->
+      <div style="display:flex;flex-direction:column;gap:3px;margin-bottom:32px">
+        <div style="display:flex;align-items:flex-start;gap:14px;padding:14px 16px;background:rgba(255,255,255,.05);border-radius:10px 10px 0 0;border:1px solid rgba(255,255,255,.08)">
+          <div style="width:26px;height:26px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0;color:var(--white)">1</div>
+          <div><div style="color:var(--white);font-size:13px;font-weight:500;margin-bottom:3px">Client clicks "Looks amazing, but I need some edits made"</div><div style="color:rgba(255,255,255,.45);font-size:12px">They type their request in the modal. It sends to <code style="color:var(--gl)">mamedeeworld@gmail.com</code> via mailto.</div></div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:14px;padding:14px 16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-top:none">
+          <div style="width:26px;height:26px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0;color:var(--white)">2</div>
+          <div><div style="color:var(--white);font-size:13px;font-weight:500;margin-bottom:3px">You open the email</div><div style="color:rgba(255,255,255,.45);font-size:12px">Copy the client's edit request text.</div></div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:14px;padding:14px 16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-top:none">
+          <div style="width:26px;height:26px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0;color:var(--white)">3</div>
+          <div><div style="color:var(--white);font-size:13px;font-weight:500;margin-bottom:3px">Go to Export CLIENT tab → copy the current CLIENT object</div><div style="color:rgba(255,255,255,.45);font-size:12px">Or upload the full HTML file to Claude Code directly.</div></div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:14px;padding:14px 16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-top:none">
+          <div style="width:26px;height:26px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0;color:var(--white)">4</div>
+          <div><div style="color:var(--white);font-size:13px;font-weight:500;margin-bottom:3px">Open Claude Code → paste the prompt below → get updated CLIENT object</div><div style="color:rgba(255,255,255,.45);font-size:12px">Claude returns only what changed. Review it before replacing.</div></div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:14px;padding:14px 16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-top:none">
+          <div style="width:26px;height:26px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0;color:var(--white)">5</div>
+          <div><div style="color:var(--white);font-size:13px;font-weight:500;margin-bottom:3px">Paste updated CLIENT into the HTML → open in Admin → review both modes</div><div style="color:rgba(255,255,255,.45);font-size:12px">Use the payment toggle to preview Dream Preview and Full Destination before sending.</div></div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:14px;padding:14px 16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-top:none">
+          <div style="width:26px;height:26px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0;color:var(--white)">6</div>
+          <div><div style="color:var(--white);font-size:13px;font-weight:500;margin-bottom:3px">Redeploy to the same Surge URL → client's link updates automatically</div><div style="color:rgba(255,255,255,.45);font-size:12px">Same domain, new deploy. The client doesn't need a new link.</div></div>
+        </div>
+      </div>
+
+      <!-- CLAUDE PROMPT -->
+      <div style="margin-bottom:14px">
+        <div style="color:rgba(255,255,255,.5);font-size:10px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:10px">Claude Code Prompt — copy this every time</div>
+        <textarea id="edit-prompt-box" class="ai" rows="13" style="font-size:12px;font-family:monospace;resize:vertical;line-height:1.7" readonly>Here is the client's edit request:
+
+[PASTE REQUEST FROM EMAIL]
+
+Here is the current CLIENT object:
+
+[PASTE CLIENT OBJECT FROM EXPORT TAB]
+
+Please update only the CLIENT object to reflect the requested edits.
+Do not change the HTML template unless absolutely necessary.
+Protect Dream Preview details — keep dreamLabel/dreamTitle/dreamDesc vague.
+Keep Full Destination Mode complete with all full names and links.
+Show me exactly what changed and why.</textarea>
+        <div style="display:flex;gap:9px;margin-top:10px">
+          <button class="btn-ac" onclick="copyEditPrompt()">Copy Prompt</button>
+          <button class="btn-ac2" onclick="admTab('export')">→ Go to Export CLIENT</button>
+        </div>
+      </div>
+
+      <!-- PERMANENT RULE -->
+      <div style="background:rgba(201,169,110,.08);border:1px solid rgba(201,169,110,.25);border-radius:11px;padding:18px 20px;margin-top:8px">
+        <div style="color:var(--gl);font-size:10px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:10px">Permanent Operating Rule</div>
+        <div style="color:rgba(255,255,255,.85);font-size:14px;line-height:1.8">
+          <strong style="color:var(--white)">Never edit random HTML sections directly unless absolutely necessary.</strong><br>
+          Edit the CLIENT object first. The HTML is infrastructure. The CLIENT object is the product.<br><br>
+          <strong style="color:var(--white)">Edit request flow:</strong><br>
+          Client email → Claude Code → updated CLIENT object → admin review → redeploy<br><br>
+          <strong style="color:var(--white)">New client flow:</strong><br>
+          Consultation → Wizard → CLIENT object → Claude research + build → admin review → deploy → preview link → unlock after payment
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ── TAB: PDF COVERS ── -->
+    <div id="adm-pdfcovers" class="adm-pane" style="display:none">
+      <p style="color:rgba(255,255,255,.7);font-size:14px;margin-bottom:6px;line-height:1.7">Generate beautiful one-page PDF covers that match the website's design system exactly. Same CLIENT data, same palette, same typography.</p>
+      <p style="color:rgba(255,255,255,.4);font-size:12px;margin-bottom:26px">Browser will open a print dialog. Choose "Save as PDF" to export the file.</p>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:28px">
+        <!-- DREAM COVER CARD -->
+        <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:13px;padding:22px">
+          <div style="color:var(--gl);font-size:10px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:9px">Dream Preview Cover</div>
+          <div style="color:var(--white);font-family:'DM Serif Display',serif;font-size:1rem;margin-bottom:8px;line-height:1.4">Sent before payment.<br>Builds desire, teases the trip.</div>
+          <ul style="color:rgba(255,255,255,.5);font-size:11px;line-height:2;list-style:none;padding:0;margin-bottom:18px">
+            <li>✦ Hero image</li>
+            <li>✦ Client name + destination + dates</li>
+            <li>✦ "Here's what I'm building for you"</li>
+            <li>✦ Wish checklist</li>
+            <li>✦ Estimated total</li>
+            <li>✦ Decision options</li>
+            <li>✦ Price disclaimer</li>
+          </ul>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <button class="btn-ac" style="width:100%" onclick="generateCover('dream')">Generate Dream Cover</button>
+            <button class="btn-ac2" style="width:100%" onclick="printCover('dream')">Print / Save as PDF</button>
+          </div>
+        </div>
+
+        <!-- REVEAL COVER CARD -->
+        <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:13px;padding:22px">
+          <div style="color:var(--gl);font-size:10px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:9px">Full Reveal Cover</div>
+          <div style="color:var(--white);font-family:'DM Serif Display',serif;font-size:1rem;margin-bottom:8px;line-height:1.4">Sent after payment.<br>Companion card to the full guide.</div>
+          <ul style="color:rgba(255,255,255,.5);font-size:11px;line-height:2;list-style:none;padding:0;margin-bottom:18px">
+            <li>✦ Hero image</li>
+            <li>✦ Client name + destination + dates</li>
+            <li>✦ Personal welcome note</li>
+            <li>✦ "What you asked for" checklist</li>
+            <li>✦ Country snapshot</li>
+            <li>✦ Good to know + memory maker</li>
+            <li>✦ Travel page reminder</li>
+            <li>✦ Price disclaimer</li>
+          </ul>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <button class="btn-ac" style="width:100%" onclick="generateCover('reveal')">Generate Full Reveal Cover</button>
+            <button class="btn-ac2" style="width:100%" onclick="printCover('reveal')">Print / Save as PDF</button>
+          </div>
+        </div>
+      </div>
+
+      <div style="background:rgba(201,169,110,.08);border:1px solid rgba(201,169,110,.25);border-radius:10px;padding:14px 18px">
+        <div style="color:var(--gl);font-size:10px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:7px">Design Rules</div>
+        <div style="color:rgba(255,255,255,.6);font-size:12px;line-height:1.8">
+          1 page only · Hero image on top · Warm cream background · Dusty rose and gold accents · Deep brown typography<br>
+          No dark blocks · No dense text · No report layout · Companion card to the website, not a separate document
+        </div>
+      </div>
+
+      <div id="cover-preview-notice" style="display:none;margin-top:18px;background:rgba(74,103,65,.2);border:1px solid rgba(74,103,65,.4);border-radius:9px;padding:12px 16px;font-size:13px;color:#8BC47A">
+        ✓ Cover generated. Scroll down to preview it, then click Print / Save as PDF above.
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- PDF COVERS (hidden; rendered on demand via admin) -->
+<div id="pdf-dream-cover" class="pdf-cover"></div>
+<div id="pdf-reveal-cover" class="pdf-cover"></div>
+
+<!-- FOOTER -->
+<footer>
+  <p style="font-family:'DM Serif Display',serif;font-size:1.1rem;color:rgba(255,255,255,.7);margin-bottom:7px">Mame Dee Travel World</p>
+  <p><a href="mailto:mamedeeworld@gmail.com">mamedeeworld@gmail.com</a></p>
+  <p style="margin-top:12px">Built for <strong id="foot-client"></strong> · <span id="foot-dates"></span></p>
+  <p style="margin-top:7px;font-size:11px;max-width:440px;margin-left:auto;margin-right:auto">This proposal is confidential and prepared exclusively for the named traveler.</p>
+</footer>
+
+<!-- STICKY PRICING BAR -->
+<div class="sticky">
+  <div class="st-total"><div class="lbl">Estimated Total</div><div class="amt" id="st-amt"></div></div>
+  <div class="st-pills" id="st-pills"></div>
+  <div class="st-actions">
+    <button class="st-edits" onclick="openModal('edits-modal')">Edits</button>
+    <button class="st-yes" onclick="openModal('yes-modal')">Book This Trip →</button>
+    <button class="st-no" onclick="openModal('no-modal')">Pass</button>
+  </div>
+</div>
+
+<!-- MODALS -->
+<div class="modal-overlay" id="yes-modal">
+  <div class="modal"><button class="modal-close" onclick="closeModal('yes-modal')">×</button>
+    <h3>🎉 Amazing, <span id="yes-name"></span>!</h3>
+    <p>I'm so excited to make this happen. I'll reach out within 24 hours with next steps. Anything you want me to know before we start?</p>
+    <textarea id="yes-notes" placeholder="Optional: final notes, requests, or excitement to share..."></textarea>
+    <div class="modal-btns"><button class="btn-mc" onclick="closeModal('yes-modal')">Cancel</button><button class="btn-ms" onclick="submitYes()">Send to Deja</button></div>
+  </div>
+</div>
+<div class="modal-overlay" id="edits-modal">
+  <div class="modal"><button class="modal-close" onclick="closeModal('edits-modal')">×</button>
+    <h3>Tell me what to adjust</h3>
+    <p>This is exactly what the process is for. Tell me what isn't quite right and I'll rework it.</p>
+    <textarea id="edits-notes" placeholder="e.g. Can we swap the Manila hotel? I'd love something closer to the water..."></textarea>
+    <div class="modal-btns"><button class="btn-mc" onclick="closeModal('edits-modal')">Cancel</button><button class="btn-ms" onclick="submitEdits()">Send Edits</button></div>
+  </div>
+</div>
+<div class="modal-overlay" id="no-modal">
+  <div class="modal"><button class="modal-close" onclick="closeModal('no-modal')">×</button>
+    <h3>That's completely okay.</h3>
+    <p>Travel is personal and I want you to feel 100% right about it. Would you mind sharing what wasn't working?</p>
+    <textarea id="no-notes" placeholder="Optional: Was it timing, budget, destination, or something else?"></textarea>
+    <div class="modal-btns"><button class="btn-mc" onclick="closeModal('no-modal')">Maybe later</button><button class="btn-ms" onclick="submitNo()">Send Feedback</button></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<!-- ═══════════════════════════════════ JS ═══════════════════════════════════ -->
+<script>
+let FULL, ADMIN;
+
+document.addEventListener('DOMContentLoaded', () => {
+  FULL  = isFullMode();
+  ADMIN = isAdminMode();
+  if (FULL)  document.body.classList.add('full-mode');
+  if (ADMIN) document.body.classList.add('admin-mode');
+  if (FULL || ADMIN) document.getElementById('dream-banner').classList.add('hidden');
+
+  renderHero(); renderWishes(); renderWelcome(); renderTaste();
+  renderFlights(); renderAccoms(); renderTransport();
+  renderItinerary(); renderPricing(); renderVault();
+  renderDecision(); renderFooter(); updateSticky();
+
+  if (ADMIN) { document.getElementById('admin-panel').classList.add('visible'); setupAdmin(); renderAdminDetails(); }
+});
+
+function renderHero(){
+  document.getElementById('hero-bg').style.backgroundImage=`url('${CLIENT.heroImage}')`;
+  document.getElementById('hero-title').innerHTML=`${CLIENT.destination}<br><em style="font-style:italic;color:var(--gl)">Awaits You</em>`;
+  document.getElementById('hero-sub').textContent=CLIENT.tagline;
+  document.getElementById('hero-dates').innerHTML=`✈ ${CLIENT.dates} · Departing ${CLIENT.departing}`;
+  document.title=`${CLIENT.firstName}'s ${CLIENT.destinationShort} Trip · Mame Dee Travel World`;
+}
+function renderWishes(){
+  document.getElementById('wish-title').textContent=`${CLIENT.firstName}, here's what I built around you`;
+  document.getElementById('wish-grid').innerHTML=CLIENT.wishes.map(w=>`<div class="wish-chip">${w}</div>`).join('');
+}
+function renderWelcome(){ document.getElementById('welcome-text').textContent=CLIENT.welcomeNote; }
+
+function renderTaste(){
+  const make=(items)=>items.map(i=>`<div class="taste-card"><img src="${i.image}" alt="${i.dreamTitle}" loading="lazy" onerror="imgFB(this)"/><div class="taste-body"><div class="taste-label">${i.label}</div><div class="taste-title">${i.dreamTitle}</div><p class="taste-desc">${i.dreamDesc}</p></div></div>`).join('');
+  document.getElementById('exp-grid').innerHTML=make(CLIENT.experiences);
+  document.getElementById('rest-grid').innerHTML=make(CLIENT.restaurants);
+}
+
+// ── FLIGHTS ──────────────────────────────────────
+function renderFlights(){
+  const sf=FULL||ADMIN;
+  document.getElementById('flights-grid').innerHTML=CLIENT.flights.map(f=>{
+    const price=fmt(f.pricePerPerson*CLIENT.travelers);
+    const title=sf?f.airline:f.dreamLabel;
+    const detail=sf?`<strong>Out:</strong> ${f.route}<br>${f.depart} → ${f.arrive}<br><strong>Return:</strong> ${f.ret}`:`${f.dreamDetail}`;
+    const link=sf?`<a class="card-link" href="${f.bookingUrl}" target="_blank">Check availability ↗</a>`:'';
+    return`<div class="card ${f.selected?'selected':''}" id="cf-${f.id}" onclick="selFlight('${f.id}')">
+      <div class="card-body">
+        <div class="card-tag">${f.dreamLabel}</div>
+        <h3 class="card-title">${title}</h3>
+        <p class="card-sub">${detail}</p>
+        <div class="card-price">${price} <span style="font-size:11px;font-weight:400;color:var(--muted)">total for ${CLIENT.travelers}</span></div>
+        <div class="card-why"><strong>Why I chose this:</strong> ${f.why}</div>${link}
+        <button class="card-select-btn">${f.selected?'✓ Selected':'Select this flight'}</button>
+      </div></div>`;
+  }).join('');
+}
+
+function selFlight(id){
+  CLIENT.flights.forEach(f=>{
+    f.selected=f.id===id;
+    const c=document.getElementById(`cf-${f.id}`);
+    if(!c)return;
+    c.classList.toggle('selected',f.selected);
+    const b=c.querySelector('.card-select-btn');
+    if(b)b.textContent=f.selected?'✓ Selected':'Select this flight';
+  });
+  updatePricingDisplay(); updateSticky();
+}
+
+// ── ACCOMMODATIONS ────────────────────────────────
+function renderAccoms(){
+  const sf=FULL||ADMIN;
+  document.getElementById('accom-sub').textContent=sf
+    ?'All stays fully revealed. Select your preferred option for each destination.'
+    :'Pick one option per destination. Images are softened for privacy — full details unlock after booking.';
+
+  const TIER_META={
+    budget: {label:'Budget-Smart',cls:'tier-budget',icon:'tier-icon-budget'},
+    mid:    {label:'Balanced',    cls:'tier-mid',   icon:'tier-icon-mid'},
+    premium:{label:'Best Experience',cls:'tier-premium',icon:'tier-icon-premium'}
+  };
+
+  document.getElementById('accom-groups').innerHTML=CLIENT.accomGroups.map(g=>`
+    <div class="accom-group">
+      <div class="accom-group-label">
+        <span>📍 ${g.leg}</span>
+        <span class="accom-group-nights">${g.options.length} options · ${g.nights} night${g.nights!==1?'s':''}</span>
+      </div>
+      <div class="card-grid">${g.options.map(a=>{
+        const tier=TIER_META[a.tier||'mid'];
+        const imgCls=sf?'':'blur-img';
+        const previewBadge=sf?'':`<div class="dream-badge">${tier.label}</div>`;
+
+        // Dream mode: everything protected
+        const title   = sf ? a.name        : a.dreamLabel;
+        const location= sf ? a.area        : ''; // no location hint in dream
+        const style   = sf ? '' : `<p class="card-sub" style="font-style:italic;margin-top:4px">${a.dreamStyle}</p>`;
+        const total   = fmt(a.pricePerNight*g.nights);
+        const priceDisplay = sf
+          ? `$${a.pricePerNight}/night &nbsp;·&nbsp; <strong>${total} total</strong>`
+          : `${tier.label} · included in your estimate`;
+        const links = sf
+          ? `<div style="display:flex;align-items:center;flex-wrap:wrap;gap:2px;margin-top:6px">
+               <a class="card-link" href="${a.bookingUrl}" target="_blank">Book property ↗</a>
+               ${a.mapsUrl?`<a class="card-maps" href="${a.mapsUrl}" target="_blank">· Maps ↗</a>`:''}
+             </div>`
+          : '';
+        const notes = sf && a.notes
+          ? `<div class="card-notes">💡 ${a.notes}</div>`
+          : '';
+
+        return`<div class="card ${a.selected?'selected':''}" id="ca-${a.id}" onclick="selAccom('${g.id}','${a.id}')">
+          <div class="card-img-wrap">
+            ${previewBadge}
+            <img class="${imgCls}" src="${a.image}" alt="${a.dreamLabel}" loading="lazy" onerror="imgFB(this)"/>
+          </div>
+          <div class="card-body">
+            <div class="tier-badge ${tier.cls}"><span class="${tier.icon}"></span>${tier.label}</div>
+            <div class="card-tag">${a.dreamLabel}</div>
+            <h3 class="card-title">${title}</h3>
+            ${location?`<p class="card-sub">📍 ${location}</p>`:''}
+            ${style}
+            <div class="card-price" style="font-size:13px;margin:6px 0">${priceDisplay}</div>
+            <div class="card-why"><strong>Why I chose this:</strong> ${a.why}</div>
+            ${links}${notes}
+            <button class="card-select-btn" style="margin-top:11px">${a.selected?'✓ Selected':'Select this stay'}</button>
+          </div></div>`;
+      }).join('')}</div>
+    </div>`).join('');
+}
+
+function selAccom(groupId, optionId){
+  const g=CLIENT.accomGroups.find(x=>x.id===groupId);
+  if(!g)return;
+  g.options.forEach(o=>{
+    o.selected=o.id===optionId;
+    const c=document.getElementById(`ca-${o.id}`);
+    if(!c)return;
+    c.classList.toggle('selected',o.selected);
+    const b=c.querySelector('.card-select-btn');
+    if(b)b.textContent=o.selected?'✓ Selected':'Select this stay';
+  });
+  updatePricingDisplay(); updateSticky();
+}
+
+// ── TRANSPORT ─────────────────────────────────────
+function renderTransport(){
+  const sf=FULL||ADMIN;
+  document.getElementById('transport-grid').innerHTML=CLIENT.transport.map(t=>{
+    const title=sf?t.type:t.dreamLabel;
+    const detail=sf?t.detail:t.dreamDetail;
+    return`<div class="card ${t.selected?'selected':''}" id="ct-${t.id}" onclick="selTransport('${t.id}')">
+      <div class="card-body">
+        <div class="card-tag">${t.dreamLabel}</div>
+        <h3 class="card-title">${title}</h3>
+        <p class="card-sub">${detail}</p>
+        <div class="card-price">${fmt(t.price)}</div>
+        <div class="card-why"><strong>Why this works:</strong> ${t.why}</div>
+        <button class="card-select-btn">${t.selected?'✓ Selected':'Select this option'}</button>
+      </div></div>`;
+  }).join('');
+}
+function selTransport(id){
+  CLIENT.transport.forEach(t=>{
+    t.selected=t.id===id;
+    const c=document.getElementById(`ct-${t.id}`);
+    if(!c)return;
+    c.classList.toggle('selected',t.selected);
+    const b=c.querySelector('.card-select-btn');
+    if(b)b.textContent=t.selected?'✓ Selected':'Select this option';
+  });
+  updatePricingDisplay(); updateSticky();
+}
+
+// ── ITINERARY ─────────────────────────────────────
+function renderItinerary(){
+  const sf=FULL||ADMIN;
+  const count=getSampleCount(CLIENT.duration);
+  const sampleNums=sf?null:pickSampleNums(CLIENT.itinerary,count);
+
+  document.getElementById('itin-title').textContent=`Your ${CLIENT.duration}-Day Journey`;
+  document.getElementById('itin-sub').textContent=sf
+    ?'Your complete day-by-day guide. Every activity has a booking link and Google Maps pin.'
+    :`All ${CLIENT.duration} days listed below. ${count} preview day${count>1?'s are':' is'} unlocked — full details come with your trip guide.`;
+  if(sf) document.getElementById('itin-gate').style.display='none';
+
+  document.getElementById('itin-grid').innerHTML=CLIENT.itinerary.map(day=>{
+    if(sf) return renderDayFull(day);
+    const alwaysShow=day.alwaysShow||day.day===1;
+    const isSample=sampleNums&&sampleNums.includes(day.day);
+    if(alwaysShow||isSample) return renderDaySample(day,alwaysShow&&!isSample);
+    return renderDayLocked(day);
+  }).join('');
+}
+
+function renderDayLocked(day){
+  return`<div class="day-card">
+    <div class="day-hdr no-click">
+      <div class="day-num dim">${day.day}</div>
+      <div><div class="day-title-text">${day.dreamTitle}</div><div class="day-date-text">${day.date}</div></div>
+      <div class="lock-pill">🔒 Locked</div>
+    </div>
+    <div class="day-lock-body">
+      <span style="font-size:1.3rem">🗝</span>
+      <div class="lock-note"><strong>Full details unlock after payment</strong>${day.lockNote||'Your complete day guide — activities, restaurants, maps, and booking links — is in your full trip document.'}</div>
+    </div></div>`;
+}
+
+function renderDaySample(day,isDay1Only){
+  const media=(day.activityImage&&day.foodImage&&!isDay1Only)?`<div class="media-row">
+    <div class="media-item"><img src="${day.activityImage}" alt="Activity" loading="lazy" onerror="imgFB(this)"/><div class="media-cap">${day.activityCaption||'Activity'}</div></div>
+    <div class="media-item"><img src="${day.foodImage}" alt="Food" loading="lazy" onerror="imgFB(this)"/><div class="media-cap">${day.foodCaption||'Dining'}</div></div>
+    </div>`:'';
+  const acts=day.activities.map(a=>`<div class="act-item"><div class="act-time">${a.time}</div><div class="act-text"><h4>${a.dreamTitle}</h4><p>${a.dreamDesc}</p></div></div>`).join('');
+  const badge=isDay1Only?'':`<div class="prev-pill">Preview ✦</div>`;
+  return`<div class="day-card">
+    <div class="day-hdr" onclick="toggleDay(this)">
+      <div class="day-num">${day.day}</div>
+      <div><div class="day-title-text">${day.dreamTitle}</div><div class="day-date-text">${day.date}</div></div>
+      ${badge}<span class="expand-arrow">▾</span>
+    </div>
+    <div class="day-body${isDay1Only?'':''}">${media}<div class="act-list">${acts}</div></div>
+  </div>`;
+}
+
+function renderDayFull(day){
+  const media=(day.activityImage&&day.foodImage)?`<div class="media-row">
+    <div class="media-item"><img src="${day.activityImage}" alt="Activity" loading="lazy" onerror="imgFB(this)"/><div class="media-cap">${day.activityCaption||'Activity'}</div></div>
+    <div class="media-item"><img src="${day.foodImage}" alt="Food" loading="lazy" onerror="imgFB(this)"/><div class="media-cap">${day.foodCaption||'Dining'}</div></div>
+    </div>`:'';
+  const acts=day.activities.map(a=>{
+    const maps=a.mapsLink?`<a href="${a.mapsLink}" target="_blank">Open in Maps ↗</a>`:'';
+    return`<div class="act-item"><div class="act-time">${a.time}</div><div class="act-text"><h4>${a.title||a.dreamTitle}</h4><p>${a.desc||a.dreamDesc} ${maps}</p></div></div>`;
+  }).join('');
+  return`<div class="day-card">
+    <div class="day-hdr" onclick="toggleDay(this)">
+      <div class="day-num">${day.day}</div>
+      <div><div class="day-title-text">${day.fullTitle||day.dreamTitle}</div><div class="day-date-text">${day.date}</div></div>
+      <span class="expand-arrow">▾</span>
+    </div>
+    <div class="day-body">${media}<div class="act-list">${acts}</div></div>
+  </div>`;
+}
+
+function toggleDay(hdr){
+  const body=hdr.nextElementSibling;
+  const arrow=hdr.querySelector('.expand-arrow');
+  const open=body.classList.toggle('open');
+  if(arrow)arrow.classList.toggle('open',open);
+}
+
+// ── PRICING ───────────────────────────────────────
+function renderPricing(){
+  document.getElementById('p-dest').textContent=`${CLIENT.destination} · Trip Investment`;
+  document.getElementById('p-dates').textContent=CLIENT.dates;
+  document.getElementById('p-disc').textContent=CLIENT.pricing.disclaimer;
+  document.getElementById('p-sub').textContent=`Estimated for ${CLIENT.travelers} traveler${CLIENT.travelers>1?'s':''}`;
+  document.getElementById('travelers-label').textContent=`${CLIENT.travelers} traveler${CLIENT.travelers>1?'s':''}`;
+
+  // Tour type toggle
+  document.getElementById('tour-options').innerHTML=Object.entries(CLIENT.activities).map(([key,act])=>`
+    <div class="tour-opt ${CLIENT.tourType===key?'active':''}" id="tour-${key}" onclick="selTourType('${key}')">
+      <div class="tour-opt-title">${act.label}</div>
+      <div class="tour-opt-price">${fmt(act.price)} total · ${act.desc}</div>
+    </div>`).join('');
+
+  updatePricingDisplay();
+}
+
+function selTourType(type){
+  CLIENT.tourType=type;
+  document.querySelectorAll('.tour-opt').forEach(el=>el.classList.remove('active'));
+  const el=document.getElementById(`tour-${type}`);
+  if(el)el.classList.add('active');
+  updatePricingDisplay(); updateSticky();
+}
+
+function updatePricingDisplay(){
+  const f=CLIENT.flights.find(x=>x.selected);
+  const t=CLIENT.transport.find(x=>x.selected);
+  const act=CLIENT.activities[CLIENT.tourType];
+  const mealsVal=getMealsVal();
+
+  let rows='';
+  if(f) rows+=prow(`✈ ${f.dreamLabel}`,fmt(f.pricePerPerson*CLIENT.travelers));
+  CLIENT.accomGroups.forEach(g=>{
+    const sel=g.options.find(o=>o.selected);
+    if(!sel)return;
+    const amt=sel.pricePerNight*g.nights;
+    // In dream mode: show combined accommodation as one total line, not per-leg
+    if(!FULL&&!ADMIN)return; // accumulate below for dream mode
+    rows+=prow(`🏨 ${sel.dreamLabel} (${g.leg})`,fmt(amt));
+  });
+  // Dream mode: show one blended accommodation line
+  if(!FULL&&!ADMIN){
+    const accomTotal=CLIENT.accomGroups.reduce((s,g)=>{const sel=g.options.find(o=>o.selected);return s+(sel?sel.pricePerNight*g.nights:0);},0);
+    rows+=prow('🏨 Accommodations (all destinations)',fmt(accomTotal));
+  }
+  if(t) rows+=prow(`🚤 ${t.dreamLabel}`,fmt(t.price));
+  rows+=prow(`🎒 ${act.label}`,fmt(act.price));
+
+  // Meals row with input
+  rows+=`<div class="meals-input-row">
+    <span class="lbl">🍽 Meals budget (edit below)</span>
+    <div style="display:flex;align-items:center;gap:6px">
+      <span style="font-size:13px;color:var(--muted)">$</span>
+      <input class="meals-input" id="meals-input" type="number" value="${mealsVal}" min="0" step="50" oninput="updatePricingDisplay();updateSticky()" />
+    </div>
+  </div>`;
+  rows+=prow('📦 Misc / Buffer',fmt(CLIENT.buffer));
+
+  const total=calcTotal();
+  rows+=`<div class="p-row total"><span class="lbl">Estimated Total</span><span class="amt" style="color:var(--green)">${fmt(total)}</span></div>`;
+
+  document.getElementById('p-rows').innerHTML=rows;
+  document.getElementById('p-total').textContent=fmt(total);
+  updateSticky();
+}
+function prow(lbl,amt){return`<div class="p-row"><span class="lbl">${lbl}</span><span class="amt">${amt}</span></div>`;}
+
+// ── STICKY ────────────────────────────────────────
+function updateSticky(){
+  document.getElementById('st-amt').textContent=fmt(calcTotal());
+  const f=CLIENT.flights.find(x=>x.selected);
+  const t=CLIENT.transport.find(x=>x.selected);
+  const pills=[];
+  if(f) pills.push(`<span class="st-pill"><strong>Flight:</strong> ${f.dreamLabel}</span>`);
+  CLIENT.accomGroups.forEach(g=>{const s=g.options.find(o=>o.selected);if(s)pills.push(`<span class="st-pill"><strong>Stay:</strong> ${s.dreamLabel}</span>`);});
+  if(t) pills.push(`<span class="st-pill"><strong>Transport:</strong> ${t.dreamLabel}</span>`);
+  pills.push(`<span class="st-pill"><strong>Tours:</strong> ${CLIENT.activities[CLIENT.tourType].label}</span>`);
+  document.getElementById('st-pills').innerHTML=pills.join('');
+}
+
+// ── VAULT ─────────────────────────────────────────
+const vD=JSON.parse(JSON.stringify(CLIENT.reservations));
+const vC=['flights','accommodations','tours','other'];
+const vL={flights:'✈ Flights',accommodations:'🏨 Stays',tours:'🎒 Tours',other:'📋 Other'};
+function renderVault(){
+  const te=document.getElementById('vault-tabs');if(!te)return;
+  te.innerHTML=vC.map((c,i)=>`<button class="vault-tab ${i===0?'active':''}" onclick="switchVaultTab('${c}')" id="vt-${c}">${vL[c]} (${(vD[c]||[]).length})</button>`).join('');
+  document.getElementById('vault-panels').innerHTML=vC.map((c,i)=>`<div class="vault-panel ${i===0?'active':''}" id="vp-${c}">${renderVI(c)}</div>`).join('');
+}
+function renderVI(cat){
+  const items=vD[cat]||[];
+  if(!items.length)return`<p style="color:rgba(255,255,255,.3);font-size:13px;padding:16px 0">No reservations yet.</p>`;
+  return items.map(it=>`<div class="vault-item"><div class="vault-item-title">${it.name}</div><div class="vault-meta">${it.provider} · ${it.date}${it.confirmation?' · Conf: '+it.confirmation:''}</div><span class="status status-${it.status}">${it.status}</span></div>`).join('');
+}
+function switchVaultTab(cat){vC.forEach(c=>{document.getElementById(`vt-${c}`).classList.toggle('active',c===cat);document.getElementById(`vp-${c}`).classList.toggle('active',c===cat);});}
+function addReservation(){
+  const name=document.getElementById('v-name').value.trim();if(!name){showToast('Please enter a name.');return;}
+  const cat=document.getElementById('v-cat').value;if(!vD[cat])vD[cat]=[];
+  vD[cat].push({name,provider:document.getElementById('v-provider').value.trim(),date:document.getElementById('v-date').value.trim(),confirmation:document.getElementById('v-conf').value.trim(),status:document.getElementById('v-status').value});
+  renderVault();switchVaultTab(cat);['v-name','v-provider','v-date','v-conf'].forEach(id=>document.getElementById(id).value='');showToast('Reservation saved ✓');
+}
+
+// ── DECISION ──────────────────────────────────────
+function renderDecision(){
+  document.getElementById('d-title').textContent=`${CLIENT.firstName}, what do you think?`;
+  document.getElementById('d-sub').textContent=`This trip was picked with your travel style in mind. Here is what is waiting for you — just say the word.`;
+}
+function renderFooter(){
+  document.getElementById('foot-client').textContent=CLIENT.firstName;
+  document.getElementById('foot-dates').textContent=CLIENT.dates;
+  document.getElementById('yes-name').textContent=CLIENT.firstName;
+}
+function scrollToDecision(){document.getElementById('decision-section').scrollIntoView({behavior:'smooth'});}
+
+// ── MODALS ────────────────────────────────────────
+function openModal(id){document.getElementById(id).classList.add('visible');}
+function closeModal(id){document.getElementById(id).classList.remove('visible');}
+function buildSel(){
+  const f=CLIENT.flights.find(x=>x.selected);
+  const t=CLIENT.transport.find(x=>x.selected);
+  const stays=CLIENT.accomGroups.map(g=>{const s=g.options.find(o=>o.selected);return s?`${g.leg}: ${s.dreamLabel}`:null;}).filter(Boolean).join('\n');
+  return `Flight: ${f?f.airline+' '+f.route:'—'}\nStays:\n${stays}\nTransport: ${t?t.type||t.dreamLabel:'—'}\nTours: ${CLIENT.activities[CLIENT.tourType].label}\nTotal: ${fmt(calcTotal())}`;
+}
+function submitYes(){
+  const n=document.getElementById('yes-notes').value;
+  window.location.href=`mailto:${CLIENT.notifyEmail}?subject=${encodeURIComponent(CLIENT.firstName+' said YES — '+CLIENT.destinationShort)}&body=${encodeURIComponent(CLIENT.firstName+' approved!\n\n'+buildSel()+'\n\nNotes: '+(n||'None')+'\n\n'+CLIENT.dates)}`;
+  closeModal('yes-modal');showToast('✨ Sent! Deja will be in touch soon.');
+}
+function submitEdits(){
+  const n=document.getElementById('edits-notes').value;if(!n.trim()){showToast('Please describe the edits.');return;}
+  window.location.href=`mailto:${CLIENT.notifyEmail}?subject=${encodeURIComponent('Edit Request — '+CLIENT.firstName+'\'s '+CLIENT.destinationShort)}&body=${encodeURIComponent('Edit request from '+CLIENT.firstName+':\n\n'+n+'\n\n'+CLIENT.dates)}`;
+  closeModal('edits-modal');showToast('Edit request sent ✓');
+}
+function submitNo(){
+  const n=document.getElementById('no-notes').value;
+  window.location.href=`mailto:${CLIENT.notifyEmail}?subject=${encodeURIComponent(CLIENT.firstName+' passed — '+CLIENT.destinationShort)}&body=${encodeURIComponent('Feedback:\n'+(n||'No feedback.'))}`;
+  closeModal('no-modal');showToast('Response sent. Thank you.');
+}
+
+// ── ADMIN ─────────────────────────────────────────
+function setupAdmin(){
+  const base=location.href.split('?')[0];
+  document.getElementById('url-preview').value=base;
+  document.getElementById('url-unlock').value=base+'?unlock=1';
+  document.getElementById('pay-tog').classList.toggle('on',CLIENT.payment.finalPaid);
+  document.getElementById('pay-lbl').textContent=CLIENT.payment.finalPaid?'Payment Complete ✓':'Payment Not Complete';
+  // overview stats
+  document.getElementById('adm-clientname').textContent=CLIENT.firstName;
+  document.getElementById('adm-clientdest').textContent=CLIENT.destination+' · '+CLIENT.dates;
+  document.getElementById('adm-total').textContent=fmt(calcTotal());
+  document.getElementById('adm-travelers').textContent=CLIENT.travelers+' traveler'+(CLIENT.travelers>1?'s':'');
+  // pre-fill content tab
+  const fields={
+    'ed-name':'firstName','ed-dest':'destination','ed-destshort':'destinationShort',
+    'ed-dates':'dates','ed-dep':'departing','ed-tag':'tagline','ed-note':'welcomeNote'
+  };
+  Object.entries(fields).forEach(([elId,key])=>{const el=document.getElementById(elId);if(el)el.value=CLIENT[key]||'';});
+  const trEl=document.getElementById('ed-travelers');if(trEl)trEl.value=CLIENT.travelers;
+  const wEl=document.getElementById('ed-wishes');if(wEl)wEl.value=(CLIENT.wishes||[]).join(', ');
+  // populate export
+  exportClient();
+}
+function renderAdminDetails(){
+  document.getElementById('adm-flights').innerHTML=CLIENT.flights.map(f=>`<tr><td>${f.dreamLabel}</td><td><strong>${f.airline}</strong> · ${f.route}<br>$${f.pricePerPerson}/person · ${fmt(f.pricePerPerson*CLIENT.travelers)} total<br><a href="${f.bookingUrl}" target="_blank">Book ↗</a></td></tr>`).join('');
+  document.getElementById('adm-accoms').innerHTML=CLIENT.accomGroups.map(g=>`
+    <tr><td colspan="2" style="background:rgba(255,255,255,.04);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--gl);padding:10px 12px 7px">${g.leg}</td></tr>
+    ${g.options.map(a=>`<tr>
+      <td style="vertical-align:top;padding-top:9px">
+        <span style="font-size:10px;padding:2px 8px;border-radius:50px;background:rgba(201,169,110,.15);color:var(--gl)">${a.tier||'mid'}</span>
+        ${a.selected?'<br><span style="font-size:10px;color:#8BC47A">✓ selected</span>':''}
+      </td>
+      <td>
+        <strong>${a.name}</strong> · ${a.area||a.location||''}<br>
+        $${a.pricePerNight}/night · ${fmt(a.pricePerNight*g.nights)} total<br>
+        <a href="${a.bookingUrl}" target="_blank">Book ↗</a>
+        ${a.mapsUrl?` &nbsp;<a href="${a.mapsUrl}" target="_blank">Maps ↗</a>`:''}
+        ${a.notes?`<br><span style="font-size:11px;color:rgba(255,255,255,.4);font-style:italic">${a.notes}</span>`:''}
+      </td></tr>`).join('')}`).join('');
+}
+function togglePayment(){
+  CLIENT.payment.finalPaid=!CLIENT.payment.finalPaid;
+  document.getElementById('pay-tog').classList.toggle('on',CLIENT.payment.finalPaid);
+  document.getElementById('pay-lbl').textContent=CLIENT.payment.finalPaid?'Payment Complete ✓ (preview only — redeploy to make permanent)':'Payment Not Complete';
+  showToast('Toggled — export + redeploy to make permanent');
+}
+function copyUrl(id){navigator.clipboard.writeText(document.getElementById(id).value).then(()=>showToast('Copied ✓'));}
+function liveEdit(key,val){CLIENT[key]=val;}
+
+// ── ADMIN TABS ─────────────────────────────────────
+function admTab(name){
+  ['overview','content','export','wizard','editflow','pdfcovers'].forEach(t=>{
+    const pane=document.getElementById('adm-'+t);
+    const tab=document.querySelector(`#adm-tabs .vault-tab[onclick="admTab('${t}')"]`);
+    if(pane)pane.style.display=t===name?'block':'none';
+    if(tab)tab.classList.toggle('active',t===name);
+  });
+  if(name==='export')exportClient();
+}
+function copyEditPrompt(){navigator.clipboard.writeText(document.getElementById('edit-prompt-box').value).then(()=>showToast('Prompt copied ✓'));}
+
+// ── PDF COVER GENERATION ───────────────────────────
+function generateCover(type){
+  const isDream=type==='dream';
+  const el=document.getElementById(isDream?'pdf-dream-cover':'pdf-reveal-cover');
+  const total=fmt(calcTotal());
+  const wishes=(CLIENT.wishes||[]).slice(0,8);
+  const checkItems=wishes.map(w=>`<div class="pdf-check-item">${w}</div>`).join('');
+
+  if(isDream){
+    el.innerHTML=`
+      <div class="pdf-cover-hero" style="background-image:url('${CLIENT.heroImage}')">
+        <div class="pdf-cover-hero-overlay"></div>
+        <div class="pdf-cover-hero-text">
+          <div class="pdf-cover-eyebrow">Mame Dee Travel World · Built for you</div>
+          <div class="pdf-cover-client">${CLIENT.firstName}</div>
+          <div class="pdf-cover-dest">${CLIENT.destination}</div>
+          <div class="pdf-cover-dates">✈ ${CLIENT.dates} · ${CLIENT.departing}</div>
+        </div>
+      </div>
+      <div class="pdf-cover-body">
+        <div class="pdf-cover-rule"></div>
+        <div class="pdf-section-lbl">Here's what I'm building for you</div>
+        <div class="pdf-tagline">${CLIENT.tagline||'Your trip, built around exactly what you asked for.'}</div>
+        <div class="pdf-checklist">${checkItems}</div>
+        <div class="pdf-price-row">
+          <span class="pdf-price-lbl">Estimated total for ${CLIENT.travelers} traveler${CLIENT.travelers>1?'s':''}</span>
+          <span class="pdf-price-amt">${total}</span>
+        </div>
+        <div class="pdf-section-lbl" style="margin-bottom:9px">What would you like to do?</div>
+        <div class="pdf-decisions">
+          <span class="pdf-dec-btn pdf-dec-yes">Yes, this is the trip! Unlock it ✨</span>
+          <span class="pdf-dec-btn pdf-dec-edit">I need a few edits</span>
+          <span class="pdf-dec-btn pdf-dec-no">I will pass</span>
+        </div>
+        <div class="pdf-disc">${CLIENT.pricing&&CLIENT.pricing.disclaimer?CLIENT.pricing.disclaimer:'Prices subject to change until booked.'}</div>
+      </div>
+      <div class="pdf-footer">
+        <span class="pdf-footer-brand">Mame Dee Travel World</span>
+        <span class="pdf-footer-url">mamedeeworld@gmail.com</span>
+      </div>`;
+  } else {
+    // Full Reveal cover — needs a few more detail fields
+    const note=CLIENT.welcomeNote
+      ?CLIENT.welcomeNote.split('.').slice(0,2).join('.')+'.':'Your full trip is ready. Every day is planned, every detail is handled.';
+    el.innerHTML=`
+      <div class="pdf-cover-hero" style="background-image:url('${CLIENT.heroImage}')">
+        <div class="pdf-cover-hero-overlay"></div>
+        <div class="pdf-cover-hero-text">
+          <div class="pdf-cover-eyebrow">Full Trip Guide · Mame Dee Travel World</div>
+          <div class="pdf-cover-client">${CLIENT.firstName}</div>
+          <div class="pdf-cover-dest">${CLIENT.destination}</div>
+          <div class="pdf-cover-dates">✈ ${CLIENT.dates} · ${CLIENT.travelers} traveler${CLIENT.travelers>1?'s':''} · Departing ${CLIENT.departing}</div>
+        </div>
+      </div>
+      <div class="pdf-cover-body">
+        <div class="pdf-cover-rule"></div>
+        <div class="pdf-note">"${note}"</div>
+        <div class="pdf-section-lbl">What you asked for</div>
+        <div class="pdf-checklist" style="margin-bottom:18px">${checkItems}</div>
+        <div class="pdf-two-col">
+          <div class="pdf-box">
+            <div class="pdf-box-title">Your full guide includes</div>
+            <div class="pdf-box-text">
+              · Complete day-by-day itinerary<br>
+              · All hotel names + booking links<br>
+              · Restaurant picks + Google Maps<br>
+              · Transportation details<br>
+              · Reservation vault<br>
+              · Printable version
+            </div>
+          </div>
+          <div class="pdf-box">
+            <div class="pdf-box-title">Good to know</div>
+            <div class="pdf-box-text">
+              · Save the travel page link — it's your hub for the entire trip<br>
+              · Add your confirmations to the Reservation Vault as they come in<br>
+              · Reach out anytime something changes
+            </div>
+          </div>
+        </div>
+        <div class="pdf-box" style="margin-bottom:16px">
+          <div class="pdf-box-title">Memory maker</div>
+          <div class="pdf-box-text">This trip was built specifically for you — not a template, not a package. Every recommendation was chosen based on your travel style, your timeline, and what you told me mattered most.</div>
+        </div>
+        <div class="pdf-price-row">
+          <span class="pdf-price-lbl">Estimated total for ${CLIENT.travelers} traveler${CLIENT.travelers>1?'s':''}</span>
+          <span class="pdf-price-amt">${total}</span>
+        </div>
+        <div class="pdf-disc">${CLIENT.pricing&&CLIENT.pricing.disclaimer?CLIENT.pricing.disclaimer:'Prices subject to change until booked.'}</div>
+      </div>
+      <div class="pdf-footer">
+        <span class="pdf-footer-brand">Mame Dee Travel World</span>
+        <span class="pdf-footer-url">mamedeeworld@gmail.com</span>
+      </div>`;
+  }
+
+  el.style.display='flex';
+  el.style.flexDirection='column';
+  const notice=document.getElementById('cover-preview-notice');
+  if(notice)notice.style.display='block';
+  showToast(`${isDream?'Dream Preview':'Full Reveal'} cover generated ✓`);
+}
+
+function printCover(type){
+  const cls=type==='dream'?'print-dream':'print-reveal';
+  // make sure cover is generated first
+  const coverId=type==='dream'?'pdf-dream-cover':'pdf-reveal-cover';
+  const el=document.getElementById(coverId);
+  if(!el||!el.innerHTML.trim()){generateCover(type);}
+  document.body.classList.add(cls);
+  window.print();
+  // remove class after print dialog closes
+  setTimeout(()=>document.body.classList.remove(cls),1000);
+}
+
+// ── EXPORT CLIENT ──────────────────────────────────
+function exportClient(){
+  const out=document.getElementById('export-output');if(!out)return;
+  out.value='const CLIENT = '+JSON.stringify(CLIENT,null,2)+';';
+}
+function copyExport(){
+  const t=document.getElementById('export-output');
+  navigator.clipboard.writeText(t.value).then(()=>showToast('CLIENT object copied ✓'));
+}
+function downloadExport(){
+  const blob=new Blob([document.getElementById('export-output').value],{type:'text/javascript'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download=`client-${CLIENT.firstName.toLowerCase()}-${CLIENT.destinationShort.toLowerCase().replace(/\s+/g,'-')}.js`;
+  a.click();
+}
+
+// ── NEW CLIENT WIZARD ──────────────────────────────
+function runWizard(){
+  const name=document.getElementById('wz-name').value.trim()||'[Client]';
+  const dest=document.getElementById('wz-dest').value.trim()||'[Destination]';
+  const dates=document.getElementById('wz-dates').value.trim()||'[Dates TBD]';
+  const dur=parseInt(document.getElementById('wz-dur').value)||7;
+  const travelers=parseInt(document.getElementById('wz-travelers').value)||2;
+  const dep=document.getElementById('wz-dep').value.trim()||'[City, State]';
+  const budget=document.getElementById('wz-budget').value.trim()||'[TBD]';
+  const pace=document.getElementById('wz-pace').value;
+  const wishes=(document.getElementById('wz-wishes').value||'').split(',').map(w=>w.trim()).filter(Boolean);
+  const avoid=document.getElementById('wz-avoid').value.trim();
+  const occasion=document.getElementById('wz-occasion').value.trim();
+  const hotelVibe=document.getElementById('wz-hotel').value;
+  const foodPref=document.getElementById('wz-food').value;
+  const diet=document.getElementById('wz-diet').value.trim();
+  const notes=document.getElementById('wz-notes').value.trim();
+
+  const destShort=dest.split(',')[0].trim();
+  const noteLines=[
+    notes?`From the consultation: ${notes}`:'',
+    avoid?`Client wants to avoid: ${avoid}`:'',
+    diet?`Dietary: ${diet}`:'',
+    occasion?`Occasion: ${occasion}`:''
+  ].filter(Boolean).join(' ');
+
+  const sampleCount=dur<=3?1:dur<=8?2:3;
+  const itinDays=[];
+  for(let i=1;i<=dur;i++){
+    const isFirst=i===1,isLast=i===dur;
+    const type=isFirst||isLast?'travel':'experience';
+    const hl=i===2||i===Math.round(dur/2)||i===dur-1;
+    itinDays.push({
+      day:i,date:`[Day ${i} date]`,
+      dreamTitle:isFirst?`Departure Day · ${dep.split(',')[0]}`
+        :isLast?`Departure · Heading Home`
+        :`[Day ${i} experience title]`,
+      fullTitle:isFirst?`${dep.split(',')[0]} → ${destShort} · Departure`
+        :isLast?`${destShort} → ${dep.split(',')[0]} · Home`
+        :`[Day ${i} full title]`,
+      type,highlight:hl&&!isFirst&&!isLast,
+      alwaysShow:isFirst||undefined,
+      lockNote:'[Add day details here]',
+      activities:[{
+        time:'[Time]',
+        dreamTitle:`[Dream activity title for day ${i}]`,
+        dreamDesc:'[Evocative 1–2 sentence teaser. Atmosphere, not logistics.]',
+        title:`[Full activity name]`,
+        desc:'[Full activity description with logistics]'
+      }]
+    });
+  }
+
+  const newClient={
+    firstName:name,
+    destination:dest,
+    destinationShort:destShort,
+    dates,duration:dur,travelers,
+    departing:dep,
+    notifyEmail:'mamedeeworld@gmail.com',
+    payment:{finalPaid:false},
+    tagline:`[Write a one-sentence trip tagline for ${name} in ${destShort}]`,
+    heroImage:'https://images.unsplash.com/[REPLACE-WITH-DESTINATION-PHOTO]?w=1800&q=80',
+    fallbackImage:'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&q=80',
+    wishes:wishes.length?wishes:['[Add wish 1]','[Add wish 2]','[Add wish 3]'],
+    welcomeNote:`[Write a personal welcome note for ${name}. Reference the occasion (${occasion||'their trip'}), their travel style (${pace} pace, ${hotelVibe} stays, ${foodPref} food), and what you built for them. 3–4 sentences max.]`,
+    _builderNotes:{budget,pace,hotelVibe,foodPref,diet,avoid,occasion,notes:noteLines,sampleDaysNeeded:sampleCount},
+    experiences:[
+      {label:'[Experience type]',dreamTitle:'[Evocative experience title]',dreamDesc:'[1–2 sentence teaser. Atmosphere only, no provider name.]',image:'https://images.unsplash.com/[PHOTO-ID]?w=600&q=80'},
+      {label:'[Experience type]',dreamTitle:'[Evocative experience title]',dreamDesc:'[Teaser]',image:'https://images.unsplash.com/[PHOTO-ID]?w=600&q=80'},
+      {label:'[Experience type]',dreamTitle:'[Evocative experience title]',dreamDesc:'[Teaser]',image:'https://images.unsplash.com/[PHOTO-ID]?w=600&q=80'}
+    ],
+    restaurants:[
+      {label:'[Dining type]',dreamTitle:'[Evocative restaurant teaser]',dreamDesc:'[Teaser]',image:'https://images.unsplash.com/[PHOTO-ID]?w=600&q=80'},
+      {label:'[Dining type]',dreamTitle:'[Teaser]',dreamDesc:'[Teaser]',image:'https://images.unsplash.com/[PHOTO-ID]?w=600&q=80'},
+      {label:'[Dining type]',dreamTitle:'[Teaser]',dreamDesc:'[Teaser]',image:'https://images.unsplash.com/[PHOTO-ID]?w=600&q=80'}
+    ],
+    flights:[
+      {id:'f1',selected:true,dreamLabel:'[Best-value route label]',dreamDetail:'[Vague but enticing flight description]',airline:'[Airline]',route:'[CITY → CITY via HUB]',depart:'[Date | Time]',arrive:'[Date | Time]',ret:'[Return leg]',pricePerPerson:0,bookingUrl:'https://[booking-url]',why:'[Why this flight]'},
+      {id:'f2',selected:false,dreamLabel:'[Premium option label]',dreamDetail:'[Teaser]',airline:'[Airline]',route:'[Route]',depart:'[Date]',arrive:'[Date]',ret:'[Return]',pricePerPerson:0,bookingUrl:'https://[booking-url]',why:'[Why]'}
+    ],
+    accomGroups:[
+      {id:'leg1',leg:'[Destination · X nights]',nights:0,options:[
+        {id:'a1a',selected:false,tier:'budget', dreamLabel:'[Budget-smart stay label]',dreamStyle:'[Save money here, spend it on experiences. Clean and well-located.]',name:'[Hotel Name]',area:'[Neighborhood, City]',pricePerNight:0,image:'https://images.unsplash.com/[PHOTO-ID]?w=600&q=80',why:'[Why this is the smart budget choice]',bookingUrl:'https://[booking-url]',mapsUrl:'https://maps.google.com/?q=[Hotel+Name]',notes:'[Useful tip]'},
+        {id:'a1b',selected:true, tier:'mid',    dreamLabel:'[Balanced stay label]',    dreamStyle:'[Great balance of comfort, location, and value.]',                           name:'[Hotel Name]',area:'[Neighborhood, City]',pricePerNight:0,image:'https://images.unsplash.com/[PHOTO-ID]?w=600&q=80',why:'[Why this is the balanced choice]',  bookingUrl:'https://[booking-url]',mapsUrl:'https://maps.google.com/?q=[Hotel+Name]',notes:'[Useful tip]'},
+        {id:'a1c',selected:false,tier:'premium',dreamLabel:'[Premium stay label]',     dreamStyle:'[The best experience. Worth every dollar if the budget allows.]',            name:'[Hotel Name]',area:'[Neighborhood, City]',pricePerNight:0,image:'https://images.unsplash.com/[PHOTO-ID]?w=600&q=80',why:'[Why this is the premium choice]',  bookingUrl:'https://[booking-url]',mapsUrl:'https://maps.google.com/?q=[Hotel+Name]',notes:'[Useful tip]'}
+      ]}
+    ],
+    transport:[
+      {id:'t1',selected:true,dreamLabel:'[Transport option A label]',dreamDetail:'[Vague but compelling]',type:'[Full transport description]',detail:'[Logistics]',price:0,why:'[Why]'},
+      {id:'t2',selected:false,dreamLabel:'[Transport option B label]',dreamDetail:'[Teaser]',type:'[Type]',detail:'[Details]',price:0,why:'[Why]'}
+    ],
+    tourType:'shared',
+    activities:{
+      shared:{label:'Shared group tours',price:0,desc:'[Describe shared tours for this destination]'},
+      private:{label:'Private tours',price:0,desc:'[Describe private tours for this destination]'}
+    },
+    mealsDefault:0,
+    buffer:100,
+    pricing:{disclaimer:'Prices are subject to change until booked. Mame Dee Travel World is not responsible for price changes by vendors, airlines, hotels, restaurants, tour operators, or third-party providers.'},
+    itinerary:itinDays,
+    reservations:{flights:[],accommodations:[],tours:[],other:[]}
+  };
+
+  document.getElementById('wz-result').value='const CLIENT = '+JSON.stringify(newClient,null,2)+';';
+  document.getElementById('wz-output').style.display='block';
+  document.getElementById('wz-output').scrollIntoView({behavior:'smooth',block:'start'});
+  showToast('CLIENT object ready ✓');
+}
+function copyWizard(){navigator.clipboard.writeText(document.getElementById('wz-result').value).then(()=>showToast('Copied ✓'));}
+function downloadWizard(){
+  const name=(document.getElementById('wz-name').value||'client').toLowerCase();
+  const dest=(document.getElementById('wz-dest').value||'trip').split(',')[0].trim().toLowerCase().replace(/\s+/g,'-');
+  const blob=new Blob([document.getElementById('wz-result').value],{type:'text/javascript'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download=`client-${name}-${dest}.js`;a.click();
+}
+
+// ── TOAST ─────────────────────────────────────────
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);}
+document.querySelectorAll('.modal-overlay').forEach(el=>el.addEventListener('click',e=>{if(e.target===el)el.classList.remove('visible');}));
+</script>
+</body>
+</html>

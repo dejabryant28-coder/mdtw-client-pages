@@ -1,0 +1,1161 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MDTW Admin Builder</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--green:#4A6741;--gold:#C9A96E;--cream:#FAF7F2;--dark:#1A1A1A;--mid:#5A5A5A;--light:#E8E2D9;--white:#FFFFFF}
+body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--dark);display:flex;min-height:100vh}
+#sidebar{width:240px;min-width:240px;background:var(--dark);display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:100;overflow-y:auto}
+#sidebar .logo{padding:24px 20px 16px;border-bottom:1px solid #333}
+#sidebar .logo .brand{font-family:'DM Serif Display',serif;color:var(--gold);font-size:18px;line-height:1.2}
+#sidebar .logo .sub{font-size:11px;color:#888;margin-top:4px;font-family:'Cormorant Garamond',serif;font-style:italic}
+#sidebar nav{padding:12px 0;flex:1}
+#sidebar nav a{display:flex;align-items:center;gap:10px;padding:11px 20px;color:#ccc;text-decoration:none;font-size:13px;font-weight:500;cursor:pointer;transition:all .2s;border-left:3px solid transparent}
+#sidebar nav a:hover{background:#1e1e1e;color:var(--white)}
+#sidebar nav a.active{background:#1e1e1e;color:var(--gold);border-left-color:var(--gold)}
+#sidebar nav a .icon{font-size:15px;width:20px;text-align:center}
+#sidebar .client-badge{margin:12px 16px;padding:10px 12px;background:#1e1e1e;border-radius:8px;border:1px solid #333}
+#sidebar .client-badge .cb-name{color:var(--gold);font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#sidebar .client-badge .cb-dest{color:#999;font-size:11px;margin-top:2px}
+#main{margin-left:240px;flex:1;min-height:100vh}
+.tab-content{display:none;padding:32px;max-width:1100px;width:100%}
+.tab-content.active{display:block}
+.card{background:var(--white);border:1px solid var(--light);border-radius:10px;padding:24px;margin-bottom:20px}
+.card-sm{background:var(--white);border:1px solid var(--light);border-radius:10px;padding:16px}
+.card h3{font-family:'DM Serif Display',serif;font-size:16px;margin-bottom:14px;color:var(--dark)}
+.card h4{font-size:13px;font-weight:600;margin-bottom:10px;color:var(--mid)}
+label{display:block;font-size:12px;font-weight:600;color:var(--mid);margin-bottom:5px;text-transform:uppercase;letter-spacing:.4px}
+input[type=text],input[type=url],input[type=email],input[type=number],textarea,select{width:100%;padding:9px 12px;border:1.5px solid var(--light);border-radius:7px;font-family:'Inter',sans-serif;font-size:13px;color:var(--dark);background:var(--white);transition:border .2s;outline:none}
+input:focus,textarea:focus,select:focus{border-color:var(--gold)}
+textarea{resize:vertical;min-height:80px}
+.form-row{display:grid;gap:14px;margin-bottom:14px}
+.form-row.cols2{grid-template-columns:1fr 1fr}
+.form-row.cols3{grid-template-columns:1fr 1fr 1fr}
+.form-row.cols4{grid-template-columns:1fr 1fr 1fr 1fr}
+.form-group{margin-bottom:14px}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border-radius:7px;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .2s}
+.btn-primary{background:var(--green);color:var(--white)}
+.btn-primary:hover{background:#3a5532}
+.btn-gold{background:var(--gold);color:var(--white)}
+.btn-gold:hover{background:#b8904a}
+.btn-outline{background:transparent;border:1.5px solid var(--light);color:var(--mid)}
+.btn-outline:hover{border-color:var(--gold);color:var(--gold)}
+.btn-danger{background:#dc3545;color:var(--white)}
+.btn-danger:hover{background:#b02a37}
+.btn-sm{padding:5px 10px;font-size:11px}
+.btn-xs{padding:3px 8px;font-size:11px}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.page-title{margin-bottom:24px}
+.page-title h2{font-family:'DM Serif Display',serif;font-size:26px;color:var(--dark)}
+.page-title p{font-size:13px;color:var(--mid);margin-top:4px}
+.stats-row{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:24px}
+.stat-card{background:var(--white);border:1px solid var(--light);border-radius:10px;padding:16px;text-align:center}
+.stat-card .stat-val{font-family:'DM Serif Display',serif;font-size:22px;color:var(--green)}
+.stat-card .stat-label{font-size:11px;color:var(--mid);margin-top:3px;text-transform:uppercase;letter-spacing:.4px}
+.pipeline{display:flex;align-items:center;gap:0;margin-bottom:24px;overflow-x:auto;padding-bottom:4px}
+.pip-step{display:flex;flex-direction:column;align-items:center;cursor:pointer;min-width:90px}
+.pip-step .pip-label{font-size:11px;font-weight:500;color:var(--mid);margin-top:6px;text-align:center;white-space:nowrap}
+.pip-dot{width:28px;height:28px;border-radius:50%;border:2px solid var(--light);background:var(--white);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--mid);transition:all .2s;position:relative;z-index:1}
+.pip-step.active .pip-dot{background:var(--green);border-color:var(--green);color:var(--white)}
+.pip-step.done .pip-dot{background:var(--gold);border-color:var(--gold);color:var(--white)}
+.pip-connector{flex:1;height:2px;background:var(--light);margin-top:-20px;min-width:14px}
+.pip-connector.done{background:var(--gold)}
+.checklist{display:flex;flex-direction:column;gap:10px}
+.check-item{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--cream);border-radius:8px;cursor:pointer}
+.check-item input[type=checkbox]{width:16px;height:16px;accent-color:var(--green);cursor:pointer;flex-shrink:0}
+.check-item label{font-size:13px;color:var(--dark);cursor:pointer;margin:0;text-transform:none;letter-spacing:0;font-weight:400}
+.progress-bar-wrap{background:var(--light);border-radius:99px;height:8px;margin-top:12px;overflow:hidden}
+.progress-bar{height:8px;background:var(--green);border-radius:99px;transition:width .4s}
+.code-box{background:#1a1a1a;border-radius:8px;padding:16px;position:relative;margin-top:8px}
+.code-box pre{color:#e8e2d9;font-family:'Courier New',monospace;font-size:12px;white-space:pre-wrap;word-break:break-all;max-height:320px;overflow-y:auto}
+.code-box .copy-btn{position:absolute;top:10px;right:10px}
+.chips-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.chip{background:var(--cream);border:1px solid var(--light);border-radius:99px;padding:4px 12px;font-size:12px;color:var(--mid)}
+.pref-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px}
+.pref-card{background:var(--cream);border:1px solid var(--light);border-radius:8px;padding:12px}
+.pref-card .pref-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--gold);margin-bottom:5px}
+.pref-card .pref-val{font-size:12px;color:var(--dark);line-height:1.5}
+.day-card{background:var(--white);border:1px solid var(--light);border-radius:10px;margin-bottom:12px;overflow:hidden}
+.day-card-header{display:flex;align-items:center;gap:10px;padding:14px 16px;cursor:pointer;background:var(--cream);border-bottom:1px solid var(--light)}
+.day-card-header:hover{background:#f0ebe3}
+.day-num{width:32px;height:32px;border-radius:50%;background:var(--green);color:var(--white);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
+.day-title-wrap{flex:1}
+.day-title-wrap .dt-main{font-size:14px;font-weight:600;color:var(--dark)}
+.day-title-wrap .dt-sub{font-size:11px;color:var(--mid);margin-top:2px}
+.day-tag{padding:3px 9px;border-radius:99px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.3px}
+.day-tag.travel{background:#e8f4fd;color:#1a6fa8}
+.day-tag.experience{background:#e8f5e9;color:#2e7d32}
+.day-highlight-badge{background:var(--gold);color:var(--white);font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px}
+.day-actions{display:flex;gap:4px;margin-left:4px}
+.day-body{padding:18px;display:none}
+.day-body.open{display:block}
+.accom-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.accom-tier-card{border-radius:8px;padding:14px;border:2px solid var(--light)}
+.accom-tier-card.budget{border-color:#a0c4ff}
+.accom-tier-card.balanced{border-color:var(--gold)}
+.accom-tier-card.premium{border-color:#c084fc}
+.accom-tier-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
+.accom-tier-card.budget .accom-tier-label{color:#1a6fa8}
+.accom-tier-card.balanced .accom-tier-label{color:#b8900a}
+.accom-tier-card.premium .accom-tier-label{color:#7c3aed}
+.accordion{border:1px solid var(--light);border-radius:8px;margin-bottom:10px;overflow:hidden}
+.accordion-header{display:flex;align-items:center;padding:12px 16px;cursor:pointer;background:var(--cream);justify-content:space-between}
+.accordion-header:hover{background:#f0ebe3}
+.accordion-title{font-size:13px;font-weight:600;color:var(--dark)}
+.accordion-body{padding:16px;display:none}
+.accordion-body.open{display:block}
+.toggle-wrap{display:flex;align-items:center;gap:8px}
+.toggle{width:36px;height:20px;background:var(--light);border-radius:99px;cursor:pointer;position:relative;transition:background .2s;flex-shrink:0}
+.toggle.on{background:var(--green)}
+.toggle::after{content:'';width:16px;height:16px;background:white;border-radius:50%;position:absolute;top:2px;left:2px;transition:left .2s}
+.toggle.on::after{left:18px}
+.img-preview{width:100%;height:140px;object-fit:cover;border-radius:7px;margin-top:8px;background:var(--light);display:block}
+.readiness-check{display:flex;flex-direction:column;gap:8px}
+.rc-item{display:flex;align-items:center;gap:8px;font-size:13px}
+.rc-item .rc-icon{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0}
+.rc-item.pass .rc-icon{background:#d4edda;color:#155724}
+.rc-item.fail .rc-icon{background:#f8d7da;color:#721c24}
+.inbox-table{width:100%;border-collapse:collapse;font-size:13px}
+.inbox-table th{text-align:left;padding:8px 12px;background:var(--cream);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--mid);border-bottom:1px solid var(--light)}
+.inbox-table td{padding:8px 12px;border-bottom:1px solid var(--light);vertical-align:top}
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.section-header h3{font-family:'DM Serif Display',serif;font-size:18px}
+.no-client{text-align:center;padding:60px 20px;color:var(--mid)}
+.no-client .nc-icon{font-size:48px;margin-bottom:16px}
+.no-client h3{font-family:'DM Serif Display',serif;font-size:20px;color:var(--dark);margin-bottom:8px}
+.no-client p{font-size:13px}
+#toast{position:fixed;bottom:24px;right:24px;background:var(--dark);color:var(--white);padding:12px 20px;border-radius:8px;font-size:13px;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none}
+#toast.show{opacity:1}
+.mt-8{margin-top:8px}.mt-16{margin-top:16px}.mt-24{margin-top:24px}
+.mb-8{margin-bottom:8px}.mb-16{margin-bottom:16px}
+.text-mid{color:var(--mid)}.text-sm{font-size:12px}.bold{font-weight:600}
+hr.divider{border:none;border-top:1px solid var(--light);margin:20px 0}
+</style>
+</head>
+<body>
+<div id="sidebar">
+  <div class="logo">
+    <div class="brand">MDTW Admin</div>
+    <div class="sub">Travel Builder v1</div>
+  </div>
+  <nav id="sidenav">
+    <a class="active" onclick="goTab('snapshot')"><span class="icon">&#128203;</span> Trip Snapshot</a>
+    <a onclick="goTab('intake')"><span class="icon">&#128229;</span> Client Intake</a>
+    <a onclick="goTab('builder')"><span class="icon">&#128506;</span> Trip Builder</a>
+    <a onclick="goTab('days')"><span class="icon">&#128197;</span> Day-by-Day</a>
+    <a onclick="goTab('stays')"><span class="icon">&#127976;</span> Stays &amp; Flights</a>
+    <a onclick="goTab('images')"><span class="icon">&#128444;</span> Images</a>
+    <a onclick="goTab('publish')"><span class="icon">&#128640;</span> Publish</a>
+  </nav>
+  <div class="client-badge">
+    <div class="cb-name" id="sbName">No client loaded</div>
+    <div class="cb-dest" id="sbDest">&#8212;</div>
+  </div>
+</div>
+<div id="main">
+<!-- TAB 1: SNAPSHOT -->
+<div class="tab-content active" id="tab-snapshot">
+  <div class="page-title"><h2>Trip Snapshot</h2><p>Overview of current client trip status</p></div>
+  <div id="snapshotNoClient" class="no-client card">
+    <div class="nc-icon">&#128203;</div>
+    <h3>No Client Loaded</h3>
+    <p>Head to <strong>Trip Builder</strong> to paste or load a CLIENT object.</p>
+    <div class="btn-row" style="justify-content:center;margin-top:16px">
+      <button class="btn btn-primary" onclick="goTab('builder')">Go to Trip Builder</button>
+    </div>
+  </div>
+  <div id="snapshotContent" style="display:none">
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-val" id="snapName">&#8212;</div><div class="stat-label">Client</div></div>
+      <div class="stat-card"><div class="stat-val" id="snapDest">&#8212;</div><div class="stat-label">Destination</div></div>
+      <div class="stat-card"><div class="stat-val" id="snapDates">&#8212;</div><div class="stat-label">Dates</div></div>
+      <div class="stat-card"><div class="stat-val" id="snapTravelers">&#8212;</div><div class="stat-label">Travelers</div></div>
+      <div class="stat-card"><div class="stat-val" id="snapBudget">&#8212;</div><div class="stat-label">Budget</div></div>
+    </div>
+    <div class="card">
+      <h3>Status Pipeline</h3>
+      <div class="pipeline" id="pipeline">
+        <div class="pip-step" onclick="setStatus('discovery')" data-s="discovery"><div class="pip-dot">1</div><div class="pip-label">Discovery</div></div>
+        <div class="pip-connector" id="pc0"></div>
+        <div class="pip-step" onclick="setStatus('research')" data-s="research"><div class="pip-dot">2</div><div class="pip-label">Research</div></div>
+        <div class="pip-connector" id="pc1"></div>
+        <div class="pip-step" onclick="setStatus('build')" data-s="build"><div class="pip-dot">3</div><div class="pip-label">Build</div></div>
+        <div class="pip-connector" id="pc2"></div>
+        <div class="pip-step" onclick="setStatus('preview_sent')" data-s="preview_sent"><div class="pip-dot">4</div><div class="pip-label">Preview Sent</div></div>
+        <div class="pip-connector" id="pc3"></div>
+        <div class="pip-step" onclick="setStatus('revisions')" data-s="revisions"><div class="pip-dot">5</div><div class="pip-label">Revisions</div></div>
+        <div class="pip-connector" id="pc4"></div>
+        <div class="pip-step" onclick="setStatus('final_payment')" data-s="final_payment"><div class="pip-dot">6</div><div class="pip-label">Final Payment</div></div>
+        <div class="pip-connector" id="pc5"></div>
+        <div class="pip-step" onclick="setStatus('delivered')" data-s="delivered"><div class="pip-dot">7</div><div class="pip-label">Delivered</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Completion Checklist</h3>
+      <div class="checklist">
+        <div class="check-item"><input type="checkbox" id="ck0" onchange="toggleMeta('dreamSent',this.checked)"><label for="ck0">Dream Preview Sent?</label></div>
+        <div class="check-item"><input type="checkbox" id="ck1" onchange="toggleMeta('editsReceived',this.checked)"><label for="ck1">Edits Received?</label></div>
+        <div class="check-item"><input type="checkbox" id="ck2" onchange="toggleMeta('finalPaid',this.checked)"><label for="ck2">Final Paid?</label></div>
+        <div class="check-item"><input type="checkbox" id="ck3" onchange="toggleMeta('fullDelivered',this.checked)"><label for="ck3">Full Destination Delivered?</label></div>
+        <div class="check-item"><input type="checkbox" id="ck4" onchange="toggleMeta('pdfGenerated',this.checked)"><label for="ck4">PDF Covers Generated?</label></div>
+      </div>
+      <div class="progress-bar-wrap mt-16"><div class="progress-bar" id="checkProgress" style="width:0%"></div></div>
+      <div class="text-sm text-mid mt-8" id="checkPct">0% complete</div>
+    </div>
+    <div class="card">
+      <h3>Quick Actions</h3>
+      <div class="btn-row">
+        <button class="btn btn-outline" onclick="openDream()">Open Dream Preview</button>
+        <button class="btn btn-outline" onclick="openFull()">Open Full Mode</button>
+        <button class="btn btn-outline" onclick="copyPageLink()">Copy Page Link</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TAB 2: INTAKE -->
+<div class="tab-content" id="tab-intake">
+  <div class="page-title"><h2>Client Intake</h2><p>Paste questionnaire and notes, then extract preferences</p></div>
+  <div class="card">
+    <h3>Questionnaire &amp; Notes</h3>
+    <div class="form-row cols2">
+      <div>
+        <div class="form-group"><label>Questionnaire (paste text)</label><textarea id="pasteQuestionnaire" rows="8" placeholder="Paste client questionnaire responses here..."></textarea></div>
+        <div class="form-group"><label>Upload Questionnaire File (TXT)</label><input type="file" id="fileQuestionnaire" accept=".txt" onchange="readFile(this,'pasteQuestionnaire')"></div>
+      </div>
+      <div>
+        <div class="form-group"><label>Consultation Notes (paste text)</label><textarea id="pasteNotes" rows="8" placeholder="Paste consultation call notes here..."></textarea></div>
+        <div class="form-group"><label>Upload Consultation File (TXT)</label><input type="file" id="fileNotes" accept=".txt" onchange="readFile(this,'pasteNotes')"></div>
+      </div>
+    </div>
+    <button class="btn btn-gold" onclick="extractPreferences()">&#10024; Extract Preferences</button>
+  </div>
+  <div class="card" id="prefSnapshotCard" style="display:none">
+    <h3>Client Preference Snapshot</h3>
+    <div class="pref-grid" id="prefGrid"></div>
+  </div>
+  <div class="card">
+    <h3>Client Details</h3>
+    <div class="form-row cols3">
+      <div class="form-group"><label>First Name</label><input type="text" id="in_firstName" placeholder="Ayanna"></div>
+      <div class="form-group"><label>Last Name</label><input type="text" id="in_lastName" placeholder="Johnson"></div>
+      <div class="form-group"><label>Destination</label><input type="text" id="in_destination" placeholder="Philippines"></div>
+    </div>
+    <div class="form-row cols4">
+      <div class="form-group"><label>Travel Dates</label><input type="text" id="in_dates" placeholder="Aug 2-16, 2025"></div>
+      <div class="form-group"><label>Duration</label><input type="text" id="in_duration" placeholder="14 nights"></div>
+      <div class="form-group"><label>Travelers</label><input type="number" id="in_travelers" placeholder="2" min="1"></div>
+      <div class="form-group"><label>Departing From</label><input type="text" id="in_departing" placeholder="Atlanta, GA"></div>
+    </div>
+    <div class="form-row cols2">
+      <div class="form-group"><label>Budget Range</label><input type="text" id="in_budget" placeholder="$4,000-$6,000 per person"></div>
+      <div class="form-group"><label>Special Occasion</label><input type="text" id="in_occasion" placeholder="Anniversary, Birthday..."></div>
+    </div>
+    <div class="form-group"><label>Wishes / Dream Moments</label><textarea id="in_wishes" rows="4" placeholder="One wish per line..."></textarea></div>
+    <div class="form-group"><label>Additional Notes</label><textarea id="in_addnotes" rows="3" placeholder="Anything else..."></textarea></div>
+  </div>
+  <div class="card">
+    <h3>Generate Draft Prompt</h3>
+    <p class="text-sm text-mid mb-16">Generate a Claude Code prompt to build the full CLIENT object from the extracted data above.</p>
+    <button class="btn btn-primary" onclick="buildDraftPrompt()">&#128640; Build My Draft</button>
+    <div id="draftPromptWrap" style="display:none;margin-top:16px">
+      <div class="code-box">
+        <button class="btn btn-outline btn-sm copy-btn" onclick="copyText(document.getElementById('draftPromptPre').textContent)">Copy</button>
+        <pre id="draftPromptPre"></pre>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TAB 3: BUILDER -->
+<div class="tab-content" id="tab-builder">
+  <div class="page-title"><h2>Trip Builder</h2><p>Paste or load a CLIENT object to begin editing</p></div>
+  <div class="card">
+    <h3>Load CLIENT Object</h3>
+    <div class="form-group"><label>Paste CLIENT JSON (with or without "const CLIENT =")</label><textarea id="clientPaste" rows="10" placeholder="Paste CLIENT object here..."></textarea></div>
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="loadClient()">Load Client Data</button>
+      <button class="btn btn-outline" onclick="loadSampleClient()">Load Sample (Philippines)</button>
+    </div>
+  </div>
+  <div id="builderFields" style="display:none">
+    <div class="card">
+      <h3>Basic Info</h3>
+      <div class="form-row cols3">
+        <div class="form-group"><label>First Name</label><input type="text" id="b_firstName" oninput="syncField('firstName',this.value)"></div>
+        <div class="form-group"><label>Destination</label><input type="text" id="b_destination" oninput="syncField('destination',this.value)"></div>
+        <div class="form-group"><label>Dates</label><input type="text" id="b_dates" oninput="syncField('dates',this.value)"></div>
+      </div>
+      <div class="form-row cols4">
+        <div class="form-group"><label>Duration</label><input type="text" id="b_duration" oninput="syncField('duration',this.value)"></div>
+        <div class="form-group"><label>Travelers</label><input type="number" id="b_travelers" oninput="syncField('travelers',this.value*1)"></div>
+        <div class="form-group"><label>Departing From</label><input type="text" id="b_departing" oninput="syncField('departing',this.value)"></div>
+        <div class="form-group"><label>Notify Email</label><input type="email" id="b_notifyEmail" oninput="syncField('notifyEmail',this.value)"></div>
+      </div>
+      <div class="form-row cols2">
+        <div class="form-group"><label>Tagline</label><input type="text" id="b_tagline" oninput="syncField('tagline',this.value)"></div>
+        <div class="form-group"><label>Meals Default ($/person/day)</label><input type="number" id="b_mealsDefault" oninput="syncField('mealsDefault',this.value*1)"></div>
+      </div>
+      <div class="form-row cols2">
+        <div class="form-group"><label>Buffer ($)</label><input type="number" id="b_buffer" oninput="syncField('buffer',this.value*1)"></div>
+        <div class="form-group"><label>Welcome Note</label><input type="text" id="b_welcomeNote" oninput="syncField('welcomeNote',this.value)"></div>
+      </div>
+      <div class="form-group">
+        <div class="toggle-wrap"><div class="toggle" id="b_finalPaidToggle" onclick="toggleFinalPaid()"></div><span style="font-size:13px">Final Payment Received</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Wishes</h3>
+      <div class="form-group"><label>One wish per line</label><textarea id="b_wishes" rows="6" oninput="syncWishes(this.value)"></textarea></div>
+    </div>
+    <div class="card">
+      <h3>Quick Navigation</h3>
+      <div class="btn-row">
+        <button class="btn btn-outline" onclick="goTab('days')">Day-by-Day</button>
+        <button class="btn btn-outline" onclick="goTab('stays')">Stays &amp; Flights</button>
+        <button class="btn btn-outline" onclick="goTab('images')">Images</button>
+        <button class="btn btn-outline" onclick="goTab('publish')">Publish</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TAB 4: DAYS -->
+<div class="tab-content" id="tab-days">
+  <div class="page-title"><h2>Day-by-Day Editor</h2><p>Build the itinerary day cards</p></div>
+  <div class="section-header">
+    <h3>Itinerary Days</h3>
+    <button class="btn btn-primary" onclick="addDay()">+ Add Day</button>
+  </div>
+  <div id="daysContainer"></div>
+</div>
+
+<!-- TAB 5: STAYS & FLIGHTS -->
+<div class="tab-content" id="tab-stays">
+  <div class="page-title"><h2>Stays &amp; Flights</h2><p>Manage flight options, accommodations, transport, and tours</p></div>
+  <div class="card">
+    <div class="section-header"><h3>Flights</h3><button class="btn btn-primary btn-sm" onclick="addFlight()">+ Add Flight</button></div>
+    <div id="flightsContainer"></div>
+  </div>
+  <div class="card">
+    <div class="section-header"><h3>Accommodations</h3><button class="btn btn-primary btn-sm" onclick="addAccomLeg()">+ Add Leg</button></div>
+    <div id="accomsContainer"></div>
+  </div>
+  <div class="card">
+    <div class="section-header"><h3>Transport</h3><button class="btn btn-primary btn-sm" onclick="addTransport()">+ Add Transport</button></div>
+    <div id="transportContainer"></div>
+  </div>
+  <div class="card">
+    <h3>Tours / Activities</h3>
+    <div class="form-row cols2">
+      <div class="card-sm">
+        <div class="bold mb-8" style="color:var(--green)">Shared Tour</div>
+        <div class="form-group"><label>Label</label><input type="text" id="tours_shared_label" oninput="syncTours()"></div>
+        <div class="form-group"><label>Price per Person</label><input type="number" id="tours_shared_price" oninput="syncTours()"></div>
+        <div class="form-group"><label>Description</label><textarea id="tours_shared_desc" rows="3" oninput="syncTours()"></textarea></div>
+      </div>
+      <div class="card-sm">
+        <div class="bold mb-8" style="color:var(--gold)">Private Tour</div>
+        <div class="form-group"><label>Label</label><input type="text" id="tours_private_label" oninput="syncTours()"></div>
+        <div class="form-group"><label>Price per Person</label><input type="number" id="tours_private_price" oninput="syncTours()"></div>
+        <div class="form-group"><label>Description</label><textarea id="tours_private_desc" rows="3" oninput="syncTours()"></textarea></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TAB 6: IMAGES -->
+<div class="tab-content" id="tab-images">
+  <div class="page-title"><h2>Images</h2><p>Manage hero, activity, accommodation, and restaurant images</p></div>
+  <div class="form-row cols2">
+    <div class="card">
+      <h3>Hero Image</h3>
+      <div class="form-group"><label>URL</label><input type="url" id="img_hero" oninput="previewImg('prev_hero',this.value)" placeholder="https://..."></div>
+      <div class="btn-row">
+        <button class="btn btn-outline btn-sm" onclick="copyText(document.getElementById('img_hero').value)">Copy URL</button>
+        <button class="btn btn-outline btn-sm" onclick="document.getElementById('img_hero').value='';previewImg('prev_hero','')">Clear</button>
+      </div>
+      <img id="prev_hero" class="img-preview" src="" alt="Hero preview" style="display:none">
+    </div>
+    <div class="card">
+      <h3>Fallback Image</h3>
+      <div class="form-group"><label>URL</label><input type="url" id="img_fallback" oninput="previewImg('prev_fallback',this.value)" placeholder="https://..."></div>
+      <div class="btn-row">
+        <button class="btn btn-outline btn-sm" onclick="copyText(document.getElementById('img_fallback').value)">Copy URL</button>
+        <button class="btn btn-outline btn-sm" onclick="document.getElementById('img_fallback').value='';previewImg('prev_fallback','')">Clear</button>
+      </div>
+      <img id="prev_fallback" class="img-preview" src="" alt="Fallback preview" style="display:none">
+    </div>
+  </div>
+  <div class="card">
+    <h3>Category Images</h3>
+    <h4>Activities</h4>
+    <div class="form-row cols3">
+      <div><label>Activity 1</label><input type="url" id="img_act0" oninput="syncCatImg('activities',0,this.value)" placeholder="https://..."><img id="prev_act0" class="img-preview" src="" style="display:none"></div>
+      <div><label>Activity 2</label><input type="url" id="img_act1" oninput="syncCatImg('activities',1,this.value)" placeholder="https://..."><img id="prev_act1" class="img-preview" src="" style="display:none"></div>
+      <div><label>Activity 3</label><input type="url" id="img_act2" oninput="syncCatImg('activities',2,this.value)" placeholder="https://..."><img id="prev_act2" class="img-preview" src="" style="display:none"></div>
+    </div>
+    <h4 style="margin-top:16px">Restaurants</h4>
+    <div class="form-row cols3">
+      <div><label>Restaurant 1</label><input type="url" id="img_rest0" oninput="syncCatImg('restaurants',0,this.value)" placeholder="https://..."><img id="prev_rest0" class="img-preview" src="" style="display:none"></div>
+      <div><label>Restaurant 2</label><input type="url" id="img_rest1" oninput="syncCatImg('restaurants',1,this.value)" placeholder="https://..."><img id="prev_rest1" class="img-preview" src="" style="display:none"></div>
+      <div><label>Restaurant 3</label><input type="url" id="img_rest2" oninput="syncCatImg('restaurants',2,this.value)" placeholder="https://..."><img id="prev_rest2" class="img-preview" src="" style="display:none"></div>
+    </div>
+    <h4 style="margin-top:16px">PDF Cover</h4>
+    <div class="form-row cols2">
+      <div><label>PDF Cover Image URL</label><input type="url" id="img_pdf" placeholder="https://..."><img id="prev_pdf" class="img-preview" src="" style="display:none"></div>
+    </div>
+    <div id="accomImgSlots" style="margin-top:16px"></div>
+  </div>
+  <div class="card">
+    <h3>AI Image Prompt Generator</h3>
+    <div class="form-row cols2">
+      <div class="form-group"><label>Destination</label><input type="text" id="ai_destination" placeholder="El Nido, Palawan"></div>
+      <div class="form-group"><label>City / Area</label><input type="text" id="ai_city" placeholder="Bacuit Bay"></div>
+    </div>
+    <div class="form-row cols2">
+      <div class="form-group"><label>Style</label><input type="text" id="ai_style" placeholder="luxury, golden hour, cinematic"></div>
+      <div class="form-group"><label>Subject</label><input type="text" id="ai_subject" placeholder="overwater villa, limestone cliffs"></div>
+    </div>
+    <button class="btn btn-gold" onclick="generateImgPrompts()">&#10024; Generate Prompts</button>
+    <div id="imgPromptsResult" style="display:none;margin-top:16px"></div>
+  </div>
+</div>
+
+<!-- TAB 7: PUBLISH -->
+<div class="tab-content" id="tab-publish">
+  <div class="page-title"><h2>Preview &amp; Publish</h2><p>Readiness checks, export, and deploy</p></div>
+  <div class="card">
+    <h3>Page Links</h3>
+    <div class="form-group"><label>Surge Domain (e.g. ayanna-philippines.surge.sh)</label><input type="text" id="surgeDomain" placeholder="ayanna-philippines.surge.sh" oninput="updateLinks()"></div>
+    <div class="btn-row">
+      <button class="btn btn-outline" onclick="openLink('dream')">Dream Preview</button>
+      <button class="btn btn-outline" onclick="openLink('full')">Full Mode</button>
+      <button class="btn btn-outline" onclick="openLink('admin')">Admin Mode</button>
+    </div>
+  </div>
+  <div class="form-row cols2">
+    <div class="card">
+      <h3>Dream Preview Readiness</h3>
+      <div class="readiness-check" id="dreamReadiness"></div>
+      <div class="progress-bar-wrap mt-16"><div class="progress-bar" id="dreamReadBar" style="width:0%"></div></div>
+      <div class="text-sm text-mid mt-8" id="dreamReadPct">0% ready</div>
+    </div>
+    <div class="card">
+      <h3>Full Destination Readiness</h3>
+      <div class="readiness-check" id="fullReadiness"></div>
+      <div class="progress-bar-wrap mt-16"><div class="progress-bar" id="fullReadBar" style="width:0%"></div></div>
+      <div class="text-sm text-mid mt-8" id="fullReadPct">0% ready</div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>Export CLIENT Object</h3>
+    <div class="btn-row mb-16">
+      <button class="btn btn-primary" onclick="doExport()">Refresh</button>
+      <button class="btn btn-outline" onclick="copyText(document.getElementById('exportArea').value)">Copy</button>
+      <button class="btn btn-outline" onclick="downloadExport()">Download</button>
+    </div>
+    <textarea id="exportArea" rows="14" style="font-family:'Courier New',monospace;font-size:12px" readonly></textarea>
+  </div>
+  <div class="card">
+    <h3>Client Edit Inbox</h3>
+    <table class="inbox-table">
+      <thead><tr><th>Date</th><th>Request</th><th>Status</th><th>Action</th></tr></thead>
+      <tbody id="inboxBody"></tbody>
+    </table>
+    <button class="btn btn-outline btn-sm" style="margin-top:12px" onclick="addInboxRow()">+ Add Request</button>
+  </div>
+  <div class="card">
+    <h3>Surge Deploy Command</h3>
+    <div class="code-box">
+      <button class="btn btn-outline btn-sm copy-btn" onclick="copyText(document.getElementById('surgeCmdPre').textContent)">Copy</button>
+      <pre id="surgeCmdPre">surge ./dist ayanna-philippines.surge.sh</pre>
+    </div>
+  </div>
+  <div class="card">
+    <h3>Edit Workflow Prompt Template</h3>
+    <div class="code-box">
+      <button class="btn btn-outline btn-sm copy-btn" onclick="copyText(document.getElementById('editPromptPre').textContent)">Copy</button>
+      <pre id="editPromptPre">Client edit request received. Update the CLIENT object as follows:
+
+[PASTE EDIT REQUEST HERE]
+
+Rules:
+- Only change what is explicitly requested
+- Preserve all other fields exactly
+- Return the full updated CLIENT object
+- Confirm each change made in a summary</pre>
+    </div>
+  </div>
+</div>
+
+</div><!-- end #main -->
+<div id="toast"></div>
+<script>
+var CLIENT = null;
+var ADMIN_META = { status:'discovery', dreamSent:false, editsReceived:false, finalPaid:false, fullDelivered:false, pdfGenerated:false };
+var INBOX_ROWS = [];
+var EXTRACTED_PREFS = {};
+
+function goTab(name){
+  document.querySelectorAll('.tab-content').forEach(function(t){t.classList.remove('active');});
+  document.querySelectorAll('#sidenav a').forEach(function(a){a.classList.remove('active');});
+  document.getElementById('tab-'+name).classList.add('active');
+  var tabs=['snapshot','intake','builder','days','stays','images','publish'];
+  var idx=tabs.indexOf(name);
+  if(idx>=0) document.querySelectorAll('#sidenav a')[idx].classList.add('active');
+  if(name==='snapshot') renderSnapshot();
+  if(name==='publish'){doExport();updateReadinessScore();}
+}
+
+function toast(msg){
+  var t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(function(){t.classList.remove('show');},2200);
+}
+
+function copyText(text){
+  if(!text){toast('Nothing to copy');return;}
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(text).then(function(){toast('Copied!');}).catch(function(){fallbackCopy(text);});
+  } else { fallbackCopy(text); }
+}
+function fallbackCopy(text){
+  var ta=document.createElement('textarea');
+  ta.value=text;document.body.appendChild(ta);ta.select();
+  try{document.execCommand('copy');toast('Copied!');}catch(e){toast('Copy failed');}
+  document.body.removeChild(ta);
+}
+
+function readFile(input,targetId){
+  var file=input.files[0];if(!file)return;
+  var reader=new FileReader();
+  reader.onload=function(e){document.getElementById(targetId).value=e.target.result;};
+  reader.readAsText(file);
+}
+
+function esc(val){
+  if(val===null||val===undefined)return'';
+  return String(val).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function setVal(id,val){
+  var el=document.getElementById(id);
+  if(el&&val!==undefined&&val!==null)el.value=val;
+}
+
+function loadClient(){
+  var raw=document.getElementById('clientPaste').value.trim();
+  raw=raw.replace(/^const\s+CLIENT\s*=\s*/,'').replace(/;?\s*$/,'');
+  try{
+    CLIENT=JSON.parse(raw);onClientLoaded();toast('Client loaded!');
+  }catch(e){
+    try{CLIENT=eval('('+raw+')');onClientLoaded();toast('Client loaded!');}
+    catch(e2){alert('Could not parse CLIENT: '+e2.message);}
+  }
+}
+
+function onClientLoaded(){
+  if(!CLIENT)return;
+  document.getElementById('sbName').textContent=CLIENT.firstName||'Unknown';
+  document.getElementById('sbDest').textContent=CLIENT.destination||'---';
+  document.getElementById('builderFields').style.display='block';
+  setVal('b_firstName',CLIENT.firstName);setVal('b_destination',CLIENT.destination);
+  setVal('b_dates',CLIENT.dates);setVal('b_duration',CLIENT.duration);
+  setVal('b_travelers',CLIENT.travelers);setVal('b_departing',CLIENT.departing);
+  setVal('b_notifyEmail',CLIENT.notifyEmail);setVal('b_tagline',CLIENT.tagline);
+  setVal('b_welcomeNote',CLIENT.welcomeNote);setVal('b_mealsDefault',CLIENT.mealsDefault);
+  setVal('b_buffer',CLIENT.buffer);
+  setVal('b_wishes',(CLIENT.wishes||[]).join('\n'));
+  var fpToggle=document.getElementById('b_finalPaidToggle');
+  fpToggle.classList.toggle('on',!!(CLIENT.payment&&CLIENT.payment.finalPaid));
+  setVal('in_firstName',CLIENT.firstName);setVal('in_destination',CLIENT.destination);
+  setVal('in_dates',CLIENT.dates);setVal('in_duration',CLIENT.duration);
+  setVal('in_travelers',CLIENT.travelers);setVal('in_departing',CLIENT.departing);
+  setVal('in_wishes',(CLIENT.wishes||[]).join('\n'));
+  setVal('img_hero',CLIENT.heroImage||'');
+  if(CLIENT.heroImage)previewImg('prev_hero',CLIENT.heroImage);
+  setVal('img_fallback',CLIENT.fallbackImage||'');
+  if(CLIENT.fallbackImage)previewImg('prev_fallback',CLIENT.fallbackImage);
+  if(CLIENT.images){
+    ['activities','restaurants'].forEach(function(cat){
+      (CLIENT.images[cat]||[]).forEach(function(url,i){
+        var pfx=cat==='activities'?'act':'rest';
+        setVal('img_'+pfx+i,url);
+        if(url){var el=document.getElementById('prev_'+pfx+i);if(el){el.src=url;el.style.display='block';}}
+      });
+    });
+  }
+  renderDays();renderFlights();renderAccoms();renderTransport();renderTours();
+  renderSnapshot();renderAccomImgSlots();updateReadinessScore();
+}
+
+function syncField(key,val){
+  if(!CLIENT)return;
+  CLIENT[key]=val;
+  if(key==='firstName')document.getElementById('sbName').textContent=val;
+  if(key==='destination')document.getElementById('sbDest').textContent=val;
+}
+function syncWishes(val){if(!CLIENT)return;CLIENT.wishes=val.split('\n').map(function(s){return s.trim();}).filter(Boolean);}
+function toggleFinalPaid(){
+  if(!CLIENT)return;
+  var t=document.getElementById('b_finalPaidToggle');
+  var on=!t.classList.contains('on');
+  t.classList.toggle('on',on);
+  CLIENT.payment=CLIENT.payment||{};CLIENT.payment.finalPaid=on;
+  ADMIN_META.finalPaid=on;
+  document.getElementById('ck2').checked=on;
+  updateCheckProgress();
+}
+
+function renderSnapshot(){
+  if(!CLIENT){
+    document.getElementById('snapshotNoClient').style.display='block';
+    document.getElementById('snapshotContent').style.display='none';return;
+  }
+  document.getElementById('snapshotNoClient').style.display='none';
+  document.getElementById('snapshotContent').style.display='block';
+  document.getElementById('snapName').textContent=CLIENT.firstName||'---';
+  document.getElementById('snapDest').textContent=CLIENT.destination||'---';
+  document.getElementById('snapDates').textContent=CLIENT.dates||'---';
+  document.getElementById('snapTravelers').textContent=CLIENT.travelers||'---';
+  var bud=CLIENT.payment?(CLIENT.payment.total?'$'+Number(CLIENT.payment.total).toLocaleString():'---'):'---';
+  document.getElementById('snapBudget').textContent=bud;
+  updatePipeline();updateCheckProgress();
+}
+
+var STATUS_ORDER=['discovery','research','build','preview_sent','revisions','final_payment','delivered'];
+function setStatus(s){ADMIN_META.status=s;updatePipeline();}
+function updatePipeline(){
+  var cur=STATUS_ORDER.indexOf(ADMIN_META.status);
+  document.querySelectorAll('.pip-step').forEach(function(el,i){
+    el.classList.remove('active','done');
+    if(i===cur)el.classList.add('active');else if(i<cur)el.classList.add('done');
+  });
+  for(var i=0;i<6;i++){var pc=document.getElementById('pc'+i);if(pc)pc.classList.toggle('done',i<cur);}
+}
+
+function toggleMeta(key,val){
+  ADMIN_META[key]=val;
+  if(key==='finalPaid'&&CLIENT){CLIENT.payment=CLIENT.payment||{};CLIENT.payment.finalPaid=val;document.getElementById('b_finalPaidToggle').classList.toggle('on',val);}
+  updateCheckProgress();
+}
+function updateCheckProgress(){
+  var keys=['dreamSent','editsReceived','finalPaid','fullDelivered','pdfGenerated'];
+  var checks=['ck0','ck1','ck2','ck3','ck4'];
+  var count=0;
+  keys.forEach(function(k,i){
+    var el=document.getElementById(checks[i]);if(el)el.checked=ADMIN_META[k];if(ADMIN_META[k])count++;
+  });
+  var pct=Math.round(count/5*100);
+  var pb=document.getElementById('checkProgress');var pt=document.getElementById('checkPct');
+  if(pb)pb.style.width=pct+'%';if(pt)pt.textContent=pct+'% complete';
+}
+
+function openDream(){var d=document.getElementById('surgeDomain').value||'your-site.surge.sh';window.open('https://'+d+'?mode=dream','_blank');}
+function openFull(){var d=document.getElementById('surgeDomain').value||'your-site.surge.sh';window.open('https://'+d+'?mode=full','_blank');}
+function copyPageLink(){var d=document.getElementById('surgeDomain').value||'your-site.surge.sh';copyText('https://'+d);}
+
+function extractPreferences(){
+  var q=document.getElementById('pasteQuestionnaire').value;
+  var n=document.getElementById('pasteNotes').value;
+  var all=(q+'\n'+n).toLowerCase();
+  var prefs={
+    'Travel Style':extractLine(all,['style','travel style','type of travel','vibe'],'Not specified'),
+    'Must-Haves':extractLine(all,['must have','must-have','need to have','require'],'Not specified'),
+    'Deal Breakers':extractLine(all,['deal breaker','avoid','don\'t want','do not want'],'Not specified'),
+    'Food Preferences':extractLine(all,['food','cuisine','eat','dining'],'Not specified'),
+    'Dietary Notes':extractLine(all,['diet','vegan','vegetarian','allerg','gluten','halal','kosher'],'None mentioned'),
+    'Accommodation Prefs':extractLine(all,['hotel','stay','accommodation','resort','villa'],'Not specified'),
+    'Transportation':extractLine(all,['transport','flight','car','driver','train'],'Not specified'),
+    'Activity Prefs':extractLine(all,['activit','adventure','relax','tour','experience','explore'],'Not specified'),
+    'Budget Notes':extractLine(all,['budget','price','cost','afford','spend'],'Not specified'),
+    'Special Occasion':extractLine(all,['anniversary','birthday','honeymoon','celebrat','milestone'],'None'),
+    'Accessibility':extractLine(all,['wheelchair','mobility','accessib','disabilit'],'None mentioned'),
+    'Other Concerns':extractLine(all,['concern','worry','nervous','anxious','safe','security'],'None mentioned')
+  };
+  EXTRACTED_PREFS=prefs;
+  var grid=document.getElementById('prefGrid');grid.innerHTML='';
+  Object.keys(prefs).forEach(function(label){
+    var d=document.createElement('div');d.className='pref-card';
+    d.innerHTML='<div class="pref-label">'+label+'</div><div class="pref-val">'+esc(prefs[label])+'</div>';
+    grid.appendChild(d);
+  });
+  document.getElementById('prefSnapshotCard').style.display='block';
+  toast('Preferences extracted!');
+}
+
+function extractLine(text,keywords,fallback){
+  var lines=text.split('\n');
+  for(var ki=0;ki<keywords.length;ki++){
+    for(var li=0;li<lines.length;li++){
+      var line=lines[li];
+      if(line.indexOf(keywords[ki])>=0&&line.length>keywords[ki].length+3){
+        return (line.replace(/^[^:]+:\s*/,'').trim().substring(0,100))||fallback;
+      }
+    }
+  }
+  return fallback;
+}
+
+function buildDraftPrompt(){
+  var name=document.getElementById('in_firstName').value||'Client';
+  var dest=document.getElementById('in_destination').value||'Destination';
+  var dates=document.getElementById('in_dates').value||'TBD';
+  var dur=document.getElementById('in_duration').value||'TBD';
+  var trav=document.getElementById('in_travelers').value||'2';
+  var dep=document.getElementById('in_departing').value||'TBD';
+  var budget=document.getElementById('in_budget').value||'TBD';
+  var wishes=document.getElementById('in_wishes').value||'';
+  var notes=document.getElementById('in_addnotes').value||'';
+  var prefLines=Object.keys(EXTRACTED_PREFS).map(function(k){return'  - '+k+': '+EXTRACTED_PREFS[k];}).join('\n');
+  var prompt='Generate a complete CLIENT JavaScript object for the MDTW travel platform.\n\n';
+  prompt+='== CLIENT DETAILS ==\n';
+  prompt+='Name: '+name+'\nDestination: '+dest+'\nDates: '+dates+'\nDuration: '+dur+'\nTravelers: '+trav+'\nDeparting From: '+dep+'\nBudget Range: '+budget+'\n\n';
+  prompt+='== EXTRACTED PREFERENCES ==\n'+(prefLines||'  (none extracted)')+'\n\n';
+  prompt+='== WISHES ==\n'+(wishes||'  (none specified)')+'\n\n';
+  prompt+='== ADDITIONAL NOTES ==\n'+(notes||'  (none)')+'\n\n';
+  prompt+='== REQUIRED OUTPUT ==\n';
+  prompt+='Return a single const CLIENT = { ... }; block.\n';
+  prompt+='Include: firstName, destination, dates, duration, travelers, departing, notifyEmail, tagline, welcomeNote, wishes[], mealsDefault, buffer, payment{finalPaid,depositPaid,total}, heroImage, fallbackImage, itinerary[], flights[], accomGroups[], transport[], activities{shared,private}, restaurants[], images{accommodations[],activities[],restaurants[]}\n\n';
+  prompt+='Each itinerary day: day, date, type, dreamTitle, fullTitle, dreamDesc, fullDesc, city, morning, afternoon, evening, alwaysShow, highlight, lockNote, activityImage, activityCaption\n';
+  prompt+='Each flight: dreamLabel, dreamDetail, airline, route, depart, arrive, ret, pricePerPerson, bookingUrl, why, selected\n';
+  prompt+='Each accomGroup: leg, nights, options[3] each with tier, dreamLabel, dreamStyle, name, area, pricePerNight, bookingUrl, mapsUrl, image, why, notes, selected\n\n';
+  prompt+='Make content realistic, luxurious, and specific to '+dest+'. Base itinerary on the wishes above.\nReturn ONLY the const CLIENT = { ... }; block with no explanation.';
+  document.getElementById('draftPromptPre').textContent=prompt;
+  document.getElementById('draftPromptWrap').style.display='block';
+  toast('Draft prompt generated!');
+}
+
+function renderDays(){
+  var c=document.getElementById('daysContainer');c.innerHTML='';
+  if(!CLIENT||!CLIENT.itinerary)return;
+  CLIENT.itinerary.forEach(function(day,idx){c.appendChild(buildDayCard(day,idx));});
+}
+
+function buildDayCard(day,idx){
+  var wrap=document.createElement('div');wrap.className='day-card';wrap.id='daycard_'+idx;
+  var hBadge=day.highlight?'<span class="day-highlight-badge">&#9733; Highlight</span>':'';
+  var tTag='<span class="day-tag '+(day.type||'experience')+'">'+(day.type||'experience')+'</span>';
+  wrap.innerHTML='<div class="day-card-header" onclick="toggleDay('+idx+')">'
+    +'<div class="day-num">'+(day.day||idx+1)+'</div>'
+    +'<div class="day-title-wrap"><div class="dt-main">'+esc(day.dreamTitle||'Untitled Day')+'</div><div class="dt-sub">'+esc(day.date||'')+(day.city?' &middot; '+esc(day.city):'')+'</div></div>'
+    +tTag+hBadge
+    +'<div class="day-actions">'
+    +'<button class="btn btn-outline btn-xs" onclick="event.stopPropagation();moveDay('+idx+',-1)" title="Move Up">&#8679;</button>'
+    +'<button class="btn btn-outline btn-xs" onclick="event.stopPropagation();moveDay('+idx+',1)" title="Move Down">&#8681;</button>'
+    +'<button class="btn btn-outline btn-xs" onclick="event.stopPropagation();duplicateDay('+idx+')">&#10697;</button>'
+    +'<button class="btn btn-danger btn-xs" onclick="event.stopPropagation();deleteDay('+idx+')">&#10005;</button>'
+    +'</div></div>'
+    +'<div class="day-body" id="daybody_'+idx+'">'
+    +'<div class="form-row cols4">'
+    +'<div class="form-group"><label>Day #</label><input type="number" value="'+esc(day.day||idx+1)+'" onchange="updateDay('+idx+',\'day\',this.value*1)"></div>'
+    +'<div class="form-group"><label>Date</label><input type="text" value="'+esc(day.date)+'" oninput="updateDay('+idx+',\'date\',this.value)"></div>'
+    +'<div class="form-group"><label>Type</label><select onchange="updateDay('+idx+',\'type\',this.value)">'
+    +'<option value="experience"'+(day.type==='experience'?' selected':'')+'>Experience</option>'
+    +'<option value="travel"'+(day.type==='travel'?' selected':'')+'>Travel</option>'
+    +'</select></div>'
+    +'<div class="form-group"><label>City</label><input type="text" value="'+esc(day.city)+'" oninput="updateDay('+idx+',\'city\',this.value)"></div>'
+    +'</div>'
+    +'<div class="form-row cols2">'
+    +'<div class="form-group"><label>Dream Title</label><input type="text" value="'+esc(day.dreamTitle)+'" oninput="updateDay('+idx+',\'dreamTitle\',this.value)"></div>'
+    +'<div class="form-group"><label>Full Title</label><input type="text" value="'+esc(day.fullTitle)+'" oninput="updateDay('+idx+',\'fullTitle\',this.value)"></div>'
+    +'</div>'
+    +'<div class="form-group"><label>Dream Description</label><textarea rows="2" oninput="updateDay('+idx+',\'dreamDesc\',this.value)">'+esc(day.dreamDesc)+'</textarea></div>'
+    +'<div class="form-group"><label>Full Description</label><textarea rows="3" oninput="updateDay('+idx+',\'fullDesc\',this.value)">'+esc(day.fullDesc)+'</textarea></div>'
+    +'<div class="form-row cols3">'
+    +'<div class="form-group"><label>Morning</label><textarea rows="2" oninput="updateDay('+idx+',\'morning\',this.value)">'+esc(day.morning)+'</textarea></div>'
+    +'<div class="form-group"><label>Afternoon</label><textarea rows="2" oninput="updateDay('+idx+',\'afternoon\',this.value)">'+esc(day.afternoon)+'</textarea></div>'
+    +'<div class="form-group"><label>Evening</label><textarea rows="2" oninput="updateDay('+idx+',\'evening\',this.value)">'+esc(day.evening)+'</textarea></div>'
+    +'</div>'
+    +'<div class="form-row cols2">'
+    +'<div class="form-group"><label>Activity Image URL</label><input type="url" value="'+esc(day.activityImage)+'" oninput="updateDay('+idx+',\'activityImage\',this.value)"></div>'
+    +'<div class="form-group"><label>Activity Caption</label><input type="text" value="'+esc(day.activityCaption)+'" oninput="updateDay('+idx+',\'activityCaption\',this.value)"></div>'
+    +'</div>'
+    +'<div class="form-group"><label>Lock Note</label><input type="text" value="'+esc(day.lockNote)+'" oninput="updateDay('+idx+',\'lockNote\',this.value)"></div>'
+    +'<div class="form-row cols2">'
+    +'<div class="toggle-wrap"><div class="toggle'+(day.alwaysShow?' on':'')+'" onclick="updateDay('+idx+',\'alwaysShow\',!CLIENT.itinerary['+idx+'].alwaysShow);renderDays()"></div><span style="font-size:13px">Always Show (Dream Mode)</span></div>'
+    +'<div class="toggle-wrap"><div class="toggle'+(day.highlight?' on':'')+'" onclick="updateDay('+idx+',\'highlight\',!CLIENT.itinerary['+idx+'].highlight);renderDays()"></div><span style="font-size:13px">Highlight Day</span></div>'
+    +'</div></div>';
+  return wrap;
+}
+
+function toggleDay(idx){var b=document.getElementById('daybody_'+idx);if(b)b.classList.toggle('open');}
+function updateDay(idx,key,val){if(!CLIENT||!CLIENT.itinerary[idx])return;CLIENT.itinerary[idx][key]=val;}
+function moveDay(idx,dir){
+  if(!CLIENT||!CLIENT.itinerary)return;
+  var ni=idx+dir;if(ni<0||ni>=CLIENT.itinerary.length)return;
+  var a=CLIENT.itinerary;var tmp=a[idx];a[idx]=a[ni];a[ni]=tmp;renderDays();
+}
+function duplicateDay(idx){
+  if(!CLIENT||!CLIENT.itinerary)return;
+  var copy=JSON.parse(JSON.stringify(CLIENT.itinerary[idx]));
+  copy.day=(copy.day||idx+1)+1;CLIENT.itinerary.splice(idx+1,0,copy);renderDays();
+}
+function deleteDay(idx){
+  if(!CLIENT||!CLIENT.itinerary)return;
+  if(!confirm('Delete Day '+(CLIENT.itinerary[idx].day||idx+1)+'?'))return;
+  CLIENT.itinerary.splice(idx,1);renderDays();
+}
+function addDay(){
+  if(!CLIENT){alert('Load a client first.');return;}
+  CLIENT.itinerary=CLIENT.itinerary||[];
+  var n=CLIENT.itinerary.length+1;
+  CLIENT.itinerary.push({day:n,date:'',type:'experience',dreamTitle:'New Day '+n,fullTitle:'',dreamDesc:'',fullDesc:'',city:'',morning:'',afternoon:'',evening:'',alwaysShow:false,highlight:false,lockNote:'',activityImage:'',activityCaption:''});
+  renderDays();toast('Day added!');
+}
+
+function renderFlights(){
+  var c=document.getElementById('flightsContainer');c.innerHTML='';
+  if(!CLIENT||!CLIENT.flights)return;
+  CLIENT.flights.forEach(function(f,idx){c.appendChild(buildFlightAccordion(f,idx));});
+}
+function buildFlightAccordion(f,idx){
+  var wrap=document.createElement('div');wrap.className='accordion';
+  wrap.innerHTML='<div class="accordion-header" onclick="toggleAcc(\'flb_'+idx+'\')">'
+    +'<span class="accordion-title">'+esc(f.dreamLabel||'Flight '+(idx+1))+' &mdash; '+esc(f.airline||'')+'</span>'
+    +'<button class="btn btn-danger btn-xs" onclick="event.stopPropagation();deleteFlight('+idx+')">&#10005; Remove</button>'
+    +'</div>'
+    +'<div class="accordion-body" id="flb_'+idx+'">'
+    +'<div class="form-row cols2">'
+    +'<div class="form-group"><label>Dream Label</label><input type="text" value="'+esc(f.dreamLabel)+'" oninput="updateFlight('+idx+',\'dreamLabel\',this.value)"></div>'
+    +'<div class="form-group"><label>Dream Detail</label><input type="text" value="'+esc(f.dreamDetail)+'" oninput="updateFlight('+idx+',\'dreamDetail\',this.value)"></div>'
+    +'</div>'
+    +'<div class="form-row cols3">'
+    +'<div class="form-group"><label>Airline</label><input type="text" value="'+esc(f.airline)+'" oninput="updateFlight('+idx+',\'airline\',this.value)"></div>'
+    +'<div class="form-group"><label>Route</label><input type="text" value="'+esc(f.route)+'" oninput="updateFlight('+idx+',\'route\',this.value)"></div>'
+    +'<div class="form-group"><label>Price/Person</label><input type="number" value="'+(f.pricePerPerson||'')+'" oninput="updateFlight('+idx+',\'pricePerPerson\',this.value*1)"></div>'
+    +'</div>'
+    +'<div class="form-row cols3">'
+    +'<div class="form-group"><label>Depart</label><input type="text" value="'+esc(f.depart)+'" oninput="updateFlight('+idx+',\'depart\',this.value)"></div>'
+    +'<div class="form-group"><label>Arrive</label><input type="text" value="'+esc(f.arrive)+'" oninput="updateFlight('+idx+',\'arrive\',this.value)"></div>'
+    +'<div class="form-group"><label>Return</label><input type="text" value="'+esc(f.ret)+'" oninput="updateFlight('+idx+',\'ret\',this.value)"></div>'
+    +'</div>'
+    +'<div class="form-group"><label>Why This Flight</label><textarea rows="2" oninput="updateFlight('+idx+',\'why\',this.value)">'+esc(f.why)+'</textarea></div>'
+    +'<div class="form-group"><label>Booking URL</label><input type="url" value="'+esc(f.bookingUrl)+'" oninput="updateFlight('+idx+',\'bookingUrl\',this.value)"></div>'
+    +'<div class="toggle-wrap mt-8"><div class="toggle'+(f.selected?' on':'')+'" onclick="updateFlight('+idx+',\'selected\',!CLIENT.flights['+idx+'].selected);renderFlights()"></div><span style="font-size:13px">Selected / Recommended</span></div>'
+    +'</div>';
+  return wrap;
+}
+function updateFlight(idx,key,val){if(CLIENT&&CLIENT.flights[idx])CLIENT.flights[idx][key]=val;}
+function deleteFlight(idx){if(!confirm('Delete this flight?'))return;CLIENT.flights.splice(idx,1);renderFlights();}
+function addFlight(){
+  if(!CLIENT){alert('Load a client first.');return;}
+  CLIENT.flights=CLIENT.flights||[];
+  CLIENT.flights.push({dreamLabel:'Option '+(CLIENT.flights.length+1),dreamDetail:'',airline:'',route:'',depart:'',arrive:'',ret:'',pricePerPerson:0,bookingUrl:'',why:'',selected:false});
+  renderFlights();
+}
+
+function renderAccoms(){
+  var c=document.getElementById('accomsContainer');c.innerHTML='';
+  if(!CLIENT||!CLIENT.accomGroups)return;
+  CLIENT.accomGroups.forEach(function(leg,legIdx){
+    var wrap=document.createElement('div');wrap.style.marginBottom='24px';
+    var tiers=['budget','balanced','premium'];
+    var tlabs=['Budget','Balanced','Premium'];
+    var colsHtml=tiers.map(function(tier,tIdx){
+      var opt=(leg.options&&leg.options[tIdx])||{};
+      return '<div class="accom-tier-card '+tier+'">'
+        +'<div class="accom-tier-label">'+tlabs[tIdx]+'</div>'
+        +'<div class="form-group"><label>Dream Label</label><input type="text" value="'+esc(opt.dreamLabel)+'" oninput="updateAccom('+legIdx+','+tIdx+',\'dreamLabel\',this.value)"></div>'
+        +'<div class="form-group"><label>Hotel Name</label><input type="text" value="'+esc(opt.name)+'" oninput="updateAccom('+legIdx+','+tIdx+',\'name\',this.value)"></div>'
+        +'<div class="form-group"><label>Area</label><input type="text" value="'+esc(opt.area)+'" oninput="updateAccom('+legIdx+','+tIdx+',\'area\',this.value)"></div>'
+        +'<div class="form-group"><label>$/Night</label><input type="number" value="'+(opt.pricePerNight||'')+'" oninput="updateAccom('+legIdx+','+tIdx+',\'pricePerNight\',this.value*1)"></div>'
+        +'<div class="form-group"><label>Style</label><input type="text" value="'+esc(opt.dreamStyle)+'" oninput="updateAccom('+legIdx+','+tIdx+',\'dreamStyle\',this.value)"></div>'
+        +'<div class="form-group"><label>Booking URL</label><input type="url" value="'+esc(opt.bookingUrl)+'" oninput="updateAccom('+legIdx+','+tIdx+',\'bookingUrl\',this.value)"></div>'
+        +'<div class="form-group"><label>Maps URL</label><input type="url" value="'+esc(opt.mapsUrl)+'" oninput="updateAccom('+legIdx+','+tIdx+',\'mapsUrl\',this.value)"></div>'
+        +'<div class="form-group"><label>Image URL</label><input type="url" value="'+esc(opt.image)+'" oninput="updateAccom('+legIdx+','+tIdx+',\'image\',this.value)"></div>'
+        +'<div class="form-group"><label>Why</label><textarea rows="2" oninput="updateAccom('+legIdx+','+tIdx+',\'why\',this.value)">'+esc(opt.why)+'</textarea></div>'
+        +'<div class="form-group"><label>Notes</label><textarea rows="2" oninput="updateAccom('+legIdx+','+tIdx+',\'notes\',this.value)">'+esc(opt.notes)+'</textarea></div>'
+        +'<div class="toggle-wrap mt-8"><div class="toggle'+(opt.selected?' on':'')+'" onclick="selectAccom('+legIdx+','+tIdx+')"></div><span style="font-size:13px">Selected</span></div>'
+        +'</div>';
+    }).join('');
+    wrap.innerHTML='<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">'
+      +'<div style="font-weight:600;font-size:14px">Leg '+(legIdx+1)+': '+esc(leg.leg||'')+' &mdash; '+(leg.nights||'?')+' nights</div>'
+      +'<div style="display:flex;gap:8px;align-items:center">'
+      +'<label style="white-space:nowrap;margin:0;font-size:11px">Leg Name</label>'
+      +'<input type="text" value="'+esc(leg.leg)+'" style="width:110px" oninput="CLIENT.accomGroups['+legIdx+'].leg=this.value">'
+      +'<label style="white-space:nowrap;margin:0;font-size:11px">Nights</label>'
+      +'<input type="number" value="'+(leg.nights||'')+'" style="width:55px" oninput="CLIENT.accomGroups['+legIdx+'].nights=this.value*1">'
+      +'<button class="btn btn-danger btn-xs" onclick="deleteLeg('+legIdx+')">&#10005;</button>'
+      +'</div></div>'
+      +'<div class="accom-grid">'+colsHtml+'</div>';
+    c.appendChild(wrap);
+  });
+}
+function updateAccom(legIdx,tIdx,key,val){
+  if(!CLIENT)return;
+  CLIENT.accomGroups[legIdx].options=CLIENT.accomGroups[legIdx].options||[];
+  CLIENT.accomGroups[legIdx].options[tIdx]=CLIENT.accomGroups[legIdx].options[tIdx]||{};
+  CLIENT.accomGroups[legIdx].options[tIdx][key]=val;
+}
+function selectAccom(legIdx,tIdx){
+  if(!CLIENT)return;
+  (CLIENT.accomGroups[legIdx].options||[]).forEach(function(o,i){o.selected=(i===tIdx);});
+  renderAccoms();
+}
+function deleteLeg(idx){if(!confirm('Delete accommodation leg?'))return;CLIENT.accomGroups.splice(idx,1);renderAccoms();renderAccomImgSlots();}
+function addAccomLeg(){
+  if(!CLIENT){alert('Load a client first.');return;}
+  CLIENT.accomGroups=CLIENT.accomGroups||[];
+  CLIENT.accomGroups.push({leg:'New Leg',nights:3,options:[
+    {tier:'budget',dreamLabel:'',dreamStyle:'',name:'',area:'',pricePerNight:0,bookingUrl:'',mapsUrl:'',image:'',why:'',notes:'',selected:false},
+    {tier:'balanced',dreamLabel:'',dreamStyle:'',name:'',area:'',pricePerNight:0,bookingUrl:'',mapsUrl:'',image:'',why:'',notes:'',selected:true},
+    {tier:'premium',dreamLabel:'',dreamStyle:'',name:'',area:'',pricePerNight:0,bookingUrl:'',mapsUrl:'',image:'',why:'',notes:'',selected:false}
+  ]});
+  renderAccoms();
+}
+
+function renderTransport(){
+  var c=document.getElementById('transportContainer');c.innerHTML='';
+  if(!CLIENT||!CLIENT.transport)return;
+  CLIENT.transport.forEach(function(t,idx){
+    var wrap=document.createElement('div');wrap.className='accordion';
+    wrap.innerHTML='<div class="accordion-header" onclick="toggleAcc(\'trb_'+idx+'\')">'
+      +'<span class="accordion-title">'+esc(t.dreamLabel||'Transport '+(idx+1))+'</span>'
+      +'<button class="btn btn-danger btn-xs" onclick="event.stopPropagation();deleteTransport('+idx+')">&#10005;</button>'
+      +'</div>'
+      +'<div class="accordion-body" id="trb_'+idx+'">'
+      +'<div class="form-row cols2">'
+      +'<div class="form-group"><label>Dream Label</label><input type="text" value="'+esc(t.dreamLabel)+'" oninput="updateTransport('+idx+',\'dreamLabel\',this.value)"></div>'
+      +'<div class="form-group"><label>Dream Detail</label><input type="text" value="'+esc(t.dreamDetail)+'" oninput="updateTransport('+idx+',\'dreamDetail\',this.value)"></div>'
+      +'</div>'
+      +'<div class="form-row cols3">'
+      +'<div class="form-group"><label>Mode</label><input type="text" value="'+esc(t.mode)+'" oninput="updateTransport('+idx+',\'mode\',this.value)"></div>'
+      +'<div class="form-group"><label>Route</label><input type="text" value="'+esc(t.route)+'" oninput="updateTransport('+idx+',\'route\',this.value)"></div>'
+      +'<div class="form-group"><label>Price/Person</label><input type="number" value="'+(t.pricePerPerson||'')+'" oninput="updateTransport('+idx+',\'pricePerPerson\',this.value*1)"></div>'
+      +'</div>'
+      +'<div class="form-group"><label>Why</label><textarea rows="2" oninput="updateTransport('+idx+',\'why\',this.value)">'+esc(t.why)+'</textarea></div>'
+      +'<div class="form-group"><label>Booking URL</label><input type="url" value="'+esc(t.bookingUrl)+'" oninput="updateTransport('+idx+',\'bookingUrl\',this.value)"></div>'
+      +'<div class="toggle-wrap mt-8"><div class="toggle'+(t.selected?' on':'')+'" onclick="updateTransport('+idx+',\'selected\',!CLIENT.transport['+idx+'].selected);renderTransport()"></div><span style="font-size:13px">Selected</span></div>'
+      +'</div>';
+    c.appendChild(wrap);
+  });
+}
+function updateTransport(idx,key,val){if(CLIENT&&CLIENT.transport[idx])CLIENT.transport[idx][key]=val;}
+function deleteTransport(idx){if(!confirm('Delete?'))return;CLIENT.transport.splice(idx,1);renderTransport();}
+function addTransport(){
+  if(!CLIENT){alert('Load a client first.');return;}
+  CLIENT.transport=CLIENT.transport||[];
+  CLIENT.transport.push({dreamLabel:'',dreamDetail:'',mode:'',route:'',pricePerPerson:0,bookingUrl:'',why:'',selected:false});
+  renderTransport();
+}
+
+function renderTours(){
+  if(!CLIENT||!CLIENT.activities)return;
+  var s=CLIENT.activities.shared||{};var p=CLIENT.activities.private||{};
+  setVal('tours_shared_label',s.label);setVal('tours_shared_price',s.pricePerPerson);setVal('tours_shared_desc',s.desc);
+  setVal('tours_private_label',p.label);setVal('tours_private_price',p.pricePerPerson);setVal('tours_private_desc',p.desc);
+}
+function syncTours(){
+  if(!CLIENT)return;
+  CLIENT.activities=CLIENT.activities||{};
+  CLIENT.activities.shared={label:document.getElementById('tours_shared_label').value,pricePerPerson:document.getElementById('tours_shared_price').value*1,desc:document.getElementById('tours_shared_desc').value};
+  CLIENT.activities.private={label:document.getElementById('tours_private_label').value,pricePerPerson:document.getElementById('tours_private_price').value*1,desc:document.getElementById('tours_private_desc').value};
+}
+
+function toggleAcc(id){var el=document.getElementById(id);if(el)el.classList.toggle('open');}
+
+function previewImg(previewId,url){
+  var el=document.getElementById(previewId);if(!el)return;
+  if(url){el.src=url;el.style.display='block';}else el.style.display='none';
+  if(previewId==='prev_hero'&&CLIENT)CLIENT.heroImage=url;
+  if(previewId==='prev_fallback'&&CLIENT)CLIENT.fallbackImage=url;
+}
+function syncCatImg(cat,idx,url){
+  if(!CLIENT)return;
+  CLIENT.images=CLIENT.images||{};CLIENT.images[cat]=CLIENT.images[cat]||[];
+  CLIENT.images[cat][idx]=url;
+  var pfx=cat==='activities'?'act':'rest';
+  var el=document.getElementById('prev_'+pfx+idx);
+  if(el){if(url){el.src=url;el.style.display='block';}else el.style.display='none';}
+}
+function renderAccomImgSlots(){
+  var c=document.getElementById('accomImgSlots');if(!c)return;
+  if(!CLIENT||!CLIENT.accomGroups||!CLIENT.accomGroups.length){c.innerHTML='';return;}
+  var html='<h4>Accommodation Images (per leg)</h4><div class="form-row cols3" style="margin-top:8px">';
+  CLIENT.accomGroups.forEach(function(leg,i){
+    html+='<div><label>'+(leg.leg||'Leg '+(i+1))+'</label>'
+      +'<input type="url" id="img_accom'+i+'" placeholder="https://..." oninput="syncAccomImg('+i+',this.value)">'
+      +'<img id="prev_accom'+i+'" class="img-preview" src="" style="display:none"></div>';
+  });
+  html+='</div>';c.innerHTML=html;
+  if(CLIENT.images&&CLIENT.images.accommodations){
+    CLIENT.images.accommodations.forEach(function(url,i){
+      if(url){setVal('img_accom'+i,url);var el=document.getElementById('prev_accom'+i);if(el){el.src=url;el.style.display='block';}}
+    });
+  }
+}
+function syncAccomImg(idx,url){
+  if(!CLIENT)return;
+  CLIENT.images=CLIENT.images||{};CLIENT.images.accommodations=CLIENT.images.accommodations||[];
+  CLIENT.images.accommodations[idx]=url;
+  var el=document.getElementById('prev_accom'+idx);
+  if(el){if(url){el.src=url;el.style.display='block';}else el.style.display='none';}
+}
+
+function generateImgPrompts(){
+  var dest=document.getElementById('ai_destination').value||'tropical destination';
+  var city=document.getElementById('ai_city').value||'';
+  var style=document.getElementById('ai_style').value||'cinematic, golden hour';
+  var subject=document.getElementById('ai_subject').value||'landscape';
+  var loc=city?dest+' '+city:dest;
+  var terms=[dest+' travel photography',loc+' landscape aerial',subject+' '+dest,dest+' luxury resort',(city||dest)+' golden hour',dest+' culture street photography'];
+  var aiPs=['Cinematic wide-angle photograph of '+subject+' in '+loc+', '+style+', soft bokeh, travel photography, 8K, professional','Aerial drone shot of '+loc+' at magic hour, '+style+', turquoise waters, lush landscape, Instagram-worthy travel shot','Editorial luxury travel photo of '+subject+' in '+dest+', '+style+', warm tones, minimalist aesthetic, clean composition'];
+  var result=document.getElementById('imgPromptsResult');result.style.display='block';
+  result.innerHTML='<h4>Unsplash Search Links</h4><div class="chips-row">'
+    +terms.map(function(t){return'<a href="https://unsplash.com/s/photos/'+encodeURIComponent(t)+'" target="_blank" class="chip" style="text-decoration:none;color:var(--green)">Search: '+esc(t)+'</a>';}).join('')
+    +'</div><h4 style="margin-top:16px">AI Generation Prompts</h4>'
+    +aiPs.map(function(p){return'<div class="code-box" style="margin-top:8px"><button class="btn btn-outline btn-sm copy-btn" onclick="copyText(this.nextElementSibling.textContent)">Copy</button><pre>'+esc(p)+'</pre></div>';}).join('');
+}
+
+function updateLinks(){
+  var d=document.getElementById('surgeDomain').value||'your-site.surge.sh';
+  document.getElementById('surgeCmdPre').textContent='surge ./dist '+d;
+}
+function openLink(mode){
+  var d=document.getElementById('surgeDomain').value||'your-site.surge.sh';
+  var sfx={dream:'?mode=dream',full:'?mode=full',admin:'?mode=admin'};
+  window.open('https://'+d+(sfx[mode]||''),'_blank');
+}
+function doExport(){
+  var ta=document.getElementById('exportArea');
+  if(!CLIENT){ta.value='// No client loaded';return;}
+  ta.value='const CLIENT = '+JSON.stringify(CLIENT,null,2)+';';
+}
+function downloadExport(){
+  doExport();
+  var val=document.getElementById('exportArea').value;
+  var blob=new Blob([val],{type:'application/javascript'});
+  var a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download=((CLIENT&&CLIENT.firstName?CLIENT.firstName.toLowerCase():'client'))+'-data.js';
+  a.click();
+}
+function updateReadinessScore(){
+  var dreamChecks=[
+    {label:'Client name set',pass:!!(CLIENT&&CLIENT.firstName)},
+    {label:'Destination set',pass:!!(CLIENT&&CLIENT.destination)},
+    {label:'Hero image URL',pass:!!(CLIENT&&CLIENT.heroImage)},
+    {label:'At least 1 itinerary day',pass:!!(CLIENT&&CLIENT.itinerary&&CLIENT.itinerary.length>0)},
+    {label:'At least 1 flight option',pass:!!(CLIENT&&CLIENT.flights&&CLIENT.flights.length>0)},
+    {label:'Tagline set',pass:!!(CLIENT&&CLIENT.tagline)}
+  ];
+  var fullChecks=[
+    {label:'All days have full descriptions',pass:!!(CLIENT&&CLIENT.itinerary&&CLIENT.itinerary.every(function(d){return d.fullDesc;}))},
+    {label:'Accommodations set',pass:!!(CLIENT&&CLIENT.accomGroups&&CLIENT.accomGroups.length>0)},
+    {label:'Transport options set',pass:!!(CLIENT&&CLIENT.transport&&CLIENT.transport.length>0)},
+    {label:'Payment object set',pass:!!(CLIENT&&CLIENT.payment)},
+    {label:'Welcome note set',pass:!!(CLIENT&&CLIENT.welcomeNote)}
+  ];
+  function buildChecks(checks,cEl,barId,pctId){
+    cEl.innerHTML='';var passed=0;
+    checks.forEach(function(c){
+      if(c.pass)passed++;
+      var d=document.createElement('div');d.className='rc-item '+(c.pass?'pass':'fail');
+      d.innerHTML='<div class="rc-icon">'+(c.pass?'&#10003;':'&#10005;')+'</div><span>'+esc(c.label)+'</span>';
+      cEl.appendChild(d);
+    });
+    var pct=Math.round(passed/checks.length*100);
+    document.getElementById(barId).style.width=pct+'%';
+    document.getElementById(pctId).textContent=pct+'% ready';
+  }
+  buildChecks(dreamChecks,document.getElementById('dreamReadiness'),'dreamReadBar','dreamReadPct');
+  buildChecks(fullChecks,document.getElementById('fullReadiness'),'fullReadBar','fullReadPct');
+}
+
+function renderInbox(){
+  var tbody=document.getElementById('inboxBody');tbody.innerHTML='';
+  INBOX_ROWS.forEach(function(row,idx){
+    var tr=document.createElement('tr');
+    tr.innerHTML='<td style="white-space:nowrap;font-size:12px">'+esc(row.date)+'</td>'
+      +'<td><textarea style="width:100%;min-height:50px;font-size:12px" onchange="INBOX_ROWS['+idx+'].request=this.value">'+esc(row.request)+'</textarea></td>'
+      +'<td><select onchange="INBOX_ROWS['+idx+'].status=this.value" style="font-size:12px">'
+      +['New','Reviewing','Updated','Delivered'].map(function(s){return'<option'+(row.status===s?' selected':'')+'>'+s+'</option>';}).join('')
+      +'</select></td>'
+      +'<td style="white-space:nowrap">'
+      +'<button class="btn btn-outline btn-xs" onclick="copyEditPrompt('+idx+')">Copy Prompt</button><br style="margin-top:4px">'
+      +'<button class="btn btn-danger btn-xs" style="margin-top:4px" onclick="INBOX_ROWS.splice('+idx+',1);renderInbox()">&#10005;</button>'
+      +'</td>';
+    tbody.appendChild(tr);
+  });
+}
+function addInboxRow(){INBOX_ROWS.push({date:new Date().toLocaleDateString(),request:'',status:'New'});renderInbox();}
+function copyEditPrompt(idx){
+  var row=INBOX_ROWS[idx];
+  copyText('Client edit request ('+row.date+'):\n'+row.request+'\n\nPlease update the CLIENT object accordingly. Only change what is explicitly requested. Return the full updated CLIENT object and list each change made.');
+}
+
+function loadSampleClient(){
+  CLIENT={
+    firstName:"Ayanna",destination:"Philippines",dates:"Aug 2-16, 2025",duration:"14 nights",
+    travelers:2,departing:"Atlanta, GA",notifyEmail:"ayanna@example.com",
+    tagline:"Island hopping through paradise",
+    welcomeNote:"Ayanna, your Filipino adventure awaits. From bustling Manila to crystalline El Nido, every detail has been curated for you.",
+    wishes:["Island hopping in El Nido","Try authentic Filipino street food","Sunset dinner on the beach","Snorkeling in clear waters","Explore local culture and temples"],
+    mealsDefault:440,buffer:145,
+    heroImage:"https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?w=1400",
+    fallbackImage:"https://images.unsplash.com/photo-1501854140801-50d01698950b?w=1400",
+    payment:{finalPaid:false,depositPaid:true,total:9800},
+    itinerary:[
+      {day:1,date:"Aug 2",type:"travel",dreamTitle:"Your Adventure Begins",fullTitle:"Departure Day — Atlanta to Manila",dreamDesc:"Today the Philippines becomes real. Wheels up from Atlanta.",fullDesc:"Depart Atlanta Hartsfield-Jackson on your overnight flight to Manila via Tokyo Narita. Arrive refreshed and ready.",city:"Atlanta / In Transit",morning:"Check in for your international flight. Arrive at ATL by 7am.",afternoon:"Depart 10:15am ATL. Long-haul begins.",evening:"Overnight flight. Sleep as the Pacific passes below.",alwaysShow:true,highlight:false,lockNote:"Flight departs 10:15am ATL",activityImage:"https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800",activityCaption:"Taking off into the adventure"},
+      {day:2,date:"Aug 3",type:"travel",dreamTitle:"Landing in Manila",fullTitle:"Arrive Manila — Rest and Explore Intramuros",dreamDesc:"Touch down in one of Asia's most vibrant capitals.",fullDesc:"Arrive Manila Ninoy Aquino at 7:40am. Check in to your hotel in Bonifacio Global City, freshen up, and explore the walled city of Intramuros.",city:"Manila",morning:"Arrive MNL 7:40am. Hotel check-in.",afternoon:"Guided walk through Intramuros — Fort Santiago, Manila Cathedral.",evening:"Dinner at Wildflour BGC.",alwaysShow:false,highlight:false,lockNote:"",activityImage:"https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=800",activityCaption:"Intramuros — the walled city"},
+      {day:3,date:"Aug 4",type:"experience",dreamTitle:"Street Food and Sunset Rooftops",fullTitle:"Manila City Day — Flavors and Skylines",dreamDesc:"Eat your way through Manila, ending with cocktails above the city skyline.",fullDesc:"A full immersion day in Manila. Morning food tour through Binondo, afternoon free for shopping in BGC, evening rooftop sundowners.",city:"Manila",morning:"Binondo food tour — siopao, hopia, fresh lumpia.",afternoon:"BGC Art Circuit stroll, Salcedo Market.",evening:"Rooftop cocktails, dinner at Gallery by Chele.",alwaysShow:false,highlight:true,lockNote:"",activityImage:"https://images.unsplash.com/photo-1555992336-03a23c7b20ee?w=800",activityCaption:"Manila's incredible food scene"},
+      {day:4,date:"Aug 5",type:"travel",dreamTitle:"Flying to Paradise",fullTitle:"Manila to El Nido — Into the Bacuit Archipelago",dreamDesc:"One short flight and the most stunning seascape in Southeast Asia awaits.",fullDesc:"Morning flight from Manila to El Nido Airport. Transfer to your resort and decompress on the beach.",city:"El Nido, Palawan",morning:"Fly Manila to El Nido on AirSWIFT. Depart 9:00am.",afternoon:"Resort check-in. First steps on El Nido sand.",evening:"Welcome dinner with beach bonfire at your resort.",alwaysShow:false,highlight:false,lockNote:"AirSWIFT T3 check-in 7:30am",activityImage:"https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?w=800",activityCaption:"El Nido from above"},
+      {day:5,date:"Aug 6",type:"experience",dreamTitle:"Islands Without End",fullTitle:"El Nido Island Hopping Tour A — Big Lagoon and Secret Lagoon",dreamDesc:"Kayak through turquoise lagoons enclosed by ancient limestone cliffs.",fullDesc:"The iconic Tour A covers the Big Lagoon, Small Lagoon, Secret Lagoon, Shimizu Island, and 7 Commandos Beach. Lunch served on board.",city:"El Nido, Palawan",morning:"Depart bangka at 9am. Big Lagoon first — kayak into the emerald cathedral.",afternoon:"Small Lagoon swim, Shimizu snorkel, beachside lunch.",evening:"7 Commandos Beach sunset. Return to resort.",alwaysShow:false,highlight:true,lockNote:"",activityImage:"https://images.unsplash.com/photo-1560780552-ba54683cb263?w=800",activityCaption:"Big Lagoon — El Nido's crown jewel"}
+    ],
+    flights:[
+      {dreamLabel:"Best Value Pick",dreamDetail:"One stop via Tokyo, arrives refreshed",airline:"Japan Airlines / Philippine Airlines",route:"ATL to NRT to MNL",depart:"Aug 2, 10:15am ATL",arrive:"Aug 3, 7:40am MNL",ret:"Aug 16, return arrives Aug 17 ATL",pricePerPerson:1850,bookingUrl:"https://www.google.com/flights",why:"Comfortable layover, great service, reliable on-time record",selected:true},
+      {dreamLabel:"Fastest Route",dreamDetail:"Direct via LAX, arrives faster",airline:"United / Cathay Pacific",route:"ATL to LAX to MNL",depart:"Aug 2, 12:30pm ATL",arrive:"Aug 3, 9:15am MNL",ret:"Aug 16, same day arrival ATL",pricePerPerson:2100,bookingUrl:"https://www.google.com/flights",why:"Quicker routing, slightly higher cost for time savings",selected:false}
+    ],
+    accomGroups:[
+      {leg:"Manila",nights:2,options:[
+        {tier:"budget",dreamLabel:"City Boutique",dreamStyle:"Urban chic",name:"Z Hostel BGC",area:"Bonifacio Global City",pricePerNight:85,bookingUrl:"https://booking.com",mapsUrl:"https://maps.google.com",image:"https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600",why:"Great rooftop social scene, central location",notes:"Shared lounge, private room available",selected:false},
+        {tier:"balanced",dreamLabel:"Modern Manila Base",dreamStyle:"Contemporary boutique",name:"Seda Vertis North",area:"Vertis North, QC",pricePerNight:165,bookingUrl:"https://booking.com",mapsUrl:"https://maps.google.com",image:"https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=600",why:"Stylish rooms, excellent breakfast, near major attractions",notes:"Complimentary airport transfer available",selected:true},
+        {tier:"premium",dreamLabel:"Skyline Luxury",dreamStyle:"5-star urban resort",name:"Raffles Makati",area:"Makati CBD",pricePerNight:420,bookingUrl:"https://booking.com",mapsUrl:"https://maps.google.com",image:"https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600",why:"Legendary Raffles service, central to fine dining",notes:"Butler service, pillow menu, rooftop pool",selected:false}
+      ]},
+      {leg:"El Nido",nights:4,options:[
+        {tier:"budget",dreamLabel:"Beachfront Vibes",dreamStyle:"Laid-back boho",name:"El Nido Cove Resort",area:"Corong-Corong Beach",pricePerNight:120,bookingUrl:"https://booking.com",mapsUrl:"https://maps.google.com",image:"https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=600",why:"Direct beach access, great value, friendly staff",notes:"Fan rooms, limited AC",selected:false},
+        {tier:"balanced",dreamLabel:"Clifftop Retreat",dreamStyle:"Boutique jungle-meets-sea",name:"Frangipani El Nido",area:"Las Cabanas Beach",pricePerNight:260,bookingUrl:"https://booking.com",mapsUrl:"https://maps.google.com",image:"https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=600",why:"Stunning views, beautiful pool, great food on site",notes:"Private beach, infinity pool, island tours bookable",selected:true},
+        {tier:"premium",dreamLabel:"Private Island Sanctuary",dreamStyle:"Ultra-luxury eco",name:"Lio Tourism Estate",area:"Lio Beach, El Nido",pricePerNight:680,bookingUrl:"https://booking.com",mapsUrl:"https://maps.google.com",image:"https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?w=600",why:"Private beach, world-class snorkeling, all-inclusive option",notes:"Minimum 3-night stay, transfers included",selected:false}
+      ]},
+      {leg:"Cebu",nights:3,options:[
+        {tier:"budget",dreamLabel:"Central Cebu Base",dreamStyle:"Clean and functional",name:"Waterfront Airport Hotel",area:"Mactan Island",pricePerNight:75,bookingUrl:"https://booking.com",mapsUrl:"https://maps.google.com",image:"https://images.unsplash.com/photo-1582719508461-905c673771fd?w=600",why:"Airport location, easy access to island day trips",notes:"Basic amenities, outdoor pool",selected:false},
+        {tier:"balanced",dreamLabel:"Ocean Views and Culture",dreamStyle:"Upscale island resort",name:"Shangri-La Mactan",area:"Mactan Island",pricePerNight:290,bookingUrl:"https://booking.com",mapsUrl:"https://maps.google.com",image:"https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=600",why:"Private beach, multiple pools, CHI spa, snorkel garden",notes:"Marine sanctuary on-site",selected:true},
+        {tier:"premium",dreamLabel:"Overwater Bliss",dreamStyle:"Award-winning luxury",name:"Crimson Resort and Spa",area:"Mactan Island",pricePerNight:510,bookingUrl:"https://booking.com",mapsUrl:"https://maps.google.com",image:"https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=600",why:"Overwater bungalows, 3 pools, beachfront serenity",notes:"Ideal for honeymoon/anniversary upgrade",selected:false}
+      ]}
+    ],
+    transport:[
+      {dreamLabel:"Island Hop via Ferry",dreamDetail:"Scenic sea route El Nido to Cebu",mode:"Ferry + Connecting Flight",route:"El Nido to Puerto Princesa to Cebu",pricePerPerson:145,bookingUrl:"https://www.2go.com.ph",why:"Scenic, budget-friendly, classic Filipino travel experience",selected:false},
+      {dreamLabel:"Quick Flight",dreamDetail:"40-min hop, maximize beach time",mode:"Domestic Flight",route:"Puerto Princesa to Cebu via Cebu Pacific",pricePerPerson:85,bookingUrl:"https://www.cebupacificair.com",why:"Fastest option, saves half a day",selected:true}
+    ],
+    activities:{
+      shared:{label:"Island Hopping Tour A (Group)",pricePerPerson:35,desc:"Join a bangka group tour — Big Lagoon, Small Lagoon, Secret Beach. Lunch included."},
+      private:{label:"Private Charter Island Tour",pricePerPerson:180,desc:"Your own bangka, your itinerary. Customize stops, depart when you want, private lunch setup."}
+    },
+    restaurants:[
+      {name:"Gallery by Chele",city:"Manila",cuisine:"Modern Filipino fine dining",priceRange:"$$$",reservationUrl:"https://www.gallerybychele.com",notes:"Book 2 weeks ahead. Ask for the tasting menu."},
+      {name:"Eggy's El Nido",city:"El Nido",cuisine:"Beachside Filipino-International",priceRange:"$$",reservationUrl:"",notes:"No reservation needed. Try the kare-kare."},
+      {name:"Lantaw Native Restaurant",city:"Cebu",cuisine:"Native Filipino heritage dishes",priceRange:"$$",reservationUrl:"",notes:"Floating cottages over the sea. Magical at sunset."}
+    ],
+    images:{
+      accommodations:["https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=600","https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=600","https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=600"],
+      activities:["https://images.unsplash.com/photo-1560780552-ba54683cb263?w=600","https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?w=600","https://images.unsplash.com/photo-1501854140801-50d01698950b?w=600"],
+      restaurants:["https://images.unsplash.com/photo-1555992336-03a23c7b20ee?w=600","https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600","https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=600"]
+    }
+  };
+  document.getElementById('clientPaste').value='const CLIENT = '+JSON.stringify(CLIENT,null,2)+';';
+  onClientLoaded();
+  toast('Sample client loaded — Ayanna, Philippines!');
+}
+
+// Init
+renderInbox();
+updateCheckProgress();
+updateReadinessScore();
+</script>
+</body>
+</html>
