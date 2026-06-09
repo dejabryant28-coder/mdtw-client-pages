@@ -18,6 +18,11 @@ body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--dark);di
 #sidebar nav a:hover{background:#1e1e1e;color:var(--white)}
 #sidebar nav a.active{background:#1e1e1e;color:var(--gold);border-left-color:var(--gold)}
 #sidebar nav a .icon{font-size:15px;width:20px;text-align:center}
+#sidebar .dee-wrap{padding:20px 20px 4px;display:flex;flex-direction:column;align-items:center;border-bottom:1px solid #2a2a2a;margin-bottom:4px}
+#sidebar .dee-wrap img{width:88px;height:88px;object-fit:contain;border-radius:50%;background:#1e1e1e;padding:6px;border:2px solid #2e2e2e;transition:transform .3s}
+#sidebar .dee-wrap img:hover{transform:scale(1.06)}
+#sidebar .dee-wrap .dee-name{font-family:'DM Serif Display',serif;color:var(--gold);font-size:13px;margin-top:8px;letter-spacing:.3px}
+#sidebar .dee-wrap .dee-tag{font-size:10px;color:#666;font-family:'Cormorant Garamond',serif;font-style:italic;margin-top:1px}
 #sidebar .client-badge{margin:12px 16px;padding:10px 12px;background:#1e1e1e;border-radius:8px;border:1px solid #333}
 #sidebar .client-badge .cb-name{color:var(--gold);font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 #sidebar .client-badge .cb-dest{color:#999;font-size:11px;margin-top:2px}
@@ -140,7 +145,12 @@ hr.divider{border:none;border-top:1px solid var(--light);margin:20px 0}
 <div id="sidebar">
   <div class="logo">
     <div class="brand">MDTW Admin</div>
-    <div class="sub">Travel Builder v1</div>
+    <div class="sub">Travel Builder v2</div>
+  </div>
+  <div class="dee-wrap">
+    <img src="mascot.png" alt="Dee" onerror="this.src='https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=200&q=80';this.style.borderRadius='50%'">
+    <div class="dee-name">Hey, I'm Dee ✨</div>
+    <div class="dee-tag">Your travel OS</div>
   </div>
   <nav id="sidenav">
     <a class="active" onclick="goTab('snapshot')"><span class="icon">&#128203;</span> Trip Snapshot</a>
@@ -200,7 +210,7 @@ hr.divider{border:none;border-top:1px solid var(--light);margin:20px 0}
         <div class="check-item"><input type="checkbox" id="ck0" onchange="toggleMeta('dreamSent',this.checked)"><label for="ck0">Dream Preview Sent?</label></div>
         <div class="check-item"><input type="checkbox" id="ck1" onchange="toggleMeta('editsReceived',this.checked)"><label for="ck1">Edits Received?</label></div>
         <div class="check-item"><input type="checkbox" id="ck2" onchange="toggleMeta('finalPaid',this.checked)"><label for="ck2">Final Paid?</label></div>
-        <div class="check-item"><input type="checkbox" id="ck3" onchange="toggleMeta('fullDelivered',this.checked)"><label for="ck3">Full Destination Delivered?</label></div>
+        <div class="check-item"><input type="checkbox" id="ck3" onchange="toggleMeta('fullDelivered',this.checked)"><label for="ck3">Destination Unlocked Delivered?</label></div>
         <div class="check-item"><input type="checkbox" id="ck4" onchange="toggleMeta('pdfGenerated',this.checked)"><label for="ck4">PDF Covers Generated?</label></div>
       </div>
       <div class="progress-bar-wrap mt-16"><div class="progress-bar" id="checkProgress" style="width:0%"></div></div>
@@ -446,7 +456,7 @@ hr.divider{border:none;border-top:1px solid var(--light);margin:20px 0}
       <div class="text-sm text-mid mt-8" id="dreamReadPct">0% ready</div>
     </div>
     <div class="card">
-      <h3>Full Destination Readiness</h3>
+      <h3>Destination Unlocked Readiness</h3>
       <div class="readiness-check" id="fullReadiness"></div>
       <div class="progress-bar-wrap mt-16"><div class="progress-bar" id="fullReadBar" style="width:0%"></div></div>
       <div class="text-sm text-mid mt-8" id="fullReadPct">0% ready</div>
