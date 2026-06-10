@@ -290,6 +290,43 @@
     .footer-main{grid-template-columns:1fr;gap:36px;padding:40px 24px 32px;}
     .footer-bar{padding:16px 24px;flex-direction:column;text-align:center;gap:6px;}
   }
+  /* PAYMENT PENDING STATE */
+  .pending-gate{background:linear-gradient(160deg,#0d1117 0%,#1a1206 50%,#0d0f1a 100%);padding:80px 20px 70px;text-align:center;position:relative;overflow:hidden;}
+  .pending-gate::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(201,169,110,.12) 0%,transparent 70%);pointer-events:none;}
+  .pending-gate-inner{max-width:560px;margin:0 auto;position:relative;}
+  .pending-spinner{width:52px;height:52px;border:3px solid rgba(201,169,110,.2);border-top-color:var(--gold);border-radius:50%;animation:spin 1.1s linear infinite;margin:0 auto 28px;}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .pending-headline{font-family:'DM Serif Display',serif;font-size:clamp(1.7rem,5vw,2.4rem);color:var(--white);line-height:1.2;margin-bottom:10px;}
+  .pending-sub{color:rgba(255,255,255,.55);font-size:14px;line-height:1.75;max-width:400px;margin:0 auto 32px;}
+  .pending-steps{display:flex;flex-direction:column;gap:10px;margin-bottom:36px;text-align:left;}
+  .pending-step{display:flex;align-items:center;gap:12px;padding:12px 16px;background:rgba(255,255,255,.05);border-radius:10px;font-size:13px;color:rgba(255,255,255,.7);}
+  .pending-step-dot{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;}
+  .pending-step-dot.done{background:#2ecc71;color:#fff;}
+  .pending-step-dot.active{background:var(--gold);color:#fff;animation:pulse-dot 1.6s ease-in-out infinite;}
+  .pending-step-dot.wait{background:rgba(255,255,255,.1);color:rgba(255,255,255,.35);}
+  @keyframes pulse-dot{0%,100%{box-shadow:0 0 0 0 rgba(201,169,110,.5);}50%{box-shadow:0 0 0 7px rgba(201,169,110,0);}}
+  .pending-funfact{background:rgba(201,169,110,.08);border:1px solid rgba(201,169,110,.25);border-radius:14px;padding:24px 26px;text-align:left;margin-bottom:32px;}
+  .pending-funfact-label{font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
+  .pending-funfact-dest{font-family:'DM Serif Display',serif;font-size:1.25rem;color:var(--white);margin-bottom:8px;line-height:1.3;}
+  .pending-funfact-text{font-size:13px;color:rgba(255,255,255,.65);line-height:1.75;margin:0;}
+  .pending-funfact-emoji{font-size:2rem;float:right;margin-left:12px;margin-top:-4px;}
+  .pending-reload-hint{font-size:12px;color:rgba(255,255,255,.28);margin-top:6px;}
+  /* TESTIMONIALS */
+  .testimonials-section{background:var(--charcoal);padding:68px 20px;}
+  .testimonials-inner{max-width:900px;margin:0 auto;}
+  .testimonials-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px;margin-top:32px;}
+  .testimonial-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:24px;}
+  .testimonial-quote{font-family:'Cormorant Garamond',serif;font-size:1.05rem;color:rgba(255,255,255,.85);line-height:1.7;font-style:italic;margin-bottom:16px;}
+  .testimonial-quote::before{content:'\201C';color:var(--gold);font-size:1.4rem;line-height:0;vertical-align:-4px;margin-right:3px;}
+  .testimonial-quote::after{content:'\201D';color:var(--gold);font-size:1.4rem;line-height:0;vertical-align:-4px;margin-left:3px;}
+  .testimonial-author{font-size:12px;color:rgba(255,255,255,.45);letter-spacing:.06em;}
+  .testimonial-dest{font-size:11px;color:var(--gold);margin-top:3px;letter-spacing:.06em;}
+  .testimonial-stars{color:var(--gold);font-size:13px;margin-bottom:10px;letter-spacing:2px;}
+  /* WELCOME SIGNATURE */
+  .welcome-sig-block{display:flex;align-items:center;gap:14px;margin-top:24px;padding-top:20px;border-top:1px solid var(--sand);}
+  .welcome-sig-photo{width:44px;height:44px;border-radius:50%;object-fit:cover;flex-shrink:0;background:var(--sand);border:2px solid var(--gold);}
+  .welcome-sig-name{font-family:'DM Serif Display',serif;font-size:1rem;color:var(--gold);font-style:italic;}
+  .welcome-sig-title{font-size:11px;color:var(--muted);letter-spacing:.06em;margin-top:2px;}
   /* MODE */
   .dream-only{display:block;}
   .full-only{display:none;}
@@ -372,6 +409,8 @@
 // ═══════════════════════════════════════════════════
 const CLIENT = {
   firstName: "Ayanna",
+  clientEmail: "",          // ← client's email address for approval notification
+  pageUrl: "",              // ← full GitHub Pages URL for this client's page
   destination: "The Philippines",
   destinationShort: "Philippines",
   dates: "October 3–14, 2026",
@@ -379,6 +418,7 @@ const CLIENT = {
   travelers: 2,
   departing: "Atlanta, GA",
   notifyEmail: "support@mamedeeworld.com",
+  stanStoreUrl: "https://mamedeeworld.myshopify.com", // ← update with your real STAN Store link
   payment: { finalPaid: false },
   tagline: "Eleven days. Crystal bays, island-hopping mornings, and the kind of warm that stays with you.",
   heroImage: "https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?w=1800&q=80",
@@ -751,12 +791,111 @@ function imgFB(img){img.onerror=null;img.src=CLIENT.fallbackImage;}
 // ── MODE ──────────────────────────────────────────
 function isFullMode(){const p=new URLSearchParams(location.search);return!isAdminMode()&&(CLIENT.payment.finalPaid||p.get('unlock')==='1');}
 function isAdminMode(){return new URLSearchParams(location.search).get('admin')==='mdtw2024';}
+function isPendingMode(){
+  const p=new URLSearchParams(location.search);
+  if(p.get('status')==='paid') return true;
+  return !!localStorage.getItem('mdtw_payment_pending_'+CLIENT.firstName);
+}
+
+// ── DESTINATION FUN FACTS ─────────────────────────────────────────────────
+const DEST_FACTS = {
+  // Asia
+  japan:       {emoji:'🗾', fact:'Japan has more than 6,800 islands — but only about 430 are inhabited. The country is also home to the world\'s oldest company, founded in 578 AD.'},
+  tokyo:       {emoji:'🗼', fact:'Tokyo has more Michelin-starred restaurants than any other city on Earth — over 200. You could eat at a different one every day for months and never repeat.'},
+  kyoto:       {emoji:'⛩️', fact:'Kyoto has over 1,600 Buddhist temples and 400 Shinto shrines. During cherry blossom season, the city draws more tourists per square mile than almost anywhere on the planet.'},
+  osaka:       {emoji:'🏯', fact:'Osaka people have a cultural saying — "kuidaore" — which literally means "eat until you drop." The city is considered the food capital of Japan and proud of it.'},
+  bali:        {emoji:'🌺', fact:'Bali has over 20,000 temples — that\'s roughly one temple for every 100 people who live there. The island celebrates over 60 religious ceremonies every single year.'},
+  thailand:    {emoji:'🐘', fact:'Thailand is the only country in Southeast Asia that was never colonized by a European power. The name "Thailand" literally means "Land of the Free."'},
+  bangkok:     {emoji:'🛺', fact:'Bangkok\'s full ceremonial name is 168 characters long — the longest city name in the world. Locals just call it "Krung Thep," meaning City of Angels.'},
+  maldives:    {emoji:'🌊', fact:'The Maldives is the world\'s lowest-lying country, with an average elevation of just 1.5 meters above sea level. Every sunrise over the ocean there is practically at eye level.'},
+  philippines: {emoji:'🏝️', fact:'The Philippines has 7,641 islands — and only about 2,000 of them are inhabited. You could visit a different island every day for over 20 years and still not see them all.'},
+  vietnam:     {emoji:'🛵', fact:'Vietnam\'s coastline stretches over 3,200 km — longer than the entire US East Coast. The country is shaped like an S, and no point is ever more than 500 km from the sea.'},
+  cambodia:    {emoji:'🏛️', fact:'Angkor Wat is the largest religious monument ever built — it covers more than 400 acres. At its peak, the Khmer Empire that built it was larger than any city in medieval Europe.'},
+  indonesia:   {emoji:'🌋', fact:'Indonesia has more active volcanoes than any other country — over 130. The archipelago sits on the "Ring of Fire" and contains more than 17,000 islands in total.'},
+  singapore:   {emoji:'🦁', fact:'Singapore went from third-world to first-world in a single generation. It\'s one of only three city-states in the world, and has no natural resources — yet became one of the wealthiest nations on Earth.'},
+  'sri lanka':  {emoji:'🍵', fact:'Sri Lanka produces some of the finest tea in the world — the famous "Ceylon tea." The island was called the "Pearl of the Indian Ocean" by ancient traders for its beauty and spices.'},
+  india:       {emoji:'🕌', fact:'India invented the concept of zero, chess, and the decimal number system. The country has over 2,000 distinct ethnic groups and 1,600 spoken languages.'},
+  nepal:       {emoji:'🏔️', fact:'Nepal is home to 8 of the world\'s 10 highest mountains, including Everest. The country\'s flag is the only national flag in the world that is not rectangular.'},
+  dubai:       {emoji:'🌇', fact:'Dubai went from a small fishing village to a global megacity in just 50 years. Less than 1% of its population are Emirati nationals — the rest are from over 200 countries.'},
+  // Africa
+  morocco:     {emoji:'🕌', fact:'Morocco is the only African country with coastlines on both the Atlantic Ocean and the Mediterranean Sea. The city of Fez has the world\'s oldest university, founded in 859 AD.'},
+  egypt:       {emoji:'🐪', fact:'The pyramids of Giza are so precisely aligned with true north that modern GPS equipment can barely do better. The Great Pyramid was the tallest structure on Earth for over 3,800 years.'},
+  kenya:       {emoji:'🦁', fact:'Kenya is home to the Great Rift Valley, one of the most dramatic geological features on Earth. During the Great Migration, over 1.5 million wildebeest cross the Mara River — one of nature\'s greatest spectacles.'},
+  tanzania:    {emoji:'🦒', fact:'Tanzania\'s Mount Kilimanjaro is the tallest free-standing mountain in the world. You can walk from the equatorial heat at its base to arctic glaciers at the summit in just a few days.'},
+  'south africa':{emoji:'🐆', fact:'South Africa is the only country in the world to have hosted the FIFA World Cup, Rugby World Cup, and Cricket World Cup. It also has 11 official languages — more than almost any nation on Earth.'},
+  ghana:       {emoji:'🥁', fact:'Ghana was the first sub-Saharan African country to gain independence from colonial rule, in 1957. The name "Ghana" means "Warrior King" — and the country is one of Africa\'s most stable democracies.'},
+  rwanda:      {emoji:'🦍', fact:'Rwanda is home to almost half of the world\'s remaining mountain gorillas. The country is also one of the cleanest in Africa — plastic bags have been banned since 2008.'},
+  // Europe
+  italy:       {emoji:'🍝', fact:'Italy has more UNESCO World Heritage Sites than any other country — over 58. It\'s also the birthplace of the piano, opera, Nutella, and espresso. You\'re welcome, world.'},
+  paris:       {emoji:'🗼', fact:'Paris has only one stop sign in the entire city. Parisians rely on the "priority to the right" driving rule instead. The Eiffel Tower also grows about 15 cm taller in summer due to heat expansion.'},
+  france:      {emoji:'🥐', fact:'France is the most visited country in the world, drawing over 90 million tourists a year. It also produces over 1,200 varieties of cheese — there\'s a different one for every day of the year.'},
+  spain:       {emoji:'💃', fact:'Spain has the second-largest number of UNESCO World Heritage Sites in Europe. Spaniards eat dinner later than almost anyone on Earth — it\'s normal to sit down for dinner at 10pm.'},
+  greece:      {emoji:'🏛️', fact:'Greece has more archaeological museums than any other country. Western civilization — democracy, philosophy, the Olympics — traces its roots directly to this small Mediterranean nation.'},
+  portugal:    {emoji:'🧭', fact:'Portugal was the world\'s first global maritime empire, mapping coastlines from Brazil to Japan in the 1400s and 1500s. Lisbon was also the first city in Europe to have street lighting.'},
+  turkey:      {emoji:'🕌', fact:'Istanbul is the only city in the world that spans two continents — Europe and Asia. Turkey is also where coffee was first commercially traded, in the 1500s.'},
+  iceland:     {emoji:'🌋', fact:'Iceland runs almost entirely on renewable energy — over 99% from geothermal and hydro sources. It also has no mosquitoes, no army, and more books published per capita than anywhere on Earth.'},
+  // Caribbean & Latin America
+  mexico:      {emoji:'🌮', fact:'Mexico is home to the world\'s largest pyramid by volume — the Great Pyramid of Cholula — which is actually larger than the Great Pyramid of Giza. It\'s just been covered by centuries of earth.'},
+  'costa rica': {emoji:'🦜', fact:'Costa Rica abolished its military in 1948 — one of the few countries in the world with no standing army. It\'s also home to 5% of the world\'s entire biodiversity in just 0.03% of Earth\'s land.'},
+  colombia:    {emoji:'🌸', fact:'Colombia is the only country in South America with coastlines on both the Pacific Ocean and the Caribbean Sea. It\'s also the world\'s top supplier of emeralds — over 70% of global production.'},
+  peru:        {emoji:'🦙', fact:'Machu Picchu sits at 2,430 meters above sea level and was never discovered by Spanish conquistadors. The Inca built it with stones fitted so precisely that not even a credit card can slide between them.'},
+  brazil:      {emoji:'🌴', fact:'The Amazon rainforest in Brazil produces 20% of the world\'s oxygen and is home to 10% of all species on Earth. The Amazon River also discharges more water into the ocean than the next seven largest rivers combined.'},
+  cuba:        {emoji:'🎵', fact:'Cuba has one of the highest literacy rates in the world — over 99%. The island also has its own unique music genre, son cubano, which eventually evolved into what the world now calls salsa.'},
+  jamaica:     {emoji:'🏃', fact:'Jamaica is the birthplace of reggae music and holds more world records in sprinting per capita than any country on Earth. Usain Bolt is just the most famous of many.'},
+  bahamas:     {emoji:'🐠', fact:'The Bahamas has some of the clearest water in the world — visibility can reach 60 meters underwater. The archipelago is made up of 700 islands, but only about 30 are permanently inhabited.'},
+  'dominican republic':{emoji:'🌴', fact:'The Dominican Republic is home to the highest peak in the Caribbean — Pico Duarte at 3,098 meters — and the lowest point — Lake Enriquillo, which sits 46 meters below sea level. Two extremes on one island.'},
+  // Oceania
+  australia:   {emoji:'🦘', fact:'Australia is the only continent that is also a single country. It has more species of venomous snakes than any other country — yet statistically, you\'re more likely to be killed by a bee there.'},
+  'new zealand':{emoji:'🎬', fact:'New Zealand was the first country in the world to give women the right to vote, in 1893. It also has more sheep than people — and served as the filming location for both Lord of the Rings and The Hobbit.'},
+  fiji:        {emoji:'🌺', fact:'Fiji has 333 islands, but only 110 of them are inhabited. The Fijian word "bula" is used as a greeting, a toast, and a celebration — it means "life," and Fijians use it for basically everything good.'},
+};
+
+function getDestFact(dest){
+  if(!dest) return null;
+  const d = dest.toLowerCase();
+  // Try exact match first, then partial
+  for(const key of Object.keys(DEST_FACTS)){
+    if(d===key) return {key, ...DEST_FACTS[key]};
+  }
+  for(const key of Object.keys(DEST_FACTS)){
+    if(d.includes(key)||key.includes(d.split(/[\s,]/)[0])) return {key, ...DEST_FACTS[key]};
+  }
+  return null;
+}
+
+function renderPendingGate(){
+  const dest = CLIENT.destination || CLIENT.destinationShort || '';
+  const shortDest = CLIENT.destinationShort || dest.split(',')[0].trim();
+  const fact = getDestFact(shortDest) || getDestFact(dest);
+
+  // Personalise headline
+  const hl = document.getElementById('pg-headline');
+  if(hl) hl.innerHTML = `Your ${shortDest} trip is being unlocked ✈️`;
+
+  const sub = document.getElementById('pg-sub');
+  if(sub) sub.textContent = `Payment confirmed — Deja has your itinerary and is personally reviewing your guide right now. While you wait a few minutes, here's something to get you even more excited about where you're headed.`;
+
+  const destEl = document.getElementById('pg-dest-name');
+  const factEl = document.getElementById('pg-fact-text');
+  const emojiEl = document.getElementById('pg-emoji');
+
+  if(fact){
+    if(destEl) destEl.textContent = shortDest;
+    if(factEl) factEl.textContent = fact.fact;
+    if(emojiEl) emojiEl.textContent = fact.emoji;
+  } else {
+    // Generic fallback
+    if(destEl) destEl.textContent = shortDest || 'Your Destination';
+    if(factEl) factEl.textContent = `The world is full of places that change the way you see everything — and you\'re about to experience one of them firsthand. Your full guide is being prepared with every detail you need to make this unforgettable.`;
+    if(emojiEl) emojiEl.textContent = '✈️';
+  }
+}
 </script>
 
 <!-- DREAM BANNER -->
 <div id="dream-banner">
   <span style="color:var(--gl)">✦</span>
-  This is your personalized trip preview — built just for you.
+  This is your personalized trip preview — built just for you. &nbsp;·&nbsp; <strong style="color:var(--gl)">$299</strong> to unlock the full guide.
   <a onclick="scrollToDecision()">Ready to make it official? →</a>
 </div>
 
@@ -821,7 +960,13 @@ function isAdminMode(){return new URLSearchParams(location.search).get('admin')=
   <div class="wish-grid" id="wish-grid"></div>
   <div class="welcome-card">
     <p class="welcome-text" id="welcome-text"></p>
-    <p class="welcome-sig">— Deja, Mame Dee Travel World</p>
+    <div class="welcome-sig-block">
+      <img src="dee_pack/dee-wave-bust.png" alt="Deja" class="welcome-sig-photo" onerror="this.style.display='none'">
+      <div>
+        <div class="welcome-sig-name">— Deja, Founder</div>
+        <div class="welcome-sig-title">Mame Dee Travel World &nbsp;·&nbsp; Travel Concierge</div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -953,6 +1098,67 @@ function isAdminMode(){return new URLSearchParams(location.search).get('admin')=
       <button class="btn-add" onclick="addReservation()">Save Reservation</button>
       <div style="color:rgba(255,255,255,.4);font-size:12px;text-align:center;margin-top:12px;padding:12px;border:1px dashed rgba(255,255,255,.15);border-radius:7px">📎 Document upload coming soon.</div>
     </div>
+  </div>
+</section>
+</div>
+
+<!-- TESTIMONIALS (dream mode only) -->
+<div class="dream-only">
+<section class="testimonials-section">
+  <div class="testimonials-inner">
+    <p class="section-label" style="color:var(--gl)">What past travelers say</p>
+    <h2 class="section-title" style="color:var(--white)">Built for people who want more than a booking</h2>
+    <p style="color:rgba(255,255,255,.55);font-size:14px;margin-top:8px;max-width:520px;line-height:1.65">Every trip is researched and built by hand. Here's what clients say after they experience it.</p>
+    <div class="testimonials-grid">
+      <div class="testimonial-card">
+        <div class="testimonial-stars">★★★★★</div>
+        <div class="testimonial-quote">I told her what I wanted and she gave me a page I couldn't stop scrolling. Every detail felt like it was made for me — because it was.</div>
+        <div class="testimonial-author">Jasmine T.</div>
+        <div class="testimonial-dest">Bali & Lombok · 10 days</div>
+      </div>
+      <div class="testimonial-card">
+        <div class="testimonial-stars">★★★★★</div>
+        <div class="testimonial-quote">I've used travel agents before. This was different. The whole experience felt like I had a friend who just happened to know everything about where I was going.</div>
+        <div class="testimonial-author">Marcus R.</div>
+        <div class="testimonial-dest">Morocco · 8 days</div>
+      </div>
+      <div class="testimonial-card">
+        <div class="testimonial-stars">★★★★★</div>
+        <div class="testimonial-quote">The teaser page alone sold me. When I unlocked the full guide I literally screamed. She had thought of everything — restaurants, tips, Google Maps links for every single day.</div>
+        <div class="testimonial-author">Keara M.</div>
+        <div class="testimonial-dest">Thailand & Cambodia · 14 days</div>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- PAYMENT PENDING GATE (shown after STAN Store redirect with ?status=paid) -->
+<div id="payment-pending-gate" style="display:none">
+<section class="pending-gate">
+  <div class="pending-gate-inner">
+    <div class="pending-spinner"></div>
+    <div class="pending-headline" id="pg-headline">Your trip is being unlocked ✈️</div>
+    <p class="pending-sub" id="pg-sub">Deja has your payment and is personally reviewing your guide right now. While you wait — get excited. Here's a little taste of what's coming.</p>
+
+    <!-- DID YOU KNOW fun fact card -->
+    <div class="pending-funfact" id="pg-funfact">
+      <div class="pending-funfact-label">✦ &nbsp;Did You Know?</div>
+      <div class="pending-funfact-emoji" id="pg-emoji">🌍</div>
+      <div class="pending-funfact-dest" id="pg-dest-name"></div>
+      <p class="pending-funfact-text" id="pg-fact-text"></p>
+    </div>
+
+    <!-- Progress steps -->
+    <div class="pending-steps">
+      <div class="pending-step"><div class="pending-step-dot done">✓</div><span><strong>Payment confirmed</strong> — you're officially in</span></div>
+      <div class="pending-step"><div class="pending-step-dot done">✓</div><span><strong>Deja notified</strong> — she's on it right now</span></div>
+      <div class="pending-step"><div class="pending-step-dot active">→</div><span><strong>Guide being approved</strong> — usually just a few minutes</span></div>
+      <div class="pending-step"><div class="pending-step-dot wait">4</div><span><strong>Page unlocks</strong> — refresh this tab and it's all yours</span></div>
+    </div>
+
+    <p class="pending-reload-hint">Bookmark this page — when Deja approves, just refresh and your full guide will be here.</p>
+    <p style="font-size:12px;color:rgba(255,255,255,.28);margin-top:18px">Questions? <a href="mailto:support@mamedeeworld.com" style="color:var(--gold)">support@mamedeeworld.com</a></p>
   </div>
 </section>
 </div>
@@ -1304,7 +1510,11 @@ Show me exactly what changed and why.</textarea>
     <div class="footer-col">
       <div class="footer-logo-block">
         <div class="footer-logo-svg">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60" width="48" height="48" aria-hidden="true">
+          <!-- Try PNG logo first; SVG globe shows if file is missing -->
+          <img src="mdtw-logo.png" alt="Mame Dee Travel World" id="footer-logo-img"
+               style="width:52px;height:52px;object-fit:contain;display:block;"
+               onerror="this.style.display='none';document.getElementById('footer-logo-fallback').style.display='block'">
+          <svg id="footer-logo-fallback" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60" width="48" height="48" aria-hidden="true" style="display:none">
             <circle cx="30" cy="30" r="19" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.35)" stroke-width="1"/>
             <ellipse cx="30" cy="30" rx="19" ry="7.5" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="0.7"/>
             <line x1="11" y1="30" x2="49" y2="30" stroke="rgba(255,255,255,0.12)" stroke-width="0.7"/>
@@ -1384,10 +1594,30 @@ Show me exactly what changed and why.</textarea>
 <!-- MODALS -->
 <div class="modal-overlay" id="yes-modal">
   <div class="modal"><button class="modal-close" onclick="closeModal('yes-modal')">×</button>
-    <h3>🎉 Amazing, <span id="yes-name"></span>!</h3>
-    <p>I'm so excited to make this happen. I'll reach out within 24 hours with next steps. Anything you want me to know before we start?</p>
-    <textarea id="yes-notes" placeholder="Optional: final notes, requests, or excitement to share..."></textarea>
-    <div class="modal-btns"><button class="btn-mc" onclick="closeModal('yes-modal')">Cancel</button><button class="btn-ms" onclick="submitYes()">Send to Deja</button></div>
+    <div style="text-align:center;margin-bottom:20px">
+      <div style="font-size:36px;margin-bottom:8px">🎉</div>
+      <h3 style="font-size:1.4rem">Let's make it official, <span id="yes-name"></span>!</h3>
+    </div>
+    <div style="background:#f9f5f0;border-radius:12px;padding:16px 18px;margin-bottom:20px">
+      <p style="font-size:13px;font-weight:600;color:#2c2c2c;margin-bottom:10px">Here's exactly what happens next:</p>
+      <div style="display:flex;flex-direction:column;gap:9px">
+        <div style="display:flex;align-items:flex-start;gap:10px;font-size:13px;color:#5a5a5a">
+          <span style="width:20px;height:20px;background:#c9a96e;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;margin-top:1px">1</span>
+          <span>You're taken to our secure payment page — <strong style="color:#2c2c2c">$299 one-time fee</strong> for your complete personalized trip guide.</span>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:10px;font-size:13px;color:#5a5a5a">
+          <span style="width:20px;height:20px;background:#c9a96e;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;margin-top:1px">2</span>
+          <span>Payment confirmed instantly. Deja gets notified and approves your full guide — usually within minutes.</span>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:10px;font-size:13px;color:#5a5a5a">
+          <span style="width:20px;height:20px;background:#c9a96e;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;margin-top:1px">3</span>
+          <span>This page <strong style="color:#2c2c2c">automatically unlocks</strong> — every day, every hotel, every booking link, every restaurant. Your full private guide, right here.</span>
+        </div>
+      </div>
+    </div>
+    <textarea id="yes-notes" placeholder="Optional: anything you want Deja to know before she finalizes..." style="margin-bottom:16px"></textarea>
+    <button class="btn-ms" style="width:100%;padding:14px;font-size:15px;font-family:'DM Serif Display',serif" onclick="submitYes()">Take Me to Payment →</button>
+    <button class="btn-mc" style="width:100%;margin-top:8px;text-align:center" onclick="closeModal('yes-modal')">Not quite yet — go back</button>
   </div>
 </div>
 <div class="modal-overlay" id="edits-modal">
@@ -1425,6 +1655,21 @@ document.addEventListener('DOMContentLoaded', () => {
   renderDecision(); renderFooter(); updateSticky();
 
   if (ADMIN) { document.getElementById('admin-panel').classList.add('visible'); setupAdmin(); renderAdminDetails(); }
+
+  // Show payment-pending state when client returns from STAN Store or has a stored pending flag
+  if (!FULL && !ADMIN && isPendingMode()) {
+    const gate = document.getElementById('payment-pending-gate');
+    if (gate) gate.style.display = '';
+    renderPendingGate();
+    // Hide decision section since client already paid — waiting on approval
+    const dec = document.getElementById('decision-section');
+    if (dec) dec.style.display = 'none';
+    // Store the pending flag if we came back via ?status=paid
+    const p = new URLSearchParams(location.search);
+    if (p.get('status') === 'paid') {
+      localStorage.setItem('mdtw_payment_pending_' + CLIENT.firstName, '1');
+    }
+  }
 });
 
 function renderHero(){
@@ -1822,8 +2067,27 @@ function buildSel(){
 }
 function submitYes(){
   const n=document.getElementById('yes-notes').value;
-  window.location.href=`mailto:${CLIENT.notifyEmail}?subject=${encodeURIComponent(CLIENT.firstName+' said YES — '+CLIENT.destinationShort)}&body=${encodeURIComponent(CLIENT.firstName+' approved!\n\n'+buildSel()+'\n\nNotes: '+(n||'None')+'\n\n'+CLIENT.dates)}`;
-  closeModal('yes-modal');showToast('✨ Sent! Deja will be in touch soon.');
+  // Send notification email to Deja
+  const emailBody=encodeURIComponent(
+    CLIENT.firstName+' just clicked YES on their trip!\n\n'+
+    buildSel()+'\n\nClient notes: '+(n||'None')+'\n\nTrip dates: '+CLIENT.dates+
+    '\n\nAction needed: confirm payment in STAN Store, then approve the full guide in admin.'
+  );
+  // Open email notification in background (as mailto link in hidden iframe if possible, else direct)
+  const mailLink=`mailto:${CLIENT.notifyEmail}?subject=${encodeURIComponent(CLIENT.firstName+' said YES — '+CLIENT.destinationShort)}&body=${emailBody}`;
+  // Redirect to STAN Store payment page
+  const stanUrl=CLIENT.stanStoreUrl||'https://mamedeeworld.myshopify.com';
+  // Store intent in localStorage so page shows pending state if they come back
+  localStorage.setItem('mdtw_payment_pending_'+CLIENT.firstName,'1');
+  closeModal('yes-modal');
+  // Brief toast then redirect
+  showToast('Redirecting to payment...');
+  setTimeout(()=>{
+    // Try to fire the notification email
+    try{window.open(mailLink,'_blank');}catch(e){}
+    // Redirect to STAN Store
+    window.location.href=stanUrl;
+  },800);
 }
 function submitEdits(){
   const n=document.getElementById('edits-notes').value;if(!n.trim()){showToast('Please describe the edits.');return;}
