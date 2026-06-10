@@ -396,6 +396,11 @@ hr.divider{border:none;border-top:1px solid var(--light);margin:20px 0}
         <div class="form-group"><label>Welcome Note</label><input type="text" id="b_welcomeNote" oninput="syncField('welcomeNote',this.value)"></div>
       </div>
       <div class="form-group">
+        <label>🎥 Intro Video URL <span style="font-weight:400;color:var(--mid);font-size:11px">Loom, YouTube, or Vimeo — appears on client page before flights</span></label>
+        <input type="url" id="b_introVideo" placeholder="https://loom.com/share/... or https://youtu.be/..." oninput="syncField('introVideo',this.value)">
+        <p style="font-size:11px;color:var(--mid);margin-top:5px;line-height:1.5">Record a 20–30 sec video. Say their name, tell them you built this just for them, and tell them to scroll and explore. Makes the page feel personal and premium.</p>
+      </div>
+      <div class="form-group">
         <div class="toggle-wrap"><div class="toggle" id="b_finalPaidToggle" onclick="toggleFinalPaid()"></div><span style="font-size:13px">Final Payment Received</span></div>
       </div>
     </div>
@@ -689,25 +694,109 @@ var DEE_CHIPS={
 };
 
 var DEE_KNOWLEDGE=[
-  {keys:['hello','hi','hey','sup','hiya'],reply:function(){return 'Hey! I\'m Dee, your travel OS. '+deeClientGreet()+' What can I help with?';}},
-  {keys:['what do i do first','where do i start','getting started','first step'],reply:function(){return CLIENT?'You have '+CLIENT.firstName+' loaded! Go through tabs 1–7 in order. You\'re on '+deeTabName()+' right now. '+deeNextStep():' Start at Tab 2 — Client Intake. Paste your client\'s form answers, hit Extract Preferences, then Build My Draft. That gives you a starting CLIENT object for Tab 3.';}},
-  {keys:['no client','how do i load','load a client','paste client'],reply:function(){return 'Go to Tab 3 — Trip Builder. You\'ll see a big textarea. Paste your full CLIENT object there and hit Load. Everything else in the admin fills in from that one object.';}},
-  {keys:['what tab','which tab','current tab','where am i'],reply:function(){return 'You\'re on Tab '+deeTabNum()+': '+deeTabName()+'. '+deeTabHint();}},
-  {keys:['publish','download','export','client page','generate file'],reply:function(){return 'Head to Tab 7 — Publish. You\'ll see the big gold "⬇ Download Client Page" button at the top. It fetches the template, bakes in your CLIENT data, and downloads '+deeFilename()+' ready to upload to GitHub.';}},
-  {keys:['github','upload','deploy','go live','link'],reply:function(){return 'After downloading the client page, go to github.com/dejabryant28-coder/mdtw-client-pages → Add file → Upload files → drag the .html file → Commit. It\'s live in about 60 seconds.';}},
-  {keys:['dream preview','dream link','preview link'],reply:function(){var f=deeFilename();return 'Dream preview link: https://dejabryant28-coder.github.io/mdtw-client-pages/'+f+'\n\nSend this to your client first — they see the teaser but not the full guide yet.';}},
-  {keys:['unlock','full guide','destination unlocked','paid','payment'],reply:function(){var f=deeFilename();return 'Once your client pays, the unlock link is:\nhttps://dejabryant28-coder.github.io/mdtw-client-pages/'+f+'?unlock=1\n\nYou can also flip finalPaid: true in the CLIENT object and redeploy.';}},
-  {keys:['who is my client','client name','current client','loaded client'],reply:function(){return CLIENT?'Your current client is '+CLIENT.firstName+' — heading to '+CLIENT.destination+' on '+CLIENT.dates+'. Departing from '+CLIENT.departing+'.':'No client loaded yet. Paste a CLIENT object in Tab 3.';}},
-  {keys:['readiness','ready','checklist','score','missing'],reply:function(){return deeReadiness();}},
-  {keys:['hero photo','hero image','cover photo'],reply:function(){return 'Go to Tab 6 — Images. You\'ll see the Hero Photo builder at the top. Upload your own photo (auto-cropped to 1800×900) or hit 🔍 Find Photo to auto-pull a beautiful Unsplash shot of '+deeDestination()+'.';}},
-  {keys:['intake','questionnaire','extract','preferences','notes'],reply:function(){return 'Tab 2 — Client Intake. Paste anything: questionnaire responses, email threads, DMs, voice note transcripts. Hit Extract Preferences and I\'ll pull out budget, pace, hotel style, food preferences, and occasion. Then Build My Draft to create the CLIENT skeleton.';}},
-  {keys:['day','itinerary','schedule','add day','reorder'],reply:function(){return 'Tab 4 — Day-by-Day. Each day has a dream teaser (vague and exciting — client sees this) and a full version (unlocked after booking). Use ↑↓ to reorder, or duplicate a day to save time on similar days.';}},
-  {keys:['flight','airline','fly'],reply:function(){return 'Tab 5 — Stays & Flights. Add up to 2 flight options. Flights show on the client page but are excluded from the total by default — your client toggles them in if they want to see the full number with flights.';}},
-  {keys:['hotel','stay','accommodation','room'],reply:function(){return 'Tab 5 — Stays & Flights. Each destination leg shows up to 3 side-by-side options. Always include a value pick and a premium pick — it opens upsell conversations naturally.';}},
-  {keys:['price','pricing','total','budget','cost'],reply:function(){return CLIENT?'The current estimated total for '+CLIENT.firstName+'\'s trip is based on selected flights (if toggled in), accommodations, transport, activities, meals, and buffer. You can see the live total in Tab 7.':'Load a client to see their trip pricing breakdown.';}},
-  {keys:['dream teaser','teaser','vague'],reply:function(){return 'Dream teasers should be poetic and vague — hint at the experience without giving it away. Example: "A morning that will redefine your idea of breakfast." Save the restaurant name and booking link for the full guide.';}},
-  {keys:['help','what can you do','what do you know'],reply:function(){return 'I know everything about this admin! Ask me about: loading clients, tabs, the client page factory, publishing, GitHub, flight pricing, hero photos, dream teasers, readiness scores, or what to do next. You can also use voice 🎤.';}},
-  {keys:['voice','mic','speak','talk'],reply:function(){return 'Tap the 🎤 button and speak — I\'ll transcribe and answer. Works best in Chrome. Try: "What should I do next?" or "Who is my client?"';}},
+  // Greetings
+  {keys:['hello','hi','hey','sup','hiya','good morning','good afternoon'],reply:function(){
+    return 'Hey! I\'m Dee — your travel OS built into this admin. '+deeClientGreet()+'\n\nHere\'s what I can help with:\n• Explain any tab\n• Tell you what to do next\n• Walk you through publishing\n• Handle client edit requests\n\nWhat do you need?';
+  }},
+
+  // FULL WORKFLOW OVERVIEW
+  {keys:['how does this work','explain everything','overview','workflow','all tabs','walk me through'],reply:function(){
+    return 'Here\'s the full workflow:\n\n1️⃣ Intake — paste your client\'s questionnaire or consultation notes. I extract their preferences.\n2️⃣ Trip Builder — load the CLIENT object (the trip data). This is your working file.\n3️⃣ Day-by-Day — build each day of the itinerary.\n4️⃣ Stays & Flights — add hotel options and flights.\n5️⃣ Images — set the hero photo for the client page.\n6️⃣ Publish — download the complete client HTML file, get their link.\n\nSend them the Dream Preview link first. After they pay, send the Unlock link.';
+  }},
+
+  // TAB 1 - SNAPSHOT
+  {keys:['trip snapshot','tab 1','snapshot','what is tab 1','status','milestone'],reply:function(){
+    return 'Tab 1 — Trip Snapshot is your status board.\n\nIt shows:\n• What stage this trip is in (draft, review, confirmed, etc.)\n• Milestones to check off (questionnaire received, itinerary built, page sent, etc.)\n• A quick overview before you jump into edits\n\nUpdate the status before sending the page — it helps you track all your clients without opening every file.';
+  }},
+
+  // TAB 2 - INTAKE (PDF, questionnaire, consultation)
+  {keys:['tab 2','client intake','intake','questionnaire','pdf','upload pdf','txt','consultation','form','notes','paste','extract'],reply:function(){
+    return 'Tab 2 — Client Intake is where you start every new client.\n\nYes — this is where you paste or upload your questionnaire and consultation notes.\n\nYou can paste:\n• Form responses\n• Email threads\n• DM screenshots transcribed to text\n• Voice note transcripts\n• PDF text copied in\n\nHit Extract Preferences → I pull out their budget, pace, hotel style, food preferences, and occasion.\n\nThen hit Build My Draft → generates a starter CLIENT object for Tab 3.\n\nTip: The more detail you paste, the better the draft comes out.';
+  }},
+
+  // TAB 3 - TRIP BUILDER (what IS it?)
+  {keys:['trip builder','tab 3','what is trip builder','what is the trip builder','client object','json','builder','what is tab 3'],reply:function(){
+    return 'Tab 3 — Trip Builder is the core of the whole system.\n\nThink of it as the trip\'s data file. Everything on the client page — the destination, dates, flights, hotels, pricing, welcome note, every day of the itinerary — lives in one object called CLIENT.\n\nYou don\'t upload PDFs here. You either:\n• Paste in a CLIENT object (from a previous session or generated by Intake)\n• Or use the field editors below to fill in each field one by one\n\nOnce the CLIENT object is loaded, every other tab reads from it and every change saves back to it.\n\nWhen you\'re done editing, go to Tab 7 to download the complete client page.';
+  }},
+
+  // TAB 4 - DAYS
+  {keys:['day by day','tab 4','itinerary','schedule','add day','reorder','duplicate','what is tab 4'],reply:function(){
+    return 'Tab 4 — Day-by-Day is where you build the itinerary.\n\nEach day has two versions:\n• Dream teaser — what your client sees before paying. Poetic and vague: "A morning that will redefine your idea of breakfast."\n• Full version — every detail, restaurant name, booking link, Google Maps pin. Only visible after they unlock.\n\nYou can:\n• Add new days\n• Reorder with ↑↓ arrows\n• Duplicate a day to save time\n\nTip: Build the dream teasers first. That\'s what sells the trip.';
+  }},
+
+  // TAB 5 - STAYS & FLIGHTS
+  {keys:['stays','flights','tab 5','accommodation','hotel','flight options','what is tab 5'],reply:function(){
+    return 'Tab 5 — Stays & Flights is where you add lodging and flight options.\n\nFor flights:\n• Add up to 2 options (best-value and premium)\n• Flights show on the client page but are NOT counted in the total by default\n• Your client can toggle flights into the estimate themselves\n\nFor accommodations:\n• Each destination leg can have up to 3 side-by-side options\n• Always include a value pick and a premium pick — it opens upsell conversations\n• The option your client selects updates the pricing total live';
+  }},
+
+  // TAB 6 - IMAGES
+  {keys:['images','tab 6','hero photo','photo','picture','image','what is tab 6'],reply:function(){
+    return 'Tab 6 — Images is where you set the visuals.\n\nThe most important one is the hero photo — the full-screen image your client sees first.\n\nYou can:\n• Upload your own photo → auto-cropped to 1800×900\n• Hit 🔍 Find Photo → auto-pulls a beautiful Unsplash shot for '+deeDestination()+'\n• Hit ↺ Try Another to cycle through different options\n• Paste any image URL directly\n\nAlso set activity and restaurant images here — visual richness is what makes clients say yes.';
+  }},
+
+  // TAB 7 - PUBLISH
+  {keys:['publish','tab 7','download','export','client page','generate','what is tab 7','go live'],reply:function(){
+    return 'Tab 7 — Publish is how you turn this into a real link for your client.\n\nSteps:\n1. Hit ⬇ Download Client Page — downloads '+deeFilename()+' to your computer\n2. Upload it to github.com/dejabryant28-coder/mdtw-client-pages\n3. It\'s live in ~60 seconds\n\nYour client gets two links:\n• Dream Preview — send this first (they see the teaser, not the full guide)\n• Unlock link (add ?unlock=1) — send after they pay\n\nBoth links are auto-generated in this tab with Copy buttons.';
+  }},
+
+  // EDIT REQUESTS — client wants changes
+  {keys:['edit','client edit','edits','change','update trip','client wants','revision','they want changes','edit request','edits made'],reply:function(){
+    return 'When your client clicks "Looks amazing, but I need some edits" — here\'s the workflow:\n\n1. You\'ll get an email at mamedeeworld@gmail.com with their edit request\n2. Come back to this admin\n3. Go to Tab 3 — Trip Builder and load their CLIENT object\n4. Make the changes (flights, hotels, days, pricing — whatever they asked)\n5. Go to Tab 7 — Download Client Page again\n6. Upload the new file to GitHub (same filename — it overwrites)\n7. Their link is automatically updated — no new link needed\n\nThe client visits the same URL and sees the updated trip.';
+  }},
+
+  // VIDEO INTRO
+  {keys:['video','intro video','loom','youtube','explain the page','welcome video','record'],reply:function(){
+    return 'Great idea — you can add a 30-second intro video to the client page!\n\nGo to Tab 3 — Trip Builder and look for the Intro Video field. Paste a Loom or YouTube link and it embeds automatically on the client page right before the flight options.\n\nYour client sees: "A message from Deja" with your video, then the full trip below it.\n\nTip: Record a 20-30 second Loom. Say their name, tell them you built this specifically for them, and tell them to scroll down and explore. It makes the page feel personal and premium.';
+  }},
+
+  // WORKFLOW — what to do next
+  {keys:['what do i do first','where do i start','getting started','first step','next step','what next','what should i do'],reply:function(){
+    return CLIENT?'You have '+CLIENT.firstName+'\'s trip loaded. Here\'s where you are:\n\n'+deeNextStep()+'\n\nYou\'re on Tab '+deeTabNum()+' right now. '+deeTabHint():
+    'Start here:\n\n1. Tab 2 — Client Intake: paste your client\'s questionnaire or consultation notes\n2. Hit Extract Preferences\n3. Hit Build My Draft\n4. Go to Tab 3 — Trip Builder to review and fill in the data\n5. Work through Tabs 4–6 to add days, hotels, and photos\n6. Tab 7 — Download the client page and upload to GitHub';
+  }},
+
+  // WHO IS CLIENT
+  {keys:['who is my client','client name','current client','loaded client','who am i working on'],reply:function(){
+    return CLIENT?'Current client: '+CLIENT.firstName+'\nDestination: '+CLIENT.destination+'\nDates: '+CLIENT.dates+'\nDeparting from: '+CLIENT.departing+'\n\n'+deeReadiness():'No client loaded. Go to Tab 2 to start from their questionnaire, or paste an existing CLIENT object in Tab 3.';
+  }},
+
+  // READINESS
+  {keys:['readiness','ready','checklist','score','missing','what\'s missing','whats missing'],reply:function(){return deeReadiness();}},
+
+  // LINKS
+  {keys:['dream preview','dream link','preview link','what is the link','client link','send link'],reply:function(){
+    var f=deeFilename();
+    return 'Dream Preview (send this first):\nhttps://dejabryant28-coder.github.io/mdtw-client-pages/'+f+'\n\nDestination Unlocked (after payment):\nhttps://dejabryant28-coder.github.io/mdtw-client-pages/'+f+'?unlock=1\n\nBoth links are also in Tab 7 with Copy buttons.';
+  }},
+  {keys:['unlock','full guide','destination unlocked','paid','payment','after they pay'],reply:function(){
+    var f=deeFilename();
+    return 'After your client pays:\n1. Open their CLIENT object in Tab 3\n2. Set finalPaid: true\n3. Re-download from Tab 7\n4. Upload to GitHub\n\nOr just send them the unlock link directly:\nhttps://dejabryant28-coder.github.io/mdtw-client-pages/'+f+'?unlock=1';
+  }},
+
+  // GITHUB / DEPLOY
+  {keys:['github','upload','deploy','go live','how to upload'],reply:function(){
+    return 'To deploy a client page:\n1. Download it from Tab 7\n2. Go to github.com/dejabryant28-coder/mdtw-client-pages\n3. Add file → Upload files\n4. Drag the .html file in\n5. Commit changes\n6. Live in ~60 seconds\n\nEach client file has a unique name (e.g. ayanna-philippines.html) so they never overwrite each other.';
+  }},
+
+  // PRICING
+  {keys:['price','pricing','total','budget','cost','how much'],reply:function(){
+    return CLIENT?'The estimated total for '+CLIENT.firstName+'\'s trip is calculated from:\n• Accommodations (per leg × nights)\n• Transportation\n• Activities/tours\n• Meals budget (editable by client)\n• Misc buffer\n\nFlights are shown but NOT included by default — your client toggles them in.\n\nAll of this updates live as your client makes selections on their page.':'Load a client to see their pricing breakdown.';
+  }},
+
+  // DREAM TEASER
+  {keys:['dream teaser','teaser','vague','dream mode','what client sees'],reply:function(){
+    return 'In Dream Preview mode, your client sees teasers — not the full itinerary.\n\nFor days: "A morning that will redefine your idea of breakfast" (not the restaurant name)\nFor activities: "Something that will make you feel completely free" (not the booking link)\nFor stays: "Waking up somewhere that doesn\'t feel real" (not the hotel name)\n\nThis creates curiosity and desire. The full details unlock after they book.\n\nYou write the dream teaser AND the full version for each day in Tab 4.';
+  }},
+
+  // HELP
+  {keys:['help','what can you do','what do you know','capabilities'],reply:function(){
+    return 'I know this entire admin system. Ask me:\n\n📋 "Explain [tab name]" — any of the 7 tabs\n👤 "Who is my client?"\n✅ "What\'s missing?" — readiness check\n✏️ "Client wants edits" — edit workflow\n📤 "How do I publish?"\n🔗 "What\'s the client link?"\n🎥 "How do I add a video?"\n➡️ "What do I do next?"\n\nOr tap a suggestion chip below.';
+  }},
+
+  // VOICE
+  {keys:['voice','mic','speak','talk','record my voice'],reply:function(){
+    return 'Tap the 🎤 button and speak your question — I\'ll transcribe and respond.\n\nWorks in Chrome and Edge. Try saying:\n• "Explain the trip builder"\n• "What is my client missing?"\n• "How do I send the client page?"\n\nTip: Speak clearly and wait for the mic to stop recording before I respond.';
+  }},
 ];
 
 function deeClientGreet(){return CLIENT?'I see you\'ve got '+CLIENT.firstName+'\'s trip loaded. ':'No client loaded yet. ';}
@@ -920,7 +1009,7 @@ function onClientLoaded(){
   setVal('b_dates',CLIENT.dates);setVal('b_duration',CLIENT.duration);
   setVal('b_travelers',CLIENT.travelers);setVal('b_departing',CLIENT.departing);
   setVal('b_notifyEmail',CLIENT.notifyEmail);setVal('b_tagline',CLIENT.tagline);
-  setVal('b_welcomeNote',CLIENT.welcomeNote);setVal('b_mealsDefault',CLIENT.mealsDefault);
+  setVal('b_welcomeNote',CLIENT.welcomeNote);setVal('b_introVideo',CLIENT.introVideo||'');setVal('b_mealsDefault',CLIENT.mealsDefault);
   setVal('b_buffer',CLIENT.buffer);
   setVal('b_wishes',(CLIENT.wishes||[]).join('\n'));
   var fpToggle=document.getElementById('b_finalPaidToggle');
