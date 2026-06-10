@@ -19,7 +19,7 @@ body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--dark);di
 #sidebar nav a.active{background:#1e1e1e;color:var(--gold);border-left-color:var(--gold)}
 #sidebar nav a .icon{font-size:15px;width:20px;text-align:center}
 #sidebar .dee-wrap{padding:20px 20px 4px;display:flex;flex-direction:column;align-items:center;border-bottom:1px solid #2a2a2a;margin-bottom:4px}
-#sidebar .dee-wrap img{width:88px;height:88px;object-fit:none;object-position:-46px -121px;border-radius:0;background:transparent;padding:0;border:none;transition:transform .3s}
+#sidebar .dee-wrap img{width:88px;height:88px;object-fit:contain;border-radius:0;background:transparent;padding:0;border:none;transition:transform .3s}
 #sidebar .dee-wrap img:hover{transform:scale(1.06)}
 #sidebar .dee-wrap .dee-name{font-family:'DM Serif Display',serif;color:var(--gold);font-size:13px;margin-top:8px;letter-spacing:.3px}
 #sidebar .dee-wrap .dee-tag{font-size:10px;color:#666;font-family:'Cormorant Garamond',serif;font-style:italic;margin-top:1px}
@@ -148,7 +148,7 @@ hr.divider{border:none;border-top:1px solid var(--light);margin:20px 0}
     <div class="sub">Travel Builder v2</div>
   </div>
   <div class="dee-wrap">
-    <img id="deeImg" src="dee_pack/dee_snapshot.png" alt="Dee" onerror="this.src='https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=200&q=80';this.style.borderRadius='50%'">
+    <img id="deeImg" src="dee_pack/dee-welcome.png" alt="Dee" onerror="this.src='https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=200&q=80';this.style.borderRadius='50%'">
     <div class="dee-name">Hey, I'm Dee ✨</div>
     <div class="dee-tag">Your travel OS</div>
   </div>
@@ -519,7 +519,7 @@ function goTab(name){
   var idx=tabs.indexOf(name);
   if(idx>=0) document.querySelectorAll('#sidenav a')[idx].classList.add('active');
   if(name==='snapshot') renderSnapshot();
-  if(name==='publish'){doExport();updateReadinessScore();}var deeMap={snapshot:'dee_pack/dee_welcome.png',intake:'dee_pack/dee_concierge.png',builder:'dee_pack/dee_guide.png',days:'dee_pack/dee_explorer.png',stays:'dee_pack/dee_librarian.png',images:'dee_pack/dee_media.png',publish:'dee_pack/dee_alert.png'};var deeImg=document.getElementById('deeImg');var deePos={snapshot:'-46px -121px',intake:'-241px -121px',builder:'-56px -566px',days:'-376px -121px',stays:'-56px -376px',images:'-376px -376px',publish:'-504px -376px'};if(deeImg&&deeMap[name]){deeImg.src=deeMap[name];deeImg.style.objectPosition=deePos[name]||'-46px -121px';}
+  if(name==='publish'){doExport();updateReadinessScore();}var deeMap={snapshot:'dee_pack/dee-welcome.png',intake:'dee_pack/dee-concierge.png',builder:'dee_pack/dee-guide.png',days:'dee_pack/dee-explorer.png',stays:'dee_pack/dee-librarian.png',images:'dee_pack/dee-media-upload.png',publish:'dee_pack/dee-deal-alert.png'};var deeImg=document.getElementById('deeImg');if(deeImg&&deeMap[name]){deeImg.src=deeMap[name];deeImg.style.objectPosition=deePos[name]||'-46px -121px';}
 }
 
 function toast(msg){
