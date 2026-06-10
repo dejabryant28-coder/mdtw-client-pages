@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -148,6 +148,10 @@ textarea{resize:vertical;min-height:80px}
 .mb-8{margin-bottom:8px}.mb-16{margin-bottom:16px}
 .text-mid{color:var(--mid)}.text-sm{font-size:12px}.bold{font-weight:600}
 hr.divider{border:none;border-top:1px solid var(--light);margin:20px 0}
+  /* Hero photo upload zone */
+  .hero-drop-zone{border:2px dashed #ccc;border-radius:8px;min-height:120px;display:flex;align-items:center;justify-content:center;text-align:center;cursor:pointer;padding:16px;transition:border-color .2s,background .2s;font-size:13px;color:#666;position:relative;overflow:hidden}
+  .hero-drop-zone.drag-over{border-color:#C9A96E;background:rgba(201,169,110,.08)}
+  .hero-drop-zone:hover{border-color:#aaa}
 </style>
 </head>
 <body>
@@ -399,12 +403,44 @@ hr.divider{border:none;border-top:1px solid var(--light);margin:20px 0}
   <div class="form-row cols2">
     <div class="card">
       <h3>Hero Image</h3>
-      <div class="form-group"><label>URL</label><input type="url" id="img_hero" oninput="previewImg('prev_hero',this.value)" placeholder="https://..."></div>
-      <div class="btn-row">
-        <button class="btn btn-outline btn-sm" onclick="copyText(document.getElementById('img_hero').value)">Copy URL</button>
-        <button class="btn btn-outline btn-sm" onclick="document.getElementById('img_hero').value='';previewImg('prev_hero','')">Clear</button>
+
+      <!-- UPLOAD YOUR OWN -->
+      <div class="form-group">
+        <label>Upload Your Own Photo</label>
+        <div id="hero-drop-zone" class="hero-drop-zone" onclick="document.getElementById('hero-file-input').click()" ondragover="event.preventDefault();this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')" ondrop="handleHeroDrop(event)">
+          <div id="hero-drop-label">
+            <span style="font-size:28px">📷</span><br>
+            Drag &amp; drop a photo here<br><span style="font-size:11px;color:#888">or click to browse — JPG, PNG, WebP</span>
+          </div>
+          <img id="hero-drop-preview" style="display:none;width:100%;height:100%;object-fit:cover;border-radius:8px" alt="hero preview">
+        </div>
+        <input type="file" id="hero-file-input" accept="image/*" style="display:none" onchange="handleHeroFile(this.files[0])">
       </div>
-      <img id="prev_hero" class="img-preview" src="" alt="Hero preview" style="display:none">
+
+      <!-- AUTO-FIND BY DESTINATION -->
+      <div class="form-group" style="margin-top:12px">
+        <label>Auto-Find by Destination</label>
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+          <span id="hero-dest-label" style="font-size:13px;color:#666;font-style:italic"></span>
+          <button class="btn btn-sm" onclick="autoFindHeroPhoto()" title="Fetch a beautiful photo for this destination">🔍 Find Photo</button>
+          <button class="btn btn-outline btn-sm" id="hero-refresh-btn" onclick="autoFindHeroPhoto(true)" style="display:none" title="Try a different photo">↺ Try Another</button>
+          <a id="hero-unsplash-link" class="btn btn-outline btn-sm" target="_blank" style="display:none;text-decoration:none">🌐 Browse Unsplash</a>
+        </div>
+        <div id="hero-auto-preview" style="display:none;margin-top:8px;border-radius:8px;overflow:hidden;height:160px">
+          <img id="hero-auto-img" style="width:100%;height:100%;object-fit:cover" alt="">
+        </div>
+      </div>
+
+      <!-- PASTE URL FALLBACK -->
+      <div class="form-group" style="margin-top:12px">
+        <label>Or Paste a URL</label>
+        <div class="form-group"><input type="url" id="img_hero" oninput="previewImg('prev_hero',this.value);CLIENT.heroImage=this.value" placeholder="https://..."></div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-outline btn-sm" onclick="clearField('img_hero','prev_hero')">Clear</button>
+      </div>
+      <div id="prev_hero"></div>
     </div>
     <div class="card">
       <h3>Fallback Image</h3>
@@ -536,6 +572,8 @@ function goTab(name){
   if(idx>=0) document.querySelectorAll('#sidenav a')[idx].classList.add('active');
   if(name==='snapshot') renderSnapshot();
   if(name==='publish'){doExport();updateReadinessScore();}
+
+  if(name==='images') setTimeout(initHeroPhotoUI, 50);
 }
 
 function toast(msg){
@@ -1182,6 +1220,82 @@ function loadSampleClient(){
 renderInbox();
 updateCheckProgress();
 updateReadinessScore();
+
+  /* Hero Photo Upload & Auto-Find */
+  let _heroUnsplashPage = 1;
+
+  function handleHeroDrop(e){
+    e.preventDefault();
+    document.getElementById('hero-drop-zone').classList.remove('drag-over');
+    const file = e.dataTransfer.files[0];
+    if(file && file.type.startsWith('image/')) handleHeroFile(file);
+  }
+
+  function handleHeroFile(file){
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = function(ev){
+      const img = new Image();
+      img.onload = function(){
+        const canvas = document.createElement('canvas');
+        canvas.width = 1800; canvas.height = 900;
+        const ctx = canvas.getContext('2d');
+        // Center-crop to 2:1 ratio
+        const srcRatio = img.width / img.height;
+        const tgtRatio = 2;
+        let sx=0,sy=0,sw=img.width,sh=img.height;
+        if(srcRatio > tgtRatio){ sw = img.height*tgtRatio; sx=(img.width-sw)/2; }
+        else { sh = img.width/tgtRatio; sy=(img.height-sh)/2; }
+        ctx.drawImage(img,sx,sy,sw,sh,0,0,1800,900);
+        const dataUrl = canvas.toDataURL('image/jpeg',0.92);
+        CLIENT.heroImage = dataUrl;
+        document.getElementById('img_hero').value = dataUrl;
+        // Show in drop zone
+        const prev = document.getElementById('hero-drop-preview');
+        const lbl = document.getElementById('hero-drop-label');
+        prev.src = dataUrl; prev.style.display='block'; lbl.style.display='none';
+        previewImg('prev_hero', dataUrl);
+      };
+      img.src = ev.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function autoFindHeroPhoto(refresh){
+    const dest = CLIENT.destination || 'travel';
+    document.getElementById('hero-dest-label').textContent = dest;
+    if(refresh) _heroUnsplashPage = Math.floor(Math.random()*5)+1;
+    const query = encodeURIComponent(dest + ' travel landscape');
+    const url = `https://source.unsplash.com/featured/1800x900/?${query}&page=${_heroUnsplashPage}`;
+    // Use a unique cache-busting param
+    const fetchUrl = `https://source.unsplash.com/featured/1800x900/?${query}&t=${Date.now()}`;
+    const autoPreview = document.getElementById('hero-auto-preview');
+    const autoImg = document.getElementById('hero-auto-img');
+    const refreshBtn = document.getElementById('hero-refresh-btn');
+    const unsplashLink = document.getElementById('hero-unsplash-link');
+    autoPreview.style.display='block';
+    autoImg.src = fetchUrl;
+    autoImg.onload = function(){
+      // Set as hero image
+      CLIENT.heroImage = autoImg.src;
+      document.getElementById('img_hero').value = autoImg.src;
+      previewImg('prev_hero', autoImg.src);
+    };
+    refreshBtn.style.display='inline-flex';
+    unsplashLink.style.display='inline-flex';
+    unsplashLink.href = `https://unsplash.com/s/photos/${encodeURIComponent(dest)}`;
+  }
+
+  function initHeroPhotoUI(){
+    const dest = CLIENT.destination || '';
+    if(dest) document.getElementById('hero-dest-label').textContent = dest;
+    if(CLIENT.heroImage && CLIENT.heroImage.length > 0){
+      const prev = document.getElementById('hero-drop-preview');
+      const lbl = document.getElementById('hero-drop-label');
+      if(prev){ prev.src = CLIENT.heroImage; prev.style.display='block'; }
+      if(lbl) lbl.style.display='none';
+    }
+  }
 </script>
 </body>
 </html>
