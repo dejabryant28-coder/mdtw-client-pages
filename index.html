@@ -911,10 +911,11 @@ function renderPendingGate(){
   <div class="hero-content">
     <!-- MDTW Logo — inline SVG always renders; PNG upgrades it if uploaded -->
     <div class="hero-logo-wrap">
-      <!-- Try PNG — hides itself on error, shows SVG instead -->
+      <!-- Try PNG logo first, then JPEG fallback, then SVG -->
       <img src="mdtw-logo.png" alt="Mame Dee Travel World" class="hero-logo-img"
+           style="width:90px;height:90px;object-fit:contain;"
            onload="this.classList.add('loaded');this.nextElementSibling.style.display='none'"
-           onerror="this.style.display='none'">
+           onerror="this.src='mdtw_logo.jpeg';this.onerror=function(){this.style.display='none';}">
       <!-- Inline SVG fallback — always shows unless PNG loaded -->
       <div class="hero-logo-svg-wrap">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" width="90" height="90" role="img" aria-label="Mame Dee Travel World">
@@ -1510,10 +1511,10 @@ Show me exactly what changed and why.</textarea>
     <div class="footer-col">
       <div class="footer-logo-block">
         <div class="footer-logo-svg">
-          <!-- Try PNG logo first; SVG globe shows if file is missing -->
+          <!-- Try PNG logo first, then JPEG, then SVG globe -->
           <img src="mdtw-logo.png" alt="Mame Dee Travel World" id="footer-logo-img"
                style="width:52px;height:52px;object-fit:contain;display:block;"
-               onerror="this.style.display='none';document.getElementById('footer-logo-fallback').style.display='block'">
+               onerror="this.src='mdtw_logo.jpeg';this.onerror=function(){this.style.display='none';document.getElementById('footer-logo-fallback').style.display='block';}">
           <svg id="footer-logo-fallback" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60" width="48" height="48" aria-hidden="true" style="display:none">
             <circle cx="30" cy="30" r="19" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.35)" stroke-width="1"/>
             <ellipse cx="30" cy="30" rx="19" ry="7.5" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="0.7"/>
