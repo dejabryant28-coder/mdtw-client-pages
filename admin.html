@@ -9,7 +9,7 @@
 *{box-sizing:border-box;margin:0;padding:0}
 :root{--green:#4A6741;--gold:#C9A96E;--cream:#FAF7F2;--dark:#1A1A1A;--mid:#5A5A5A;--light:#E8E2D9;--white:#FFFFFF}
 body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--dark);display:flex;min-height:100vh}
-#sidebar{width:240px;min-width:240px;background:var(--dark);display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:100;overflow-y:auto}
+#sidebar{width:240px;min-width:240px;background:var(--hdark);display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:100;overflow-y:auto}
 #sidebar .logo{padding:24px 20px 16px;borderh-bottom:1px solid #333}
 #sidebar .logo .brand{font-family:'DM Serif Display',serif;color:var(--gold);font-size:18px;line-height:1.2}
 #sidebar .logo .sub{font-size:11px;color:#888;margin-top:4px;font-family:'Cormorant Garamond',serif;font-style:italic}
@@ -19,7 +19,7 @@ body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--dark);di
 #sidebar nav a.active{background:#1e1e1e;color:var(--gold);border-left-color:var(--gold)}
 #sidebar nav a .icon{font-size:15px;width:20px;text-align:center}
 #sidebar .dee-wrap{padding:20px 20px 4px;display:flex;flex-direction:column;align-items:center;border-bottom:1px solid #2a2a2a;margin-bottom:4px}
-#sidebar .dee-wrap img{width:88px;height:88px;object-fit:contain;border-radius:0;background:transparent;padding:0;border:none;transition:transform .3s}
+#sidebar .dee-wrap img{width:88px;height:88px;object-fit:none;object-position:-46px -121px;border-radius:0;background:transparent;padding:0;border:none;transition:transform .3s}
 #sidebar .dee-wrap img:hover{transform:scale(1.06)}
 #sidebar .dee-wrap .dee-name{font-family:'DM Serif Display',serif;color:var(--gold);font-size:13px;margin-top:8px;letter-spacing:.3px}
 #sidebar .dee-wrap .dee-tag{font-size:10px;color:#666;font-family:'Cormorant Garamond',serif;font-style:italic;margin-top:1px}
@@ -519,7 +519,7 @@ function goTab(name){
   var idx=tabs.indexOf(name);
   if(idx>=0) document.querySelectorAll('#sidenav a')[idx].classList.add('active');
   if(name==='snapshot') renderSnapshot();
-  if(name==='publish'){doExport();updateReadinessScore();}var deeMap={snapshot:'dee_pack/dee_welcome.png',intake:'dee_pack/dee_concierge.png',builder:'dee_pack/dee_guide.png',days:'dee_pack/dee_explorer.png',stays:'dee_pack/dee_librarian.png',images:'dee_pack/dee_media.png',publish:'dee_pack/dee_alert.png'};var deeImg=document.getElementById('deeImg');if(deeImg&&deeMap[name]){deeImg.src=deeMap[name];}
+  if(name==='publish'){doExport();updateReadinessScore();}var deeMap={snapshot:'dee_pack/dee_welcome.png',intake:'dee_pack/dee_concierge.png',builder:'dee_pack/dee_guide.png',days:'dee_pack/dee_explorer.png',stays:'dee_pack/dee_librarian.png',images:'dee_pack/dee_media.png',publish:'dee_pack/dee_alert.png'};var deeImg=document.getElementById('deeImg');var deePos={snapshot:'-46px -121px',intake:'-241px -121px',builder:'-56px -566px',days:'-376px -121px',stays:'-56px -376px',images:'-376px -376px',publish:'-504px -376px'};if(deeImg&&deeMap[name]){deeImg.src=deeMap[name];deeImg.style.objectPosition=deePos[name]||'-46px -121px';}
 }
 
 function toast(msg){
