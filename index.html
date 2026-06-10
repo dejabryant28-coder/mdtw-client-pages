@@ -142,6 +142,16 @@
   .meals-input-row .lbl{color:var(--muted);font-size:14px;flex:1;}
   .meals-input{border:1px solid var(--sand);border-radius:7px;padding:6px 10px;font-size:14px;font-family:'Inter',sans-serif;width:90px;text-align:right;background:var(--cream);}
   .meals-input:focus{outline:none;border-color:var(--gold);}
+  /* Flight toggle row */
+  .flight-toggle-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--sand);font-size:14px;flex-wrap:wrap;gap:6px;}
+  .flight-toggle-row .lbl{color:var(--muted);}
+  .flight-toggle-right{display:flex;align-items:center;gap:10px;}
+  .flight-amt{font-weight:600;color:var(--charcoal);transition:all .3s;}
+  .flight-amt.flight-excluded{color:#bbb;text-decoration:line-through;}
+  .flight-tog-btn{font-size:11px;font-family:'Inter',sans-serif;font-weight:600;padding:4px 10px;border-radius:20px;border:1px solid var(--gold);background:transparent;color:var(--gold);cursor:pointer;transition:all .2s;white-space:nowrap;letter-spacing:.03em;}
+  .flight-tog-btn:hover{background:var(--gold);color:#fff;}
+  .flight-tog-btn.active{background:var(--gold);color:#fff;}
+  .flight-note{font-size:11px;color:var(--muted);padding:4px 0 8px;border-bottom:1px solid var(--sand);line-height:1.4;}
   .pricing-disc{font-size:11px;color:var(--muted);line-height:1.6;margin-top:16px;padding:13px;background:var(--cream);border-radius:8px;}
   /* VAULT */
   .vault-section{background:var(--charcoal);padding:68px 20px;}
@@ -678,6 +688,11 @@ function getMealsVal(){
   const v=parseInt(el.value.replace(/[^0-9]/g,''));
   return isNaN(v)?CLIENT.mealsDefault:v;
 }
+let flightInTotal=false;
+function toggleFlightInTotal(){
+  flightInTotal=!flightInTotal;
+  updatePricingDisplay();updateSticky();
+}
 function calcTotal(){
   const f=CLIENT.flights.find(x=>x.selected);
   const t=CLIENT.transport.find(x=>x.selected);
@@ -687,7 +702,7 @@ function calcTotal(){
   },0);
   const activities=CLIENT.activities[CLIENT.tourType].price;
   const meals=getMealsVal();
-  return (f?f.pricePerPerson*CLIENT.travelers:0)+accom+(t?t.price:0)+activities+meals+CLIENT.buffer;
+  return (flightInTotal&&f?f.pricePerPerson*CLIENT.travelers:0)+accom+(t?t.price:0)+activities+meals+CLIENT.buffer;
 }
 function fmt(n){return '$'+n.toLocaleString();}
 function imgFB(img){img.onerror=null;img.src=CLIENT.fallbackImage;}
@@ -732,28 +747,12 @@ function isAdminMode(){return new URLSearchParams(location.search).get('admin')=
   </div>
 </section>
 
-<!-- TASTE TEASERS (dream only) -->
-<div class="dream-only">
-<div class="section-bg">
-<div class="si">
-  <p class="section-label">A taste of what's waiting</p>
-  <h2 class="section-title">Experiences &amp; Flavors</h2>
-  <p class="section-sub">A few highlights to give you the feel. The full lineup is in your complete guide.</p>
-  <div class="divider"></div>
-  <p style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:14px">Experiences</p>
-  <div class="taste-grid" id="exp-grid"></div>
-  <p style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;margin-top:32px">Food &amp; Dining</p>
-  <div class="taste-grid" id="rest-grid"></div>
-</div>
-</div>
-</div>
-
 <!-- FLIGHTS -->
 <div class="section-bg">
 <div class="si">
   <p class="section-label">Getting there</p>
   <h2 class="section-title">Flight Options</h2>
-  <p class="section-sub">Your selection updates the estimated total in pricing below.</p>
+  <p class="section-sub">Choose your preferred route. Flights are quoted separately — use the toggle in pricing below to add them to your estimate.</p>
   <div class="divider"></div>
   <div class="card-grid" id="flights-grid"></div>
 </div>
@@ -776,6 +775,22 @@ function isAdminMode(){return new URLSearchParams(location.search).get('admin')=
   <p class="section-sub">Your selection updates the estimated total in pricing below.</p>
   <div class="divider"></div>
   <div class="card-grid" id="transport-grid"></div>
+</div>
+</div>
+
+<!-- TASTE TEASERS (dream only) -->
+<div class="dream-only">
+<div class="section-bg">
+<div class="si">
+  <p class="section-label">A taste of what's waiting</p>
+  <h2 class="section-title">Experiences &amp; Flavors</h2>
+  <p class="section-sub">A few highlights to give you the feel. The full lineup is in your complete guide.</p>
+  <div class="divider"></div>
+  <p style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:14px">Experiences</p>
+  <div class="taste-grid" id="exp-grid"></div>
+  <p style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;margin-top:32px">Food &amp; Dining</p>
+  <div class="taste-grid" id="rest-grid"></div>
+</div>
 </div>
 </div>
 
@@ -1518,7 +1533,19 @@ function updatePricingDisplay(){
   const mealsVal=getMealsVal();
 
   let rows='';
-  if(f) rows+=prow(`✈ ${f.dreamLabel}`,fmt(f.pricePerPerson*CLIENT.travelers));
+  if(f){
+    const fAmt=f.pricePerPerson*CLIENT.travelers;
+    rows+=`<div class="p-row flight-toggle-row">
+      <span class="lbl">✈ ${f.dreamLabel}</span>
+      <span class="flight-toggle-right">
+        <span class="amt flight-amt${flightInTotal?'':' flight-excluded'}">${fmt(fAmt)}</span>
+        <button class="flight-tog-btn${flightInTotal?' active':''}" onclick="toggleFlightInTotal()" title="${flightInTotal?'Remove flights from estimate':'Add flights to estimate'}">
+          ${flightInTotal?'− Remove from total':'+ Add to total'}
+        </button>
+      </span>
+    </div>
+    <div class="flight-note">${flightInTotal?'✓ Flights included in your estimate below.':'Flights not included in estimate — budgets are typically set without flights.'}</div>`;
+  }
   CLIENT.accomGroups.forEach(g=>{
     const sel=g.options.find(o=>o.selected);
     if(!sel)return;
@@ -1546,7 +1573,8 @@ function updatePricingDisplay(){
   rows+=prow('📦 Misc / Buffer',fmt(CLIENT.buffer));
 
   const total=calcTotal();
-  rows+=`<div class="p-row total"><span class="lbl">Estimated Total</span><span class="amt" style="color:var(--green)">${fmt(total)}</span></div>`;
+  const totalLbl=flightInTotal?'Estimated Total (flights included)':'Estimated Total <span style="font-size:11px;font-weight:400;color:var(--muted)">(excl. flights)</span>';
+  rows+=`<div class="p-row total"><span class="lbl">${totalLbl}</span><span class="amt" style="color:var(--green)">${fmt(total)}</span></div>`;
 
   document.getElementById('p-rows').innerHTML=rows;
   document.getElementById('p-total').textContent=fmt(total);
@@ -1556,7 +1584,8 @@ function prow(lbl,amt){return`<div class="p-row"><span class="lbl">${lbl}</span>
 
 // ── STICKY ────────────────────────────────────────
 function updateSticky(){
-  document.getElementById('st-amt').textContent=fmt(calcTotal());
+  const stEl=document.getElementById('st-amt');
+  if(stEl){stEl.textContent=fmt(calcTotal());stEl.title=flightInTotal?'Includes flights':'Excludes flights';}
   const f=CLIENT.flights.find(x=>x.selected);
   const t=CLIENT.transport.find(x=>x.selected);
   const pills=[];
