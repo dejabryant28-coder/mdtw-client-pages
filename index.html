@@ -18,6 +18,7 @@
   .hero{position:relative;height:100vh;min-height:560px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;overflow:hidden;}
   .hero-bg{position:absolute;inset:0;background-size:cover;background-position:center;filter:brightness(.55);}
   .hero-content{position:relative;z-index:2;padding:0 24px;max-width:760px;}
+  .hero-logo{width:90px;height:auto;margin:0 auto 18px;display:block;filter:brightness(0) invert(1);opacity:.92;}
   .hero-eyebrow{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gl);margin-bottom:18px;}
   .hero h1{font-size:clamp(2.8rem,6vw,5.5rem);color:var(--white);line-height:1.08;margin-bottom:20px;}
   .hero-sub{font-family:'Cormorant Garamond',serif;font-size:clamp(1.1rem,2.5vw,1.5rem);color:rgba(255,255,255,.88);font-style:italic;margin-bottom:36px;line-height:1.5;}
@@ -186,7 +187,8 @@
   .btn-yes:hover{background:var(--gl);transform:translateY(-2px);}
   .btn-edits{background:transparent;color:var(--white);border:1.5px solid rgba(255,255,255,.5);padding:13px 44px;border-radius:50px;font-size:14px;cursor:pointer;min-width:300px;font-family:'Inter',sans-serif;transition:all .2s;}
   .btn-edits:hover{border-color:var(--white);background:rgba(255,255,255,.08);}
-  .btn-no{background:transparent;color:rgba(255,255,255,.45);border:none;padding:10px;font-size:13px;cursor:pointer;text-decoration:underline;font-family:'Inter',sans-serif;}
+  .btn-no{background:transparent;color:rgba(255,255,255,.75);border:1.5px solid rgba(255,255,255,.3);padding:11px 44px;border-radius:50px;font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s;min-width:300px;}
+  .btn-no:hover{border-color:rgba(255,255,255,.6);color:var(--white);background:rgba(255,255,255,.06);}
   .no-pressure{max-width:500px;margin:26px auto 0;color:rgba(255,255,255,.42);font-family:'Cormorant Garamond',serif;font-size:1rem;font-style:italic;line-height:1.65;}
   /* UNLOCK GATE */
   .unlock-gate{background:var(--white);border:1px solid var(--sand);border-radius:18px;padding:44px 32px;text-align:center;max-width:500px;margin:24px auto 0;}
@@ -729,6 +731,7 @@ function isAdminMode(){return new URLSearchParams(location.search).get('admin')=
 <section class="hero">
   <div class="hero-bg" id="hero-bg"></div>
   <div class="hero-content">
+    <img src="mdtw-logo.png" alt="Mame Dee Travel World" class="hero-logo">
     <p class="hero-eyebrow">Mame Dee Travel World · Built for you</p>
     <h1 id="hero-title"></h1>
     <p class="hero-sub" id="hero-sub"></p>
