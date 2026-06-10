@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -23,7 +23,27 @@ body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--dark);di
 #sidebar nav a.active .step{background:var(--gold);color:#111}
 #sidebar nav a:hover .step{color:#aaa}
 #sidebar .sidebar-dee{display:flex;justify-content:center;padding:16px 24px 0;background:#111}
-#sidebar .sidebar-dee img{width:110px;height:auto;object-fit:contain;display:block;image-rendering:auto}
+#sidebar .sidebar-dee img{width:110px;height:auto;object-fit:contain;display:block;image-rendering:auto;cursor:pointer;transition:transform .2s;}
+#sidebar .sidebar-dee img:hover{transform:scale(1.06);}
+#sidebar .dee-status{text-align:center;font-size:10px;color:#555;padding:4px 0 12px;letter-spacing:.05em;cursor:pointer;}
+#sidebar .dee-status.active{color:var(--gold);}
+/* Dee helper panel */
+#dee-panel{position:fixed;left:228px;top:0;width:300px;height:100vh;background:#0e0e0e;border-right:1px solid #222;z-index:200;display:flex;flex-direction:column;transform:translateX(-110%);transition:transform .28s cubic-bezier(.4,0,.2,1);box-shadow:4px 0 24px rgba(0,0,0,.4);}
+#dee-panel.open{transform:translateX(0);}
+#dee-panel .dp-header{padding:20px 20px 16px;border-bottom:1px solid #1a1a1a;display:flex;align-items:center;gap:12px;}
+#dee-panel .dp-header img{width:48px;height:auto;flex-shrink:0;}
+#dee-panel .dp-header .dp-title{font-family:'DM Serif Display',serif;color:var(--gold);font-size:16px;line-height:1.2;}
+#dee-panel .dp-header .dp-sub{font-size:10px;color:#555;margin-top:2px;letter-spacing:.08em;text-transform:uppercase;}
+#dee-panel .dp-close{margin-left:auto;background:none;border:none;color:#444;font-size:18px;cursor:pointer;padding:4px;}
+#dee-panel .dp-close:hover{color:#ccc;}
+#dee-panel .dp-body{flex:1;overflow-y:auto;padding:18px 20px;}
+#dee-panel .dp-tip{background:#161616;border:1px solid #222;border-radius:10px;padding:14px 16px;margin-bottom:12px;}
+#dee-panel .dp-tip .dt-label{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:6px;}
+#dee-panel .dp-tip .dt-text{font-size:13px;color:#aaa;line-height:1.6;}
+#dee-panel .dp-tip .dt-text strong{color:#ddd;}
+#dee-panel .dp-actions{padding:16px 20px;border-top:1px solid #1a1a1a;display:flex;flex-direction:column;gap:8px;}
+#dee-panel .dp-btn{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:7px;padding:10px 14px;color:#aaa;font-size:12px;text-align:left;cursor:pointer;transition:all .15s;font-family:'Inter',sans-serif;}
+#dee-panel .dp-btn:hover{background:#222;color:#fff;border-color:#333;}
 #sidebar .client-badge{margin:0 16px 16px;padding:12px 14px;background:#161616;border-radius:8px;border:1px solid #1e1e1e}
 #sidebar .client-badge .cb-label{font-size:9px;text-transform:uppercase;letter-spacing:1.5px;color:#3a3a3a;font-weight:700;margin-bottom:5px}
 #sidebar .client-badge .cb-name{color:var(--gold);font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -128,6 +148,12 @@ textarea{resize:vertical;min-height:80px}
 .toggle::after{content:'';width:16px;height:16px;background:white;border-radius:50%;position:absolute;top:2px;left:2px;transition:left .2s}
 .toggle.on::after{left:18px}
 .img-preview{width:100%;height:140px;object-fit:cover;border-radius:7px;margin-top:8px;background:var(--light);display:block}
+/* Hero photo builder */
+.hero-upload-zone{border:2px dashed #ddd;border-radius:12px;overflow:hidden;cursor:pointer;transition:border-color .2s,background .2s;background:#fafafa;min-height:200px;display:flex;align-items:center;justify-content:center;position:relative;}
+.hero-upload-zone:hover,.hero-upload-zone.drag-over{border-color:var(--gold);background:#fffdf5;}
+.hero-upload-prompt{text-align:center;padding:32px 20px;pointer-events:none;}
+.hero-upload-preview{width:100%;height:220px;object-fit:cover;display:block;border-radius:10px;}
+.hero-auto-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:16px;padding:12px 14px;background:var(--light);border-radius:8px;}
 .readiness-check{display:flex;flex-direction:column;gap:8px}
 .rc-item{display:flex;align-items:center;gap:8px;font-size:13px}
 .rc-item .rc-icon{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0}
@@ -148,36 +174,6 @@ textarea{resize:vertical;min-height:80px}
 .mb-8{margin-bottom:8px}.mb-16{margin-bottom:16px}
 .text-mid{color:var(--mid)}.text-sm{font-size:12px}.bold{font-weight:600}
 hr.divider{border:none;border-top:1px solid var(--light);margin:20px 0}
-  /* Hero photo upload zone */
-  .hero-drop-zone{border:2px dashed #ccc;border-radius:8px;min-height:120px;display:flex;align-items:center;justify-content:center;text-align:center;cursor:pointer;padding:16px;transition:border-color .2s,background .2s;font-size:13px;color:#666;position:relative;overflow:hidden}
-  .hero-drop-zone.drag-over{border-color:#C9A96E;background:rgba(201,169,110,.08)}
-  .hero-drop-zone:hover{border-color:#aaa}
-
-  /* Dee Interactive Sidebar */
-  .sidebar-dee{cursor:pointer;position:relative;transition:transform .2s}
-  .sidebar-dee:hover{transform:scale(1.05)}
-  .dee-status-dot{position:absolute;bottom:8px;right:8px;width:10px;height:10px;background:#4caf50;border-radius:50%;border:2px solid #111;animation:deePulse 2s infinite}
-  @keyframes deePulse{0%,100%{box-shadow:0 0 0 0 rgba(76,175,80,.6)}50%{box-shadow:0 0 0 5px rgba(76,175,80,0)}}
-  .dee-ask-label{font-size:9px;text-align:center;color:#4caf50;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;padding-bottom:4px;margin-top:-4px}
-  .dee-ask-label:hover{color:#80e27e}
-
-  /* Dee Panel */
-  .dee-panel{position:fixed;top:0;right:-380px;width:360px;height:100vh;background:#1a1a1a;border-left:1px solid #333;z-index:9999;display:flex;flex-direction:column;transition:right .3s cubic-bezier(.4,0,.2,1);box-shadow:-4px 0 24px rgba(0,0,0,.5)}
-  .dee-panel.open{right:0}
-  .dee-overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:9998;display:none;opacity:0;transition:opacity .3s}
-  .dee-overlay.open{display:block;opacity:1}
-  .dee-panel-header{display:flex;align-items:center;justify-content:space-between;padding:20px 20px 16px;border-bottom:1px solid #2a2a2a}
-  .dee-panel-dee{display:flex;align-items:center;gap:12px}
-  .dee-panel-img{width:56px;height:auto;object-fit:contain}
-  .dee-panel-name{font-family:'DM Serif Display',serif;font-size:18px;color:#C9A96E}
-  .dee-panel-role{font-size:11px;color:#666;text-transform:uppercase;letter-spacing:1.2px;margin-top:2px}
-  .dee-close-btn{background:none;border:none;color:#555;font-size:18px;cursor:pointer;padding:6px;border-radius:4px;line-height:1;transition:color .2s}
-  .dee-close-btn:hover{color:#ccc}
-  .dee-panel-body{padding:24px 20px;flex:1;overflow-y:auto}
-  .dee-tip-msg{font-size:14px;line-height:1.7;color:#ccc;margin-bottom:20px}
-  .dee-tip-actions{display:flex;flex-direction:column;gap:8px}
-  .dee-tip-actions .dee-action-btn{background:#222;border:1px solid #333;color:#C9A96E;font-size:12px;padding:10px 14px;border-radius:8px;cursor:pointer;text-align:left;transition:background .15s,border-color .15s;font-family:inherit}
-  .dee-tip-actions .dee-action-btn:hover{background:#2a2a2a;border-color:#C9A96E}
 </style>
 </head>
 <body>
@@ -186,11 +182,10 @@ hr.divider{border:none;border-top:1px solid var(--light);margin:20px 0}
     <div class="brand">MDTW Admin</div>
     <div class="sub">Travel Builder v2</div>
   </div>
-  <div class="sidebar-dee" id="dee-sidebar-btn" onclick="toggleDeePanel()" title="Ask Dee for tips">
-    <img src="dee_pack/dee-wave-bust.png" alt="Dee">
-    <div class="dee-status-dot" id="dee-status-dot"></div>
+  <div class="sidebar-dee" onclick="toggleDeePanel()">
+    <img src="dee_pack/dee-wave-bust.png" alt="Dee" id="dee-sidebar-img" title="Ask Dee">
   </div>
-  <div class="dee-ask-label" onclick="toggleDeePanel()">&#9679; Ask Dee</div>
+  <div class="dee-status active" id="dee-status-label" onclick="toggleDeePanel()">● Ask Dee</div>
   <nav id="sidenav">
     <div class="nav-section">Workflow</div>
     <a class="active" onclick="goTab('snapshot')"><span class="step">1</span> Trip Snapshot</a>
@@ -207,25 +202,23 @@ hr.divider{border:none;border-top:1px solid var(--light);margin:20px 0}
     <div class="cb-dest" id="sbDest"></div>
   </div>
 </div>
-
-<!-- DEE PANEL -->
-<div id="dee-panel" class="dee-panel">
-  <div class="dee-panel-header">
-    <div class="dee-panel-dee">
-      <img src="dee_pack/dee-wave-bust.png" alt="Dee" class="dee-panel-img">
-      <div>
-        <div class="dee-panel-name">Dee</div>
-        <div class="dee-panel-role" id="dee-panel-role">Your MDTW Guide</div>
-      </div>
+<!-- DEE HELPER PANEL -->
+<div id="dee-panel">
+  <div class="dp-header">
+    <img src="dee_pack/dee-concierge.png" alt="Dee">
+    <div>
+      <div class="dp-title">Dee</div>
+      <div class="dp-sub">Your Travel OS</div>
     </div>
-    <button class="dee-close-btn" onclick="toggleDeePanel()" title="Close">&#10005;</button>
+    <button class="dp-close" onclick="toggleDeePanel()">✕</button>
   </div>
-  <div class="dee-panel-body" id="dee-panel-body">
-    <p class="dee-tip-msg" id="dee-tip-msg"></p>
-    <div id="dee-tip-actions" class="dee-tip-actions"></div>
+  <div class="dp-body" id="dee-tips-body">
+    <!-- filled by JS based on active tab -->
+  </div>
+  <div class="dp-actions" id="dee-actions">
+    <!-- filled by JS -->
   </div>
 </div>
-<div id="dee-overlay" class="dee-overlay" onclick="toggleDeePanel()"></div>
 
 <div id="main">
 <!-- TAB 1: SNAPSHOT -->
@@ -448,56 +441,49 @@ hr.divider{border:none;border-top:1px solid var(--light);margin:20px 0}
 <div class="tab-content" id="tab-images">
   <div class="page-title"><h2>Images</h2><p>Manage hero, activity, accommodation, and restaurant images</p></div>
   <div class="dee-banner"><img src="dee_pack/dee-creator.png" alt="Dee"><div class="dee-text"><div class="dee-role">Dee — Creator</div><div class="dee-msg">Let's make it look amazing.</div><div class="dee-sub">Set image URLs for every section. Use the AI prompt generator to find the perfect Unsplash shots.</div></div></div>
-  <div class="form-row cols2">
-    <div class="card">
-      <h3>Hero Image</h3>
+  <!-- HERO PHOTO BUILDER -->
+  <div class="card" id="hero-photo-card">
+    <h3>Hero Photo</h3>
+    <p style="font-size:13px;color:var(--mid);margin-bottom:16px">The full-screen image your client sees first. Upload your own or auto-find one by destination.</p>
 
-      <!-- UPLOAD YOUR OWN -->
-      <div class="form-group">
-        <label>Upload Your Own Photo</label>
-        <div id="hero-drop-zone" class="hero-drop-zone" onclick="document.getElementById('hero-file-input').click()" ondragover="event.preventDefault();this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')" ondrop="handleHeroDrop(event)">
-          <div id="hero-drop-label">
-            <span style="font-size:28px">📷</span><br>
-            Drag &amp; drop a photo here<br><span style="font-size:11px;color:#888">or click to browse — JPG, PNG, WebP</span>
-          </div>
-          <img id="hero-drop-preview" style="display:none;width:100%;height:100%;object-fit:cover;border-radius:8px" alt="hero preview">
-        </div>
-        <input type="file" id="hero-file-input" accept="image/*" style="display:none" onchange="handleHeroFile(this.files[0])">
+    <!-- Upload zone -->
+    <div class="hero-upload-zone" id="heroUploadZone"
+         onclick="document.getElementById('heroFileInput').click()"
+         ondragover="event.preventDefault();this.classList.add('drag-over')"
+         ondragleave="this.classList.remove('drag-over')"
+         ondrop="handleHeroDrop(event);this.classList.remove('drag-over')">
+      <div id="heroUploadPrompt" class="hero-upload-prompt">
+        <div style="font-size:32px;margin-bottom:8px">🖼</div>
+        <p style="font-weight:600;margin-bottom:4px">Drag & drop your photo here</p>
+        <p style="font-size:12px;color:var(--mid)">or click to browse · JPG, PNG, WebP · auto-cropped to hero ratio</p>
       </div>
-
-      <!-- AUTO-FIND BY DESTINATION -->
-      <div class="form-group" style="margin-top:12px">
-        <label>Auto-Find by Destination</label>
-        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-          <span id="hero-dest-label" style="font-size:13px;color:#666;font-style:italic"></span>
-          <button class="btn btn-sm" onclick="autoFindHeroPhoto()" title="Fetch a beautiful photo for this destination">🔍 Find Photo</button>
-          <button class="btn btn-outline btn-sm" id="hero-refresh-btn" onclick="autoFindHeroPhoto(true)" style="display:none" title="Try a different photo">↺ Try Another</button>
-          <a id="hero-unsplash-link" class="btn btn-outline btn-sm" target="_blank" style="display:none;text-decoration:none">🌐 Browse Unsplash</a>
-        </div>
-        <div id="hero-auto-preview" style="display:none;margin-top:8px;border-radius:8px;overflow:hidden;height:160px">
-          <img id="hero-auto-img" style="width:100%;height:100%;object-fit:cover" alt="">
-        </div>
-      </div>
-
-      <!-- PASTE URL FALLBACK -->
-      <div class="form-group" style="margin-top:12px">
-        <label>Or Paste a URL</label>
-        <div class="form-group"><input type="url" id="img_hero" oninput="previewImg('prev_hero',this.value);CLIENT.heroImage=this.value" placeholder="https://..."></div>
-      </div>
-
-      <div class="btn-row">
-        <button class="btn btn-outline btn-sm" onclick="clearField('img_hero','prev_hero')">Clear</button>
-      </div>
-      <div id="prev_hero"></div>
+      <img id="heroUploadPreview" class="hero-upload-preview" style="display:none" alt="Hero preview">
     </div>
-    <div class="card">
-      <h3>Fallback Image</h3>
-      <div class="form-group"><label>URL</label><input type="url" id="img_fallback" oninput="previewImg('prev_fallback',this.value)" placeholder="https://..."></div>
-      <div class="btn-row">
-        <button class="btn btn-outline btn-sm" onclick="copyText(document.getElementById('img_fallback').value)">Copy URL</button>
-        <button class="btn btn-outline btn-sm" onclick="document.getElementById('img_fallback').value='';previewImg('prev_fallback','')">Clear</button>
+    <input type="file" id="heroFileInput" accept="image/*" style="display:none" onchange="handleHeroUpload(this.files[0])">
+
+    <!-- Auto-find row -->
+    <div class="hero-auto-row">
+      <span style="color:var(--mid);font-size:13px">Auto-find a photo of</span>
+      <strong id="heroDestLabel" style="color:var(--dark)">[load a client first]</strong>
+      <button class="btn btn-gold btn-sm" onclick="autoFindHeroPhoto()">🔍 Find Photo</button>
+      <button class="btn btn-outline btn-sm" onclick="refreshHeroPhoto()">↺ Try Another</button>
+      <button class="btn btn-outline btn-sm" onclick="openUnsplashSearch()">🌐 Browse Unsplash</button>
+    </div>
+
+    <!-- URL paste fallback -->
+    <div class="form-group" style="margin-top:14px">
+      <label>Or paste any image URL</label>
+      <div style="display:flex;gap:8px">
+        <input type="url" id="img_hero" placeholder="https://images.unsplash.com/..." style="flex:1" oninput="applyHeroUrl(this.value)">
+        <button class="btn btn-outline btn-sm" onclick="document.getElementById('img_hero').value='';applyHeroUrl('')">Clear</button>
       </div>
-      <img id="prev_fallback" class="img-preview" src="" alt="Fallback preview" style="display:none">
+    </div>
+
+    <!-- Fallback image -->
+    <div class="form-group" style="margin-top:10px">
+      <label style="color:var(--mid);font-size:12px">Fallback image URL (used if hero fails to load)</label>
+      <input type="url" id="img_fallback" oninput="previewImg('prev_fallback',this.value)" placeholder="https://...">
+      <img id="prev_fallback" class="img-preview" src="" alt="Fallback preview" style="display:none;margin-top:8px">
     </div>
   </div>
   <div class="card">
@@ -611,9 +597,115 @@ var ADMIN_META = { status:'discovery', dreamSent:false, editsReceived:false, fin
 var INBOX_ROWS = [];
 var EXTRACTED_PREFS = {};
 
+// ── DEE HELPER PANEL ──────────────────────────────
+var deePanelOpen=false;
+var currentTab='snapshot';
+
+var DEE_TIPS={
+  snapshot:{
+    img:'dee-welcome.png',
+    tips:[
+      {label:'What this tab does',text:'Trip Snapshot is your <strong>status board</strong>. Set the trip stage, check off milestones, and get a quick overview before jumping into edits.'},
+      {label:'Pro tip',text:'Update the status <strong>before</strong> sending the client page — it helps you track which stage each client is at without opening every file.'},
+      {label:'No client loaded?',text:'Head to <strong>Tab 3 — Trip Builder</strong> and paste your CLIENT object. Everything else fills in from there.'}
+    ],
+    actions:['Go to Trip Builder','Go to Client Intake']
+  },
+  intake:{
+    img:'dee-concierge.png',
+    tips:[
+      {label:'How intake works',text:'Paste your client\'s form responses or notes, then hit <strong>Extract Preferences</strong>. I\'ll pull their budget, pace, hotel style, food preferences, and occasion automatically.'},
+      {label:'Pro tip',text:'The more detail in the notes field, the better the extraction. Copy from your questionnaire, emails, or DMs — I handle the messy formatting.'},
+      {label:'After extracting',text:'Hit <strong>Build My Draft</strong> to auto-generate the CLIENT object skeleton for Tab 3.'}
+    ],
+    actions:['Go to Trip Builder']
+  },
+  builder:{
+    img:'dee-desk-setup.png',
+    tips:[
+      {label:'This is the core',text:'Paste or edit your <strong>CLIENT object</strong> here. This is the single source of truth — every other tab and the client page pulls from it.'},
+      {label:'Pro tip',text:'Use the field editors below the JSON panel instead of editing raw JSON — less chance of a syntax error breaking the whole page.'},
+      {label:'Saving changes',text:'Changes update live in memory. Hit <strong>Export to Publish tab</strong> when ready to generate the client\'s page code.'}
+    ],
+    actions:['Go to Day-by-Day','Go to Publish']
+  },
+  days:{
+    img:'dee-guide.png',
+    tips:[
+      {label:'Day-by-Day builder',text:'Add, reorder, or duplicate itinerary days here. Each day has a <strong>dream teaser</strong> (client sees in preview) and a <strong>full version</strong> (unlocked after booking).'},
+      {label:'Pro tip',text:'Dream teasers should be <strong>vague but exciting</strong> — "A morning that will redefine your idea of breakfast." Save the specifics for the full guide.'},
+      {label:'Move & duplicate',text:'Use the ↑↓ arrows to reorder days. Duplicate a day to save time when two days have a similar structure.'}
+    ],
+    actions:['Go to Stays & Flights']
+  },
+  stays:{
+    img:'dee-librarian.png',
+    tips:[
+      {label:'3 columns = 3 options',text:'Each accommodation leg shows up to 3 side-by-side options. Your client picks one. The selected option updates the pricing total automatically.'},
+      {label:'Pro tip',text:'Always give at least <strong>2 options per leg</strong> — a value pick and a premium pick. Clients feel in control, and it opens upsell conversations naturally.'},
+      {label:'Flight pricing',text:'Remember: flights are shown but <strong>not counted in the total by default</strong>. The client toggles them in if they want to see the full number.'}
+    ],
+    actions:['Go to Images','Go to Publish']
+  },
+  images:{
+    img:'dee-creator.png',
+    tips:[
+      {label:'Hero photo sets the mood',text:'The hero image is the <strong>first thing your client sees</strong>. Use a stunning, accurate photo of their destination — not a generic beach.'},
+      {label:'Upload vs auto-find',text:'<strong>Upload</strong> if you have a specific photo. Use <strong>Find Photo</strong> to pull a curated Unsplash shot by destination. Hit ↺ to cycle options.'},
+      {label:'Pro tip',text:'After setting the hero, scroll down and set activity + restaurant images too. Visual richness is what makes clients say yes.'}
+    ],
+    actions:['Find Hero Photo','Go to Publish']
+  },
+  publish:{
+    img:'dee-passport.png',
+    tips:[
+      {label:'Readiness score',text:'The checklist tells you what\'s missing before you send. Don\'t send a page below 80% — an incomplete page loses trust.'},
+      {label:'How to deploy',text:'Copy the full CLIENT object from the export box, paste it into your <strong>index.html</strong> CLIENT section, then upload to GitHub Pages.'},
+      {label:'Pro tip',text:'Send the client the <strong>Dream Preview link first</strong> — no unlock param. After they say yes and pay, flip <strong>finalPaid: true</strong> and redeploy to unlock their full guide.'}
+    ],
+    actions:['Go to Images','Copy Export']
+  }
+};
+
+function toggleDeePanel(){
+  deePanelOpen=!deePanelOpen;
+  var panel=document.getElementById('dee-panel');
+  if(deePanelOpen){
+    panel.classList.add('open');
+    renderDeeTips(currentTab);
+    document.getElementById('dee-status-label').textContent='● Close Dee';
+  } else {
+    panel.classList.remove('open');
+    document.getElementById('dee-status-label').textContent='● Ask Dee';
+  }
+}
+
+function renderDeeTips(tab){
+  var data=DEE_TIPS[tab]||DEE_TIPS.snapshot;
+  // update panel image
+  document.querySelector('#dee-panel .dp-header img').src='dee_pack/'+data.img;
+
+  var body=document.getElementById('dee-tips-body');
+  body.innerHTML='<p style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#444;margin-bottom:14px">'+
+    (tab.charAt(0).toUpperCase()+tab.slice(1).replace(/([A-Z])/g,' $1'))+' · Tips</p>'+
+    data.tips.map(function(t){
+      return '<div class="dp-tip"><div class="dt-label">'+t.label+'</div><div class="dt-text">'+t.text+'</div></div>';
+    }).join('');
+
+  var actions=document.getElementById('dee-actions');
+  actions.innerHTML='<p style="font-size:10px;color:#444;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px">Quick actions</p>'+
+    data.actions.map(function(a){
+      var tabMap={'Go to Trip Builder':'builder','Go to Client Intake':'intake','Go to Day-by-Day':'days',
+        'Go to Stays & Flights':'stays','Go to Images':'images','Go to Publish':'publish',
+        'Find Hero Photo':'images','Copy Export':'publish'};
+      var dest=tabMap[a];
+      return '<button class="dp-btn" onclick="'+
+        (dest?'goTab(\''+dest+'\');':'')+(a==='Find Hero Photo'?'autoFindHeroPhoto();':'')+(a==='Copy Export'?'doExport();':'')+'toggleDeePanel()">'+a+'</button>';
+    }).join('');
+}
+
 function goTab(name){
-  _currentTab = name;
-  if(_deeOpen) renderDeeTips(name);
+  currentTab=name;
   document.querySelectorAll('.tab-content').forEach(function(t){t.classList.remove('active');});
   document.querySelectorAll('#sidenav a').forEach(function(a){a.classList.remove('active');});
   document.getElementById('tab-'+name).classList.add('active');
@@ -621,9 +713,10 @@ function goTab(name){
   var idx=tabs.indexOf(name);
   if(idx>=0) document.querySelectorAll('#sidenav a')[idx].classList.add('active');
   if(name==='snapshot') renderSnapshot();
+  if(name==='images') initHeroPhotoUI();
   if(name==='publish'){doExport();updateReadinessScore();}
-
-  if(name==='images') setTimeout(initHeroPhotoUI, 50);
+  // update Dee panel if open
+  if(deePanelOpen) renderDeeTips(name);
 }
 
 function toast(msg){
@@ -1074,6 +1167,84 @@ function syncTours(){
 
 function toggleAcc(id){var el=document.getElementById(id);if(el)el.classList.toggle('open');}
 
+// ── HERO PHOTO BUILDER ────────────────────────────
+var heroPhotoSeed=Math.floor(Math.random()*9000)+1000;
+
+function applyHeroUrl(url){
+  if(!url){
+    document.getElementById('heroUploadPreview').style.display='none';
+    document.getElementById('heroUploadPrompt').style.display='block';
+    if(CLIENT)CLIENT.heroImage='';
+    return;
+  }
+  if(CLIENT)CLIENT.heroImage=url;
+  var prev=document.getElementById('heroUploadPreview');
+  prev.src=url;prev.style.display='block';
+  document.getElementById('heroUploadPrompt').style.display='none';
+}
+
+function autoFindHeroPhoto(){
+  if(!CLIENT){showToast('Load a client first');return;}
+  var dest=encodeURIComponent((CLIENT.destinationShort||CLIENT.destination||'travel').toLowerCase().replace(/[^a-z0-9 ]/g,'').trim());
+  var url='https://source.unsplash.com/featured/1800x900/?'+dest+',travel,landscape&sig='+heroPhotoSeed;
+  applyHeroUrl(url);
+  document.getElementById('img_hero').value=url;
+  showToast('✓ Photo loaded — click "Try Another" for a different one');
+}
+
+function refreshHeroPhoto(){
+  heroPhotoSeed=Math.floor(Math.random()*9000)+1000;
+  autoFindHeroPhoto();
+}
+
+function openUnsplashSearch(){
+  var dest=(CLIENT&&(CLIENT.destinationShort||CLIENT.destination))||'travel';
+  window.open('https://unsplash.com/s/photos/'+encodeURIComponent(dest),'_blank');
+}
+
+function handleHeroUpload(file){
+  if(!file||!file.type.startsWith('image/'))return;
+  var reader=new FileReader();
+  reader.onload=function(e){
+    var img=new Image();
+    img.onload=function(){
+      var canvas=document.createElement('canvas');
+      canvas.width=1800;canvas.height=900;
+      var ctx=canvas.getContext('2d');
+      // Center-crop to 2:1 ratio
+      var srcAspect=img.width/img.height;
+      var dstAspect=2.0;
+      var sx,sy,sw,sh;
+      if(srcAspect>dstAspect){sw=img.height*dstAspect;sh=img.height;sx=(img.width-sw)/2;sy=0;}
+      else{sw=img.width;sh=img.width/dstAspect;sx=0;sy=(img.height-sh)/2;}
+      ctx.drawImage(img,sx,sy,sw,sh,0,0,1800,900);
+      var dataUrl=canvas.toDataURL('image/jpeg',0.88);
+      applyHeroUrl(dataUrl);
+      document.getElementById('img_hero').value='(uploaded photo)';
+      showToast('✓ Photo uploaded & resized to 1800×900');
+    };
+    img.src=e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function handleHeroDrop(e){
+  e.preventDefault();
+  var file=e.dataTransfer.files[0];
+  if(file&&file.type.startsWith('image/'))handleHeroUpload(file);
+}
+
+function initHeroPhotoUI(){
+  if(!CLIENT)return;
+  var label=document.getElementById('heroDestLabel');
+  if(label)label.textContent=CLIENT.destinationShort||CLIENT.destination||'[no destination set]';
+  if(CLIENT.heroImage){
+    applyHeroUrl(CLIENT.heroImage);
+    document.getElementById('img_hero').value=CLIENT.heroImage.startsWith('data:')?'(uploaded photo)':CLIENT.heroImage;
+  }
+  if(CLIENT.fallbackImage)document.getElementById('img_fallback').value=CLIENT.fallbackImage;
+}
+
 function previewImg(previewId,url){
   var el=document.getElementById(previewId);if(!el)return;
   if(url){el.src=url;el.style.display='block';}else el.style.display='none';
@@ -1270,168 +1441,6 @@ function loadSampleClient(){
 renderInbox();
 updateCheckProgress();
 updateReadinessScore();
-
-  /* Hero Photo Upload & Auto-Find */
-  let _heroUnsplashPage = 1;
-
-  function handleHeroDrop(e){
-    e.preventDefault();
-    document.getElementById('hero-drop-zone').classList.remove('drag-over');
-    const file = e.dataTransfer.files[0];
-    if(file && file.type.startsWith('image/')) handleHeroFile(file);
-  }
-
-  function handleHeroFile(file){
-    if(!file) return;
-    const reader = new FileReader();
-    reader.onload = function(ev){
-      const img = new Image();
-      img.onload = function(){
-        const canvas = document.createElement('canvas');
-        canvas.width = 1800; canvas.height = 900;
-        const ctx = canvas.getContext('2d');
-        // Center-crop to 2:1 ratio
-        const srcRatio = img.width / img.height;
-        const tgtRatio = 2;
-        let sx=0,sy=0,sw=img.width,sh=img.height;
-        if(srcRatio > tgtRatio){ sw = img.height*tgtRatio; sx=(img.width-sw)/2; }
-        else { sh = img.width/tgtRatio; sy=(img.height-sh)/2; }
-        ctx.drawImage(img,sx,sy,sw,sh,0,0,1800,900);
-        const dataUrl = canvas.toDataURL('image/jpeg',0.92);
-        CLIENT.heroImage = dataUrl;
-        document.getElementById('img_hero').value = dataUrl;
-        // Show in drop zone
-        const prev = document.getElementById('hero-drop-preview');
-        const lbl = document.getElementById('hero-drop-label');
-        prev.src = dataUrl; prev.style.display='block'; lbl.style.display='none';
-        previewImg('prev_hero', dataUrl);
-      };
-      img.src = ev.target.result;
-    };
-    reader.readAsDataURL(file);
-  }
-
-  function autoFindHeroPhoto(refresh){
-    const dest = CLIENT.destination || 'travel';
-    document.getElementById('hero-dest-label').textContent = dest;
-    if(refresh) _heroUnsplashPage = Math.floor(Math.random()*5)+1;
-    const query = encodeURIComponent(dest + ' travel landscape');
-    const url = `https://source.unsplash.com/featured/1800x900/?${query}&page=${_heroUnsplashPage}`;
-    // Use a unique cache-busting param
-    const fetchUrl = `https://source.unsplash.com/featured/1800x900/?${query}&t=${Date.now()}`;
-    const autoPreview = document.getElementById('hero-auto-preview');
-    const autoImg = document.getElementById('hero-auto-img');
-    const refreshBtn = document.getElementById('hero-refresh-btn');
-    const unsplashLink = document.getElementById('hero-unsplash-link');
-    autoPreview.style.display='block';
-    autoImg.src = fetchUrl;
-    autoImg.onload = function(){
-      // Set as hero image
-      CLIENT.heroImage = autoImg.src;
-      document.getElementById('img_hero').value = autoImg.src;
-      previewImg('prev_hero', autoImg.src);
-    };
-    refreshBtn.style.display='inline-flex';
-    unsplashLink.style.display='inline-flex';
-    unsplashLink.href = `https://unsplash.com/s/photos/${encodeURIComponent(dest)}`;
-  }
-
-  function initHeroPhotoUI(){
-    const dest = CLIENT.destination || '';
-    if(dest) document.getElementById('hero-dest-label').textContent = dest;
-    if(CLIENT.heroImage && CLIENT.heroImage.length > 0){
-      const prev = document.getElementById('hero-drop-preview');
-      const lbl = document.getElementById('hero-drop-label');
-      if(prev){ prev.src = CLIENT.heroImage; prev.style.display='block'; }
-      if(lbl) lbl.style.display='none';
-    }
-  }
-
-  /* ===== DEE PANEL ===== */
-  let _deeOpen = false;
-  let _currentTab = 'snapshot';
-
-  const _deeTips = {
-    snapshot: {
-      role: 'Trip Overview',
-      msg: "This is your command center. When no client is loaded, head to Trip Builder and paste your CLIENT object.\n\nOnce loaded, use the status board here to track where the trip stands — set it to Draft, In Review, or Delivered.",
-      actions: [
-        {label:'→ Go to Trip Builder', fn:"goTab('builder')"},
-        {label:'→ Check Readiness Score', fn:"goTab('publish')"},
-      ]
-    },
-    intake: {
-      role: 'Client Intake',
-      msg: "Paste the raw questionnaire text and your consultation notes — then click Extract Preferences.\n\nDee reads both and builds out the CLIENT.preferences block automatically. The messier the paste, the better she handles it.",
-      actions: [
-        {label:'→ Go to Trip Builder to review', fn:"goTab('builder')"},
-      ]
-    },
-    builder: {
-      role: 'Trip Architect',
-      msg: "This is where you edit the CLIENT object directly. Load sample data to see the structure, or paste your own.\n\nTip: Always use 'Load Client Data' — do not manually type JSON here. One misplaced comma breaks everything.",
-      actions: [
-        {label:'→ Load Sample (Philippines)', fn:"document.querySelector('.btn-outline[onclick*=Sample]')&&document.querySelector('.btn-outline[onclick*=Sample]').click()"},
-        {label:'→ Go to Day-by-Day', fn:"goTab('itinerary')"},
-      ]
-    },
-    itinerary: {
-      role: 'Day Planner',
-      msg: "Build each day card here. Mark days as 'Dream Teaser' to show them in the Dream Preview — or leave them off to keep the surprise.\n\nAt least one day needs to be tagged as a teaser before you can publish the Dream Preview.",
-      actions: [
-        {label:'→ Go to Stays & Flights', fn:"goTab('stays')"},
-        {label:'→ Check Publish Readiness', fn:"goTab('publish')"},
-      ]
-    },
-    stays: {
-      role: 'Pricing Architect',
-      msg: "Set 3 accommodation tiers per leg so clients can choose their comfort level. Flight options are quoted separately — use the toggle in the client's cost estimate to include or exclude them from the total.\n\nAlways set transport and tour pricing here before publishing.",
-      actions: [
-        {label:'→ Go to Images', fn:"goTab('images')"},
-        {label:'→ Check Publish Readiness', fn:"goTab('publish')"},
-      ]
-    },
-    images: {
-      role: 'Visual Director',
-      msg: "Hero image is the first thing your client sees — make it count.\n\nDrag & drop your own photo (auto-crops to 1800×900), use the 🔍 Find Photo button to pull a beautiful Unsplash shot for their destination, or paste any direct image URL.",
-      actions: [
-        {label:'→ Find hero photo by destination', fn:"document.getElementById('dee-panel') && toggleDeePanel(); autoFindHeroPhoto && autoFindHeroPhoto()"},
-        {label:'→ Go to Publish', fn:"goTab('publish')"},
-      ]
-    },
-    publish: {
-      role: 'Launch Control',
-      msg: "Dream Preview goes live first — it's the teaser page clients see while the full itinerary is being built.\n\nOnce all readiness checks are green, export the CLIENT object, drop it in index.html, and push to surge.\n\nThe Destination Unlocked page is the full reveal — only when everything is set.",
-      actions: [
-        {label:'→ Back to Images', fn:"goTab('images')"},
-        {label:'→ Back to Trip Builder', fn:"goTab('builder')"},
-      ]
-    }
-  };
-
-  function toggleDeePanel(){
-    _deeOpen = !_deeOpen;
-    const panel = document.getElementById('dee-panel');
-    const overlay = document.getElementById('dee-overlay');
-    if(_deeOpen){
-      panel.classList.add('open');
-      overlay.classList.add('open');
-      renderDeeTips(_currentTab);
-    } else {
-      panel.classList.remove('open');
-      overlay.classList.remove('open');
-    }
-  }
-
-  function renderDeeTips(tabName){
-    const tips = _deeTips[tabName] || _deeTips.snapshot;
-    document.getElementById('dee-panel-role').textContent = tips.role;
-    document.getElementById('dee-tip-msg').textContent = tips.msg;
-    const actionsEl = document.getElementById('dee-tip-actions');
-    actionsEl.innerHTML = tips.actions.map(a =>
-      `<button class="dee-action-btn" onclick="${a.fn}">${a.label}</button>`
-    ).join('');
-  }
 </script>
 </body>
 </html>

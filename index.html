@@ -18,7 +18,13 @@
   .hero{position:relative;height:100vh;min-height:560px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;overflow:hidden;}
   .hero-bg{position:absolute;inset:0;background-size:cover;background-position:center;filter:brightness(.55);}
   .hero-content{position:relative;z-index:2;padding:0 24px;max-width:760px;}
-  .hero-logo{width:90px;height:auto;margin:0 auto 18px;display:block;filter:brightness(0) invert(1);opacity:.92;}
+  /* Hero logo block */
+  .hero-logo-wrap{margin:0 auto 22px;display:flex;flex-direction:column;align-items:center;gap:0;cursor:default;}
+  .hero-logo-img{width:90px;height:90px;object-fit:contain;display:none;}
+  .hero-logo-img.loaded{display:block;}
+  .hero-logo-svg-wrap{display:flex;align-items:center;justify-content:center;}
+  .hero-logo-wordmark{font-family:'DM Serif Display',serif;font-size:14px;color:rgba(255,255,255,.88);letter-spacing:.06em;margin-top:5px;text-align:center;line-height:1.3;}
+  .hero-logo-concierge{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-top:3px;font-family:'Inter',sans-serif;font-weight:600;opacity:.9;}
   .hero-eyebrow{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gl);margin-bottom:18px;}
   .hero h1{font-size:clamp(2.8rem,6vw,5.5rem);color:var(--white);line-height:1.08;margin-bottom:20px;}
   .hero-sub{font-family:'Cormorant Garamond',serif;font-size:clamp(1.1rem,2.5vw,1.5rem);color:rgba(255,255,255,.88);font-style:italic;margin-bottom:36px;line-height:1.5;}
@@ -251,27 +257,32 @@
   .toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:var(--charcoal);color:var(--white);padding:10px 20px;border-radius:50px;font-size:14px;z-index:3000;opacity:0;transition:opacity .3s;pointer-events:none;}
   .toast.show{opacity:1;}
   /* FOOTER */
-  footer{background:#0d0d0d;color:rgba(255,255,255,.45);font-size:12px;line-height:1.8;}
-  footer a{color:#C9A96E;text-decoration:none;transition:color .2s}
-  footer a:hover{color:#e8c88a}
-  .footer-main{display:grid;grid-template-columns:1fr 1fr 1fr;gap:40px;max-width:960px;margin:0 auto;padding:48px 32px 36px}
+  .site-footer{background:#0e0c0a;border-top:1px solid #1e1a16;}
+  .footer-main{max-width:1000px;margin:0 auto;padding:60px 32px 48px;display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:48px;}
   .footer-col{}
-  .footer-globe{width:36px;height:36px;margin-bottom:10px}
-  .footer-brand{font-family:'DM Serif Display',serif;font-size:16px;color:rgba(255,255,255,.9);margin-bottom:4px}
-  .footer-tagline{font-size:11px;color:rgba(255,255,255,.35);letter-spacing:.8px;margin-bottom:12px}
-  .footer-conf{font-size:10px;color:rgba(255,255,255,.25);font-style:italic;margin-top:12px;line-height:1.6}
-  .footer-col h4{font-size:9px;text-transform:uppercase;letter-spacing:2px;color:#C9A96E;margin-bottom:14px;font-weight:600}
-  .footer-links{display:flex;flex-direction:column;gap:6px}
-  .footer-links a{font-size:12px;color:rgba(255,255,255,.5)}
-  .footer-links a:hover{color:#C9A96E}
-  .footer-social{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
-  .footer-social a{font-size:12px;color:rgba(255,255,255,.5);display:flex;align-items:center;gap:8px}
-  .footer-social a:hover{color:#C9A96E}
-  .footer-contact-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:12px 14px;margin-top:8px}
-  .footer-contact-card p{font-size:11px;color:rgba(255,255,255,.4);margin-bottom:4px}
-  .footer-contact-card a{font-size:13px;color:#C9A96E;font-weight:500}
-  .footer-bottom{border-top:1px solid rgba(255,255,255,.07);text-align:center;padding:14px 20px;font-size:10px;color:rgba(255,255,255,.2);letter-spacing:.5px}
-  @media(max-width:700px){.footer-main{grid-template-columns:1fr;gap:28px;padding:32px 20px 24px}}
+  .footer-logo-block{display:flex;align-items:center;gap:14px;margin-bottom:18px;}
+  .footer-logo-svg{flex-shrink:0;}
+  .footer-brand-text{}
+  .footer-brand-name{font-family:'DM Serif Display',serif;font-size:18px;color:rgba(255,255,255,.88);line-height:1.2;}
+  .footer-brand-tag{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-top:3px;font-weight:600;}
+  .footer-tagline{font-size:13px;color:rgba(255,255,255,.38);line-height:1.65;max-width:220px;margin-top:4px;}
+  .footer-col-title{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.3);font-weight:700;margin-bottom:16px;font-family:'Inter',sans-serif;}
+  .footer-links{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:9px;}
+  .footer-links li{}
+  .footer-links a,.footer-links button{color:rgba(255,255,255,.55);text-decoration:none;font-size:13px;background:none;border:none;cursor:pointer;padding:0;font-family:'Inter',sans-serif;transition:color .15s;}
+  .footer-links a:hover,.footer-links button:hover{color:var(--gold);}
+  .footer-contact-item{display:flex;align-items:center;gap:8px;font-size:13px;color:rgba(255,255,255,.55);margin-bottom:9px;}
+  .footer-contact-item a{color:rgba(255,255,255,.55);text-decoration:none;transition:color .15s;}
+  .footer-contact-item a:hover{color:var(--gold);}
+  .footer-contact-icon{font-size:14px;flex-shrink:0;width:18px;text-align:center;}
+  .footer-bar{border-top:1px solid #1a1714;padding:18px 32px;max-width:1000px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;}
+  .footer-bar-left{font-size:11px;color:rgba(255,255,255,.22);letter-spacing:.04em;}
+  .footer-bar-right{font-size:11px;color:rgba(255,255,255,.22);}
+  .footer-bar-right span{color:rgba(201,169,110,.4);}
+  @media(max-width:700px){
+    .footer-main{grid-template-columns:1fr;gap:36px;padding:40px 24px 32px;}
+    .footer-bar{padding:16px 24px;flex-direction:column;text-align:center;gap:6px;}
+  }
   /* MODE */
   .dream-only{display:block;}
   .full-only{display:none;}
@@ -343,10 +354,6 @@
     body.print-dream,body.print-reveal{padding:0!important;margin:0!important;background:var(--cream)!important;}
     .pdf-cover{page-break-after:always;box-shadow:none!important;}
   }
-
-  .hero-logo-wrap{display:flex;justify-content:center}
-  .hero-logo-svg{width:90px;height:90px;margin:0 auto 18px;display:block}
-  .hero-logo-png{width:90px;height:auto;margin:0 auto 18px;display:block}
 </style>
 </head>
 <body>
@@ -754,22 +761,44 @@ function isAdminMode(){return new URLSearchParams(location.search).get('admin')=
 <section class="hero">
   <div class="hero-bg" id="hero-bg"></div>
   <div class="hero-content">
+    <!-- MDTW Logo — inline SVG always renders; PNG upgrades it if uploaded -->
     <div class="hero-logo-wrap">
-  <img src="mdtw-logo.png" alt="Mame Dee Travel World" class="hero-logo hero-logo-png" onerror="this.style.display='none';document.getElementById('hero-logo-svg').style.display='block'">
-  <svg id="hero-logo-svg" class="hero-logo hero-logo-svg" style="display:none" viewBox="0 0 90 90" xmlns="http://www.w3.org/2000/svg">
-    <!-- Globe -->
-    <circle cx="45" cy="45" r="36" fill="none" stroke="rgba(255,255,255,0.85)" stroke-width="2"/>
-    <!-- Orbit ellipse -->
-    <ellipse cx="45" cy="45" rx="44" ry="16" fill="none" stroke="#C9A96E" stroke-width="1.5" stroke-dasharray="5,3"/>
-    <!-- Landmasses simplified -->
-    <ellipse cx="35" cy="38" rx="10" ry="7" fill="rgba(255,255,255,0.8)"/>
-    <ellipse cx="55" cy="50" rx="8" ry="6" fill="rgba(255,255,255,0.8)"/>
-    <ellipse cx="44" cy="56" rx="5" ry="4" fill="rgba(255,255,255,0.8)"/>
-    <!-- Airplane -->
-    <text x="65" y="30" font-size="13" fill="#C9A96E" transform="rotate(-30 65 30)">&#x2708;</text>
-  </svg>
-</div>
-    <p class="hero-eyebrow">Mame Dee Travel World · Built for you</p>
+      <!-- Try PNG — hides itself on error, shows SVG instead -->
+      <img src="mdtw-logo.png" alt="Mame Dee Travel World" class="hero-logo-img"
+           onload="this.classList.add('loaded');this.nextElementSibling.style.display='none'"
+           onerror="this.style.display='none'">
+      <!-- Inline SVG fallback — always shows unless PNG loaded -->
+      <div class="hero-logo-svg-wrap">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" width="90" height="90" role="img" aria-label="Mame Dee Travel World">
+          <!-- Globe body -->
+          <circle cx="48" cy="48" r="30" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.55)" stroke-width="1.4"/>
+          <!-- Latitude lines -->
+          <ellipse cx="48" cy="48" rx="30" ry="12" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="0.8"/>
+          <line x1="18" y1="48" x2="78" y2="48" stroke="rgba(255,255,255,0.18)" stroke-width="0.8"/>
+          <!-- Landmasses (simplified, white-tinted) -->
+          <path d="M34,34 Q40,28 50,31 Q58,27 63,34 Q70,33 72,40 Q68,50 60,48 Q50,54 41,48 Q31,44 34,36Z" fill="rgba(255,255,255,0.22)"/>
+          <path d="M30,42 Q26,50 30,58 Q36,64 42,60 Q38,52 33,48Z" fill="rgba(255,255,255,0.16)"/>
+          <path d="M54,52 Q60,50 64,56 Q60,62 54,60Z" fill="rgba(255,255,255,0.14)"/>
+          <!-- Orbit ellipse dashed gold -->
+          <ellipse cx="48" cy="48" rx="44" ry="17" fill="none" stroke="rgba(201,169,110,0.75)" stroke-width="1.3" stroke-dasharray="3.5,4.5"/>
+          <!-- Airplane (top-right of orbit) -->
+          <g transform="translate(84,34) rotate(-28)">
+            <polygon points="0,0 -11,4 -11,-4" fill="rgba(201,169,110,0.95)"/>
+            <polygon points="-11,3.5 -17,7 -16,2" fill="rgba(201,169,110,0.7)"/>
+            <polygon points="-11,-3.5 -17,-7 -16,-2" fill="rgba(201,169,110,0.7)"/>
+          </g>
+          <!-- TRAVEL CONCIERGE arc text at top -->
+          <defs>
+            <path id="mdtw-arc" d="M 12,48 A 36,36 0 0,1 84,48"/>
+          </defs>
+          <text font-size="6.5" font-family="'Inter',Arial,sans-serif" fill="rgba(255,255,255,0.55)" letter-spacing="2.8" text-anchor="middle" font-weight="600">
+            <textPath href="#mdtw-arc" startOffset="50%">TRAVEL CONCIERGE</textPath>
+          </text>
+        </svg>
+      </div>
+      <div class="hero-logo-wordmark">Mame Dee Travel World</div>
+    </div>
+    <p class="hero-eyebrow">Built for you</p>
     <h1 id="hero-title"></h1>
     <p class="hero-sub" id="hero-sub"></p>
     <div class="hero-dates" id="hero-dates"></div>
@@ -1243,52 +1272,77 @@ Show me exactly what changed and why.</textarea>
 <div id="pdf-reveal-cover" class="pdf-cover"></div>
 
 <!-- FOOTER -->
-<footer id="site-footer">
+<footer class="site-footer">
   <div class="footer-main">
-    <!-- Left: Brand -->
+
+    <!-- LEFT: Brand -->
     <div class="footer-col">
-      <svg class="footer-globe" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="30" cy="30" r="24" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="1.5"/>
-        <ellipse cx="30" cy="30" rx="29" ry="10" fill="none" stroke="#C9A96E" stroke-width="1" stroke-dasharray="4,2"/>
-        <ellipse cx="23" cy="25" rx="7" ry="5" fill="rgba(255,255,255,0.5)"/>
-        <ellipse cx="37" cy="34" rx="5" ry="4" fill="rgba(255,255,255,0.5)"/>
-        <text x="43" y="19" font-size="9" fill="#C9A96E" transform="rotate(-30 43 19)">&#x2708;</text>
-      </svg>
-      <div class="footer-brand">Mame Dee Travel World</div>
-      <div class="footer-tagline" id="foot-tagline-sub">Built with intention &middot; Delivered with care</div>
-      <div style="font-size:11px;color:rgba(255,255,255,.4);margin-top:6px" id="foot-client-block">
-        Built for <strong id="foot-client" style="color:rgba(255,255,255,.65)"></strong>
-        <span id="foot-dates" style="display:block;font-size:10px;color:rgba(255,255,255,.3);margin-top:2px"></span>
+      <div class="footer-logo-block">
+        <div class="footer-logo-svg">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60" width="48" height="48" aria-hidden="true">
+            <circle cx="30" cy="30" r="19" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.35)" stroke-width="1"/>
+            <ellipse cx="30" cy="30" rx="19" ry="7.5" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="0.7"/>
+            <line x1="11" y1="30" x2="49" y2="30" stroke="rgba(255,255,255,0.12)" stroke-width="0.7"/>
+            <path d="M21,21 Q26,17 31,19 Q36,17 39,22 Q44,21 45,26 Q42,32 37,30 Q32,34 26,30 Q19,27 21,23Z" fill="rgba(255,255,255,0.18)"/>
+            <ellipse cx="30" cy="30" rx="27.5" ry="10.5" fill="none" stroke="rgba(201,169,110,0.6)" stroke-width="1" stroke-dasharray="2.5,3.5"/>
+            <g transform="translate(52,21) rotate(-25)">
+              <polygon points="0,0 -7,2.5 -7,-2.5" fill="rgba(201,169,110,0.85)"/>
+            </g>
+          </svg>
+        </div>
+        <div class="footer-brand-text">
+          <div class="footer-brand-name">Mame Dee Travel World</div>
+          <div class="footer-brand-tag">Travel Concierge</div>
+        </div>
       </div>
-      <div class="footer-conf">This itinerary is confidential and prepared exclusively for the named traveler.</div>
+      <p class="footer-tagline">Built for <strong id="foot-client" style="color:rgba(255,255,255,.55)"></strong> · <span id="foot-dates" style="color:rgba(255,255,255,.38)"></span></p>
+      <p style="font-size:11px;color:rgba(255,255,255,.2);margin-top:10px;line-height:1.6;max-width:220px">This proposal is confidential and prepared exclusively for the named traveler.</p>
     </div>
-    <!-- Middle: Navigation -->
+
+    <!-- MIDDLE: Trip navigation -->
     <div class="footer-col">
-      <h4>Your Trip</h4>
-      <div class="footer-links">
-        <a href="#" onclick="document.querySelector('.section-bg h2')&&document.querySelector('.section-bg h2').closest('.section-bg').scrollIntoView({behavior:'smooth'});return false">✈ Flights</a>
-        <a href="#" onclick="document.querySelector('.section h2')&&document.querySelector('.section h2').closest('.section').scrollIntoView({behavior:'smooth'});return false">🏨 Your Stays</a>
-        <a href="#" onclick="Array.from(document.querySelectorAll('h2.section-title')).find(h=>h.textContent.includes('Transportation'))?.closest('.section-bg')?.scrollIntoView({behavior:'smooth'});return false">🚗 Transportation</a>
-        <a href="#" onclick="Array.from(document.querySelectorAll('h2.section-title')).find(h=>h.textContent.includes('Day'))?.closest('.section')?.scrollIntoView({behavior:'smooth'});return false">📅 Itinerary</a>
-        <a href="#" onclick="Array.from(document.querySelectorAll('h2.section-title')).find(h=>h.textContent.includes('Cost'))?.closest('.section-bg')?.scrollIntoView({behavior:'smooth'});return false">💰 Pricing</a>
-        <a href="#" id="foot-book-link" onclick="document.getElementById('decision-section')?.scrollIntoView({behavior:'smooth'});return false">📩 Book This Trip</a>
+      <div class="footer-col-title">Trip Overview</div>
+      <ul class="footer-links">
+        <li><button onclick="document.querySelector('.hero').scrollIntoView({behavior:'smooth'})">↑ Back to Top</button></li>
+        <li><button onclick="document.getElementById('flights-grid')?.closest('.section-bg,.section')?.scrollIntoView({behavior:'smooth'})">✈ Flights</button></li>
+        <li><button onclick="document.getElementById('accom-groups')?.closest('.section-bg,.section')?.scrollIntoView({behavior:'smooth'})">🏨 Accommodations</button></li>
+        <li><button onclick="document.getElementById('transport-grid')?.closest('.section-bg,.section')?.scrollIntoView({behavior:'smooth'})">🚗 Transportation</button></li>
+        <li><button onclick="document.getElementById('itin-grid')?.closest('.section-bg,.section')?.scrollIntoView({behavior:'smooth'})">📅 Itinerary</button></li>
+        <li><button onclick="document.getElementById('p-rows')?.closest('.section-bg,.section')?.scrollIntoView({behavior:'smooth'})">💰 Pricing</button></li>
+        <li><button onclick="scrollToDecision()">✨ Book This Trip</button></li>
+      </ul>
+    </div>
+
+    <!-- RIGHT: Contact -->
+    <div class="footer-col">
+      <div class="footer-col-title">Get In Touch</div>
+      <div class="footer-contact-item">
+        <span class="footer-contact-icon">✉</span>
+        <a href="mailto:mamedeeworld@gmail.com">mamedeeworld@gmail.com</a>
+      </div>
+      <div class="footer-contact-item">
+        <span class="footer-contact-icon">📷</span>
+        <a href="https://instagram.com/mamedeetravelworld" target="_blank" rel="noopener">@mamedeetravelworld</a>
+      </div>
+      <div class="footer-contact-item">
+        <span class="footer-contact-icon">🎵</span>
+        <a href="https://tiktok.com/@mamedeetravelworld" target="_blank" rel="noopener">@mamedeetravelworld</a>
+      </div>
+      <div style="margin-top:16px;padding:12px 14px;background:rgba(201,169,110,0.07);border:1px solid rgba(201,169,110,0.2);border-radius:8px;">
+        <p style="font-size:11px;color:rgba(201,169,110,.7);line-height:1.6;margin:0">Questions about this trip?<br>
+        <a href="mailto:mamedeeworld@gmail.com" style="color:var(--gold);text-decoration:none;font-weight:600">Send a message →</a></p>
       </div>
     </div>
-    <!-- Right: Contact -->
-    <div class="footer-col">
-      <h4>Stay Connected</h4>
-      <div class="footer-social">
-        <a href="mailto:mamedeeworld@gmail.com">✉️ mamedeeworld@gmail.com</a>
-        <a href="https://instagram.com/mamedeetravelworld" target="_blank">📸 @mamedeetravelworld</a>
-        <a href="https://tiktok.com/@mamedeeworld" target="_blank">🎵 @mamedeeworld</a>
-      </div>
-      <div class="footer-contact-card">
-        <p>Ready to make it official?</p>
-        <a href="mailto:mamedeeworld@gmail.com?subject=Booking%20Inquiry" id="foot-yes-link">Send a booking inquiry →</a>
-      </div>
+
+  </div>
+
+  <!-- Bottom bar -->
+  <div style="border-top:1px solid #1a1714;padding:0 32px;">
+    <div class="footer-bar">
+      <span class="footer-bar-left">© 2026 Mame Dee Travel World · All rights reserved</span>
+      <span class="footer-bar-right">Built with <span>✦</span> for every dream trip</span>
     </div>
   </div>
-  <div class="footer-bottom">&copy; <span id="foot-year"></span> Mame Dee Travel World &middot; All rights reserved &middot; <span id="foot-dest-line"></span></div>
 </footer>
 
 <!-- STICKY PRICING BAR -->
@@ -1705,17 +1759,9 @@ function renderDecision(){
   document.getElementById('d-sub').textContent=`This trip was picked with your travel style in mind. Here is what is waiting for you — just say the word.`;
 }
 function renderFooter(){
-  const c = CLIENT;
-  const fc = document.getElementById('foot-client');
-  const fd = document.getElementById('foot-dates');
-  const fy = document.getElementById('foot-year');
-  const fdl = document.getElementById('foot-dest-line');
-  if(fc) fc.textContent = (c.clientFirstName||'') + ' ' + (c.clientLastName||'');
-  if(fd) fd.textContent = c.tripDates||'';
-  if(fy) fy.textContent = new Date().getFullYear();
-  if(fdl) fdl.textContent = c.destination ? c.destination + ' itinerary' : '';
-  const yn = document.getElementById('yes-name');
-  if(yn) yn.textContent = c.clientFirstName||'traveler';
+  document.getElementById('foot-client').textContent=CLIENT.firstName;
+  document.getElementById('foot-dates').textContent=CLIENT.dates;
+  document.getElementById('yes-name').textContent=CLIENT.firstName;
 }
 function scrollToDecision(){document.getElementById('decision-section').scrollIntoView({behavior:'smooth'});}
 
