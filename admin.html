@@ -10,7 +10,7 @@
 :root{--green:#4A6741;--gold:#C9A96E;--cream:#FAF7F2;--dark:#1A1A1A;--mid:#5A5A5A;--light:#E8E2D9;--white:#FFFFFF}
 body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--dark);display:flex;min-height:100vh}
 #sidebar{width:240px;min-width:240px;background:var(--dark);display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:100;overflow-y:auto}
-#sidebar .logo{padding:24px 20px 16px;border-bottom:1px solid #333}
+#sidebar .logo{padding:24px 20px 16px;borderh-bottom:1px solid #333}
 #sidebar .logo .brand{font-family:'DM Serif Display',serif;color:var(--gold);font-size:18px;line-height:1.2}
 #sidebar .logo .sub{font-size:11px;color:#888;margin-top:4px;font-family:'Cormorant Garamond',serif;font-style:italic}
 #sidebar nav{padding:12px 0;flex:1}
@@ -19,7 +19,7 @@ body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--dark);di
 #sidebar nav a.active{background:#1e1e1e;color:var(--gold);border-left-color:var(--gold)}
 #sidebar nav a .icon{font-size:15px;width:20px;text-align:center}
 #sidebar .dee-wrap{padding:20px 20px 4px;display:flex;flex-direction:column;align-items:center;border-bottom:1px solid #2a2a2a;margin-bottom:4px}
-#sidebar .dee-wrap img{width:88px;height:88px;object-fit:contain;border-radius:50%;background:#1e1e1e;padding:6px;border:2px solid #2e2e2e;transition:transform .3s}
+#sidebar .dee-wrap img{width:88px;height:88px;object-fit:contain;border-radius:0;background:transparent;padding:0;border:none;transition:transform .3s}
 #sidebar .dee-wrap img:hover{transform:scale(1.06)}
 #sidebar .dee-wrap .dee-name{font-family:'DM Serif Display',serif;color:var(--gold);font-size:13px;margin-top:8px;letter-spacing:.3px}
 #sidebar .dee-wrap .dee-tag{font-size:10px;color:#666;font-family:'Cormorant Garamond',serif;font-style:italic;margin-top:1px}
@@ -148,7 +148,7 @@ hr.divider{border:none;border-top:1px solid var(--light);margin:20px 0}
     <div class="sub">Travel Builder v2</div>
   </div>
   <div class="dee-wrap">
-    <img src="mascot.png" alt="Dee" onerror="this.src='https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=200&q=80';this.style.borderRadius='50%'">
+    <img id="deeImg" src="dee_pack/dee_snapshot.png" alt="Dee" onerror="this.src='https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=200&q=80';this.style.borderRadius='50%'">
     <div class="dee-name">Hey, I'm Dee ✨</div>
     <div class="dee-tag">Your travel OS</div>
   </div>
@@ -519,7 +519,7 @@ function goTab(name){
   var idx=tabs.indexOf(name);
   if(idx>=0) document.querySelectorAll('#sidenav a')[idx].classList.add('active');
   if(name==='snapshot') renderSnapshot();
-  if(name==='publish'){doExport();updateReadinessScore();}
+  if(name==='publish'){doExport();updateReadinessScore();}var deeMap={snapshot:'dee_pack/dee_welcome.png',intake:'dee_pack/dee_concierge.png',builder:'dee_pack/dee_guide.png',days:'dee_pack/dee_explorer.png',stays:'dee_pack/dee_librarian.png',images:'dee_pack/dee_media.png',publish:'dee_pack/dee_alert.png'};var deeImg=document.getElementById('deeImg');if(deeImg&&deeMap[name]){deeImg.src=deeMap[name];}
 }
 
 function toast(msg){
@@ -1140,7 +1140,7 @@ function loadSampleClient(){
     ],
     transport:[
       {dreamLabel:"Island Hop via Ferry",dreamDetail:"Scenic sea route El Nido to Cebu",mode:"Ferry + Connecting Flight",route:"El Nido to Puerto Princesa to Cebu",pricePerPerson:145,bookingUrl:"https://www.2go.com.ph",why:"Scenic, budget-friendly, classic Filipino travel experience",selected:false},
-      {dreamLabel:"Quick Flight",dreamDetail:"40-min hop, maximize beach time",mode:"Domestic Flight",route:"Puerto Princesa to Cebu via Cebu Pacific",pricePerPerson:85,bookingUrl:"https://www.cebupacificair.com",why:"Fastest option, saves half a day",selected:true}
+      {dreamLabel:"Quick Flight",dreamDetail:"40-min hhop, maximize beach time",mode:"Domestic Flight",route:"Puerto Princesa to Cebu via Cebu Pacific",pricePerPerson:85,bookingUrl:"https://www.cebupacificair.com",why:"Fastest option, saves half a day",selected:true}
     ],
     activities:{
       shared:{label:"Island Hopping Tour A (Group)",pricePerPerson:35,desc:"Join a bangka group tour — Big Lagoon, Small Lagoon, Secret Beach. Lunch included."},
