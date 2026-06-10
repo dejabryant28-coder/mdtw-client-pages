@@ -9,25 +9,34 @@
 *{box-sizing:border-box;margin:0;padding:0}
 :root{--green:#4A6741;--gold:#C9A96E;--cream:#FAF7F2;--dark:#1A1A1A;--mid:#5A5A5A;--light:#E8E2D9;--white:#FFFFFF}
 body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--dark);display:flex;min-height:100vh}
-#sidebar{width:240px;min-width:240px;background:var(--hdark);display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:100;overflow-y:auto}
-#sidebar .logo{padding:24px 20px 16px;borderh-bottom:1px solid #333}
-#sidebar .logo .brand{font-family:'DM Serif Display',serif;color:var(--gold);font-size:18px;line-height:1.2}
-#sidebar .logo .sub{font-size:11px;color:#888;margin-top:4px;font-family:'Cormorant Garamond',serif;font-style:italic}
-#sidebar nav{padding:12px 0;flex:1}
-#sidebar nav a{display:flex;align-items:center;gap:10px;padding:11px 20px;color:#ccc;text-decoration:none;font-size:13px;font-weight:500;cursor:pointer;transition:all .2s;border-left:3px solid transparent}
-#sidebar nav a:hover{background:#1e1e1e;color:var(--white)}
-#sidebar nav a.active{background:#1e1e1e;color:var(--gold);border-left-color:var(--gold)}
-#sidebar nav a .icon{font-size:15px;width:20px;text-align:center}
-#sidebar .dee-wrap{padding:20px 20px 4px;display:flex;flex-direction:column;align-items:center;border-bottom:1px solid #2a2a2a;margin-bottom:4px}
-#sidebar .dee-wrap img{width:88px;height:88px;object-fit:contain;border-radius:0;background:transparent;padding:0;border:none;transition:transform .3s}
-#sidebar .dee-wrap img:hover{transform:scale(1.06)}
-#sidebar .dee-wrap .dee-name{font-family:'DM Serif Display',serif;color:var(--gold);font-size:13px;margin-top:8px;letter-spacing:.3px}
-#sidebar .dee-wrap .dee-tag{font-size:10px;color:#666;font-family:'Cormorant Garamond',serif;font-style:italic;margin-top:1px}
-#sidebar .client-badge{margin:12px 16px;padding:10px 12px;background:#1e1e1e;border-radius:8px;border:1px solid #333}
+/* ── SIDEBAR ── */
+#sidebar{width:220px;min-width:220px;background:#111;display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:100;overflow-y:auto;border-right:1px solid #222}
+#sidebar .logo{padding:28px 24px 22px;border-bottom:1px solid #1e1e1e}
+#sidebar .logo .brand{font-family:'DM Serif Display',serif;color:var(--gold);font-size:20px;letter-spacing:.2px}
+#sidebar .logo .sub{font-size:10px;color:#555;margin-top:3px;text-transform:uppercase;letter-spacing:1.5px;font-weight:600}
+#sidebar nav{padding:16px 0;flex:1}
+#sidebar nav .nav-section{font-size:9px;text-transform:uppercase;letter-spacing:2px;color:#3a3a3a;font-weight:700;padding:16px 24px 6px}
+#sidebar nav a{display:flex;align-items:center;gap:12px;padding:10px 24px;color:#666;text-decoration:none;font-size:12px;font-weight:500;cursor:pointer;transition:all .15s;border-left:2px solid transparent;letter-spacing:.2px;user-select:none}
+#sidebar nav a:hover{color:#ccc;background:rgba(255,255,255,.03)}
+#sidebar nav a.active{color:#fff;border-left-color:var(--gold);background:rgba(201,169,110,.06)}
+#sidebar nav a .step{width:18px;height:18px;border-radius:4px;background:#1e1e1e;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#555;flex-shrink:0;transition:all .15s}
+#sidebar nav a.active .step{background:var(--gold);color:#111}
+#sidebar nav a:hover .step{color:#aaa}
+#sidebar .sidebar-dee{display:flex;justify-content:center;padding:16px 24px 0;background:#111}
+#sidebar .sidebar-dee img{width:110px;height:auto;object-fit:contain;display:block;image-rendering:auto}
+#sidebar .client-badge{margin:0 16px 16px;padding:12px 14px;background:#161616;border-radius:8px;border:1px solid #1e1e1e}
+#sidebar .client-badge .cb-label{font-size:9px;text-transform:uppercase;letter-spacing:1.5px;color:#3a3a3a;font-weight:700;margin-bottom:5px}
 #sidebar .client-badge .cb-name{color:var(--gold);font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-#sidebar .client-badge .cb-dest{color:#999;font-size:11px;margin-top:2px}
-#main{margin-left:240px;flex:1;min-height:100vh}
-.tab-content{display:none;padding:32px;max-width:1100px;width:100%}
+#sidebar .client-badge .cb-dest{color:#555;font-size:11px;margin-top:2px}
+/* ── DEE BANNER ── */
+.dee-banner{display:flex;align-items:flex-end;gap:20px;background:var(--white);border:1px solid var(--light);border-radius:12px;padding:20px 24px 0 24px;margin-bottom:28px;overflow:hidden}
+.dee-banner img{width:72px;height:auto;object-fit:contain;flex-shrink:0;margin-bottom:-1px}
+.dee-banner .dee-text{padding-bottom:20px;flex:1}
+.dee-banner .dee-text .dee-role{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--gold);margin-bottom:6px}
+.dee-banner .dee-text .dee-msg{font-family:'DM Serif Display',serif;font-size:20px;color:var(--dark);line-height:1.25}
+.dee-banner .dee-text .dee-sub{font-size:12px;color:var(--mid);margin-top:5px;line-height:1.5}
+#main{margin-left:220px;flex:1;min-height:100vh;background:var(--cream)}
+.tab-content{display:none;padding:40px 44px;max-width:1080px;width:100%}
 .tab-content.active{display:block}
 .card{background:var(--white);border:1px solid var(--light);border-radius:10px;padding:24px;margin-bottom:20px}
 .card-sm{background:var(--white);border:1px solid var(--light);border-radius:10px;padding:16px}
@@ -54,9 +63,9 @@ textarea{resize:vertical;min-height:80px}
 .btn-sm{padding:5px 10px;font-size:11px}
 .btn-xs{padding:3px 8px;font-size:11px}
 .btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-.page-title{margin-bottom:24px}
-.page-title h2{font-family:'DM Serif Display',serif;font-size:26px;color:var(--dark)}
-.page-title p{font-size:13px;color:var(--mid);margin-top:4px}
+.page-title{margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid var(--light)}
+.page-title h2{font-family:'DM Serif Display',serif;font-size:28px;color:var(--dark);letter-spacing:-.3px}
+.page-title p{font-size:13px;color:var(--mid);margin-top:5px;line-height:1.5}
 .stats-row{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:24px}
 .stat-card{background:var(--white);border:1px solid var(--light);border-radius:10px;padding:16px;text-align:center}
 .stat-card .stat-val{font-family:'DM Serif Display',serif;font-size:22px;color:var(--green)}
@@ -147,29 +156,30 @@ hr.divider{border:none;border-top:1px solid var(--light);margin:20px 0}
     <div class="brand">MDTW Admin</div>
     <div class="sub">Travel Builder v2</div>
   </div>
-  <div class="dee-wrap">
-    <img id="deeImg" src="dee_pack/dee-welcome.png" alt="Dee" onerror="this.src='https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=200&q=80';this.style.borderRadius='50%'">
-    <div class="dee-name">Hey, I'm Dee ✨</div>
-    <div class="dee-tag">Your travel OS</div>
+  <div class="sidebar-dee">
+    <img src="dee_pack/dee-wave-bust.png" alt="Dee">
   </div>
   <nav id="sidenav">
-    <a class="active" onclick="goTab('snapshot')"><span class="icon">&#128203;</span> Trip Snapshot</a>
-    <a onclick="goTab('intake')"><span class="icon">&#128229;</span> Client Intake</a>
-    <a onclick="goTab('builder')"><span class="icon">&#128506;</span> Trip Builder</a>
-    <a onclick="goTab('days')"><span class="icon">&#128197;</span> Day-by-Day</a>
-    <a onclick="goTab('stays')"><span class="icon">&#127976;</span> Stays &amp; Flights</a>
-    <a onclick="goTab('images')"><span class="icon">&#128444;</span> Images</a>
-    <a onclick="goTab('publish')"><span class="icon">&#128640;</span> Publish</a>
+    <div class="nav-section">Workflow</div>
+    <a class="active" onclick="goTab('snapshot')"><span class="step">1</span> Trip Snapshot</a>
+    <a onclick="goTab('intake')"><span class="step">2</span> Client Intake</a>
+    <a onclick="goTab('builder')"><span class="step">3</span> Trip Builder</a>
+    <a onclick="goTab('days')"><span class="step">4</span> Day-by-Day</a>
+    <a onclick="goTab('stays')"><span class="step">5</span> Stays &amp; Flights</a>
+    <a onclick="goTab('images')"><span class="step">6</span> Images</a>
+    <a onclick="goTab('publish')"><span class="step">7</span> Publish</a>
   </nav>
   <div class="client-badge">
+    <div class="cb-label">Active Client</div>
     <div class="cb-name" id="sbName">No client loaded</div>
-    <div class="cb-dest" id="sbDest">&#8212;</div>
+    <div class="cb-dest" id="sbDest"></div>
   </div>
 </div>
 <div id="main">
 <!-- TAB 1: SNAPSHOT -->
 <div class="tab-content active" id="tab-snapshot">
   <div class="page-title"><h2>Trip Snapshot</h2><p>Overview of current client trip status</p></div>
+  <div class="dee-banner"><img src="dee_pack/dee-welcome.png" alt="Dee"><div class="dee-text"><div class="dee-role">Dee — Trip Overview</div><div class="dee-msg">Here's where this trip stands.</div><div class="dee-sub">Select a status below, check off milestones, and track the client journey.</div></div></div>
   <div id="snapshotNoClient" class="no-client card">
     <div class="nc-icon">&#128203;</div>
     <h3>No Client Loaded</h3>
@@ -230,6 +240,7 @@ hr.divider{border:none;border-top:1px solid var(--light);margin:20px 0}
 <!-- TAB 2: INTAKE -->
 <div class="tab-content" id="tab-intake">
   <div class="page-title"><h2>Client Intake</h2><p>Paste questionnaire and notes, then extract preferences</p></div>
+  <div class="dee-banner"><img src="dee_pack/dee-concierge.png" alt="Dee"><div class="dee-text"><div class="dee-role">Dee — Concierge</div><div class="dee-msg">Tell me about your dream trip.</div><div class="dee-sub">Paste the questionnaire and consultation notes. I'll pull out everything that matters.</div></div></div>
   <div class="card">
     <h3>Questionnaire &amp; Notes</h3>
     <div class="form-row cols2">
@@ -284,6 +295,7 @@ hr.divider{border:none;border-top:1px solid var(--light);margin:20px 0}
 <!-- TAB 3: BUILDER -->
 <div class="tab-content" id="tab-builder">
   <div class="page-title"><h2>Trip Builder</h2><p>Paste or load a CLIENT object to begin editing</p></div>
+  <div class="dee-banner"><img src="dee_pack/dee-desk-setup.png" alt="Dee"><div class="dee-text"><div class="dee-role">Dee — Research</div><div class="dee-msg">Let's build something great.</div><div class="dee-sub">Load the CLIENT object and edit every detail — name, dates, tagline, welcome note, and pricing.</div></div></div>
   <div class="card">
     <h3>Load CLIENT Object</h3>
     <div class="form-group"><label>Paste CLIENT JSON (with or without "const CLIENT =")</label><textarea id="clientPaste" rows="10" placeholder="Paste CLIENT object here..."></textarea></div>
@@ -337,6 +349,7 @@ hr.divider{border:none;border-top:1px solid var(--light);margin:20px 0}
 <!-- TAB 4: DAYS -->
 <div class="tab-content" id="tab-days">
   <div class="page-title"><h2>Day-by-Day Editor</h2><p>Build the itinerary day cards</p></div>
+  <div class="dee-banner"><img src="dee_pack/dee-guide.png" alt="Dee"><div class="dee-text"><div class="dee-role">Dee — Planner</div><div class="dee-msg">Let's build the perfect day.</div><div class="dee-sub">Add, edit, reorder, and tag each day of the itinerary. Mark sample days to show in Dream Preview.</div></div></div>
   <div class="section-header">
     <h3>Itinerary Days</h3>
     <button class="btn btn-primary" onclick="addDay()">+ Add Day</button>
@@ -347,6 +360,7 @@ hr.divider{border:none;border-top:1px solid var(--light);margin:20px 0}
 <!-- TAB 5: STAYS & FLIGHTS -->
 <div class="tab-content" id="tab-stays">
   <div class="page-title"><h2>Stays &amp; Flights</h2><p>Manage flight options, accommodations, transport, and tours</p></div>
+  <div class="dee-banner"><img src="dee_pack/dee-librarian.png" alt="Dee"><div class="dee-text"><div class="dee-role">Dee — Auditor</div><div class="dee-msg">Let's make sure everything fits.</div><div class="dee-sub">Set 3 accommodation tiers per leg, flight options, transport, and tour pricing. Protect the dream details.</div></div></div>
   <div class="card">
     <div class="section-header"><h3>Flights</h3><button class="btn btn-primary btn-sm" onclick="addFlight()">+ Add Flight</button></div>
     <div id="flightsContainer"></div>
@@ -381,6 +395,7 @@ hr.divider{border:none;border-top:1px solid var(--light);margin:20px 0}
 <!-- TAB 6: IMAGES -->
 <div class="tab-content" id="tab-images">
   <div class="page-title"><h2>Images</h2><p>Manage hero, activity, accommodation, and restaurant images</p></div>
+  <div class="dee-banner"><img src="dee_pack/dee-creator.png" alt="Dee"><div class="dee-text"><div class="dee-role">Dee — Creator</div><div class="dee-msg">Let's make it look amazing.</div><div class="dee-sub">Set image URLs for every section. Use the AI prompt generator to find the perfect Unsplash shots.</div></div></div>
   <div class="form-row cols2">
     <div class="card">
       <h3>Hero Image</h3>
@@ -439,6 +454,7 @@ hr.divider{border:none;border-top:1px solid var(--light);margin:20px 0}
 <!-- TAB 7: PUBLISH -->
 <div class="tab-content" id="tab-publish">
   <div class="page-title"><h2>Preview &amp; Publish</h2><p>Readiness checks, export, and deploy</p></div>
+  <div class="dee-banner"><img src="dee_pack/dee-passport.png" alt="Dee"><div class="dee-text"><div class="dee-role">Dee — Booking</div><div class="dee-msg">Everything is ready to go.</div><div class="dee-sub">Run the readiness checklist, export the CLIENT object, and upload to GitHub to go live.</div></div></div>
   <div class="card">
     <h3>Page Links</h3>
     <div class="form-group"><label>Surge Domain (e.g. ayanna-philippines.surge.sh)</label><input type="text" id="surgeDomain" placeholder="ayanna-philippines.surge.sh" oninput="updateLinks()"></div>
@@ -519,7 +535,7 @@ function goTab(name){
   var idx=tabs.indexOf(name);
   if(idx>=0) document.querySelectorAll('#sidenav a')[idx].classList.add('active');
   if(name==='snapshot') renderSnapshot();
-  if(name==='publish'){doExport();updateReadinessScore();}var deeMap={snapshot:'dee_pack/dee-welcome.png',intake:'dee_pack/dee-concierge.png',builder:'dee_pack/dee-guide.png',days:'dee_pack/dee-explorer.png',stays:'dee_pack/dee-librarian.png',images:'dee_pack/dee-media-upload.png',publish:'dee_pack/dee-deal-alert.png'};var deeImg=document.getElementById('deeImg');if(deeImg&&deeMap[name]){deeImg.src=deeMap[name];deeImg.style.objectPosition=deePos[name]||'-46px -121px';}
+  if(name==='publish'){doExport();updateReadinessScore();}
 }
 
 function toast(msg){
@@ -1140,7 +1156,7 @@ function loadSampleClient(){
     ],
     transport:[
       {dreamLabel:"Island Hop via Ferry",dreamDetail:"Scenic sea route El Nido to Cebu",mode:"Ferry + Connecting Flight",route:"El Nido to Puerto Princesa to Cebu",pricePerPerson:145,bookingUrl:"https://www.2go.com.ph",why:"Scenic, budget-friendly, classic Filipino travel experience",selected:false},
-      {dreamLabel:"Quick Flight",dreamDetail:"40-min hhop, maximize beach time",mode:"Domestic Flight",route:"Puerto Princesa to Cebu via Cebu Pacific",pricePerPerson:85,bookingUrl:"https://www.cebupacificair.com",why:"Fastest option, saves half a day",selected:true}
+      {dreamLabel:"Quick Flight",dreamDetail:"40-min hop, maximize beach time",mode:"Domestic Flight",route:"Puerto Princesa to Cebu via Cebu Pacific",pricePerPerson:85,bookingUrl:"https://www.cebupacificair.com",why:"Fastest option, saves half a day",selected:true}
     ],
     activities:{
       shared:{label:"Island Hopping Tour A (Group)",pricePerPerson:35,desc:"Join a bangka group tour — Big Lagoon, Small Lagoon, Secret Beach. Lunch included."},
