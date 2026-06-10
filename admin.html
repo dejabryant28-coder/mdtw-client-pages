@@ -23,27 +23,47 @@ body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--dark);di
 #sidebar nav a.active .step{background:var(--gold);color:#111}
 #sidebar nav a:hover .step{color:#aaa}
 #sidebar .sidebar-dee{display:flex;justify-content:center;padding:16px 24px 0;background:#111}
-#sidebar .sidebar-dee img{width:110px;height:auto;object-fit:contain;display:block;image-rendering:auto;cursor:pointer;transition:transform .2s;}
-#sidebar .sidebar-dee img:hover{transform:scale(1.06);}
-#sidebar .dee-status{text-align:center;font-size:10px;color:#555;padding:4px 0 12px;letter-spacing:.05em;cursor:pointer;}
-#sidebar .dee-status.active{color:var(--gold);}
-/* Dee helper panel */
-#dee-panel{position:fixed;left:228px;top:0;width:300px;height:100vh;background:#0e0e0e;border-right:1px solid #222;z-index:200;display:flex;flex-direction:column;transform:translateX(-110%);transition:transform .28s cubic-bezier(.4,0,.2,1);box-shadow:4px 0 24px rgba(0,0,0,.4);}
-#dee-panel.open{transform:translateX(0);}
-#dee-panel .dp-header{padding:20px 20px 16px;border-bottom:1px solid #1a1a1a;display:flex;align-items:center;gap:12px;}
-#dee-panel .dp-header img{width:48px;height:auto;flex-shrink:0;}
-#dee-panel .dp-header .dp-title{font-family:'DM Serif Display',serif;color:var(--gold);font-size:16px;line-height:1.2;}
-#dee-panel .dp-header .dp-sub{font-size:10px;color:#555;margin-top:2px;letter-spacing:.08em;text-transform:uppercase;}
-#dee-panel .dp-close{margin-left:auto;background:none;border:none;color:#444;font-size:18px;cursor:pointer;padding:4px;}
-#dee-panel .dp-close:hover{color:#ccc;}
-#dee-panel .dp-body{flex:1;overflow-y:auto;padding:18px 20px;}
-#dee-panel .dp-tip{background:#161616;border:1px solid #222;border-radius:10px;padding:14px 16px;margin-bottom:12px;}
-#dee-panel .dp-tip .dt-label{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:6px;}
-#dee-panel .dp-tip .dt-text{font-size:13px;color:#aaa;line-height:1.6;}
-#dee-panel .dp-tip .dt-text strong{color:#ddd;}
-#dee-panel .dp-actions{padding:16px 20px;border-top:1px solid #1a1a1a;display:flex;flex-direction:column;gap:8px;}
-#dee-panel .dp-btn{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:7px;padding:10px 14px;color:#aaa;font-size:12px;text-align:left;cursor:pointer;transition:all .15s;font-family:'Inter',sans-serif;}
-#dee-panel .dp-btn:hover{background:#222;color:#fff;border-color:#333;}
+#sidebar .sidebar-dee img{width:110px;height:auto;object-fit:contain;display:block;image-rendering:auto;}
+/* ── DEE FLOATING CHAT ── */
+#dee-float-btn{position:fixed;bottom:24px;right:24px;z-index:300;cursor:pointer;width:72px;height:auto;filter:drop-shadow(0 4px 16px rgba(0,0,0,.5));transition:transform .2s;}
+#dee-float-btn:hover{transform:scale(1.08);}
+#dee-float-btn img{width:72px;height:auto;display:block;}
+#dee-float-pulse{position:absolute;top:4px;right:4px;width:12px;height:12px;background:#4ade80;border-radius:50%;border:2px solid #111;animation:dee-pulse 2s infinite;}
+@keyframes dee-pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.6;transform:scale(1.2);}}
+#dee-chat{position:fixed;bottom:110px;right:24px;width:320px;background:#0e0e0e;border:1px solid #2a2a2a;border-radius:18px;z-index:299;display:flex;flex-direction:column;box-shadow:0 8px 48px rgba(0,0,0,.7);transform:translateY(20px) scale(.95);opacity:0;pointer-events:none;transition:all .25s cubic-bezier(.34,1.56,.64,1);}
+#dee-chat.open{transform:translateY(0) scale(1);opacity:1;pointer-events:all;}
+#dee-chat-hdr{display:flex;align-items:center;gap:10px;padding:14px 16px 12px;border-bottom:1px solid #1e1e1e;border-radius:18px 18px 0 0;background:#141414;}
+#dee-chat-hdr img{width:40px;height:auto;flex-shrink:0;}
+#dee-chat-hdr-text .dee-chat-name{font-family:'DM Serif Display',serif;color:var(--gold);font-size:15px;line-height:1.1;}
+#dee-chat-hdr-text .dee-chat-status{font-size:10px;color:#4ade80;letter-spacing:.08em;margin-top:2px;}
+#dee-chat-close{margin-left:auto;background:none;border:none;color:#444;font-size:20px;cursor:pointer;line-height:1;padding:0 2px;}
+#dee-chat-close:hover{color:#ccc;}
+#dee-chat-msgs{flex:1;overflow-y:auto;padding:14px 14px 8px;max-height:320px;display:flex;flex-direction:column;gap:10px;}
+#dee-chat-msgs::-webkit-scrollbar{width:4px;}
+#dee-chat-msgs::-webkit-scrollbar-track{background:transparent;}
+#dee-chat-msgs::-webkit-scrollbar-thumb{background:#2a2a2a;border-radius:4px;}
+.dee-msg-row{display:flex;gap:8px;align-items:flex-end;}
+.dee-msg-row.user{flex-direction:row-reverse;}
+.dee-msg-bubble{max-width:230px;padding:9px 12px;border-radius:14px;font-size:13px;line-height:1.5;}
+.dee-msg-row.dee .dee-msg-bubble{background:#1e1e1e;color:#ccc;border-bottom-left-radius:4px;}
+.dee-msg-row.user .dee-msg-bubble{background:var(--gold);color:#111;border-bottom-right-radius:4px;font-weight:500;}
+.dee-msg-avatar{width:26px;height:26px;flex-shrink:0;}
+.dee-typing{display:flex;gap:4px;align-items:center;padding:10px 14px;}
+.dee-typing span{width:6px;height:6px;background:#444;border-radius:50%;animation:dee-dot 1.2s infinite;}
+.dee-typing span:nth-child(2){animation-delay:.2s;}
+.dee-typing span:nth-child(3){animation-delay:.4s;}
+@keyframes dee-dot{0%,60%,100%{transform:translateY(0);}30%{transform:translateY(-6px);}}
+#dee-chat-chips{display:flex;gap:6px;flex-wrap:wrap;padding:6px 14px 0;}
+.dee-chip{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:20px;padding:5px 11px;font-size:11px;color:#aaa;cursor:pointer;white-space:nowrap;transition:all .15s;font-family:'Inter',sans-serif;}
+.dee-chip:hover{background:rgba(201,169,110,.15);border-color:var(--gold);color:var(--gold);}
+#dee-chat-input-row{display:flex;gap:8px;align-items:center;padding:10px 12px 14px;}
+#dee-chat-input{flex:1;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:22px;padding:9px 14px;font-size:13px;color:#ddd;font-family:'Inter',sans-serif;outline:none;transition:border-color .15s;}
+#dee-chat-input:focus{border-color:var(--gold);}
+#dee-mic-btn{width:34px;height:34px;border-radius:50%;background:#1a1a1a;border:1px solid #2a2a2a;color:#666;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s;}
+#dee-mic-btn:hover{background:rgba(201,169,110,.12);border-color:var(--gold);color:var(--gold);}
+#dee-mic-btn.recording{background:rgba(239,68,68,.15);border-color:#ef4444;color:#ef4444;animation:dee-pulse 1s infinite;}
+#dee-send-btn{width:34px;height:34px;border-radius:50%;background:var(--gold);border:none;color:#111;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .15s;}
+#dee-send-btn:hover{transform:scale(1.1);}
 #sidebar .client-badge{margin:0 16px 16px;padding:12px 14px;background:#161616;border-radius:8px;border:1px solid #1e1e1e}
 #sidebar .client-badge .cb-label{font-size:9px;text-transform:uppercase;letter-spacing:1.5px;color:#3a3a3a;font-weight:700;margin-bottom:5px}
 #sidebar .client-badge .cb-name{color:var(--gold);font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -182,10 +202,9 @@ hr.divider{border:none;border-top:1px solid var(--light);margin:20px 0}
     <div class="brand">MDTW Admin</div>
     <div class="sub">Travel Builder v2</div>
   </div>
-  <div class="sidebar-dee" onclick="toggleDeePanel()">
-    <img src="dee_pack/dee-wave-bust.png" alt="Dee" id="dee-sidebar-img" title="Ask Dee">
+  <div class="sidebar-dee">
+    <img src="dee_pack/dee-wave-bust.png" alt="Dee">
   </div>
-  <div class="dee-status active" id="dee-status-label" onclick="toggleDeePanel()">● Ask Dee</div>
   <nav id="sidenav">
     <div class="nav-section">Workflow</div>
     <a class="active" onclick="goTab('snapshot')"><span class="step">1</span> Trip Snapshot</a>
@@ -202,21 +221,26 @@ hr.divider{border:none;border-top:1px solid var(--light);margin:20px 0}
     <div class="cb-dest" id="sbDest"></div>
   </div>
 </div>
-<!-- DEE HELPER PANEL -->
-<div id="dee-panel">
-  <div class="dp-header">
+<!-- DEE FLOATING CHAT -->
+<div id="dee-float-btn" onclick="toggleDeeChat()">
+  <img src="dee_pack/dee-wave-bust.png" alt="Ask Dee">
+  <div id="dee-float-pulse"></div>
+</div>
+<div id="dee-chat">
+  <div id="dee-chat-hdr">
     <img src="dee_pack/dee-concierge.png" alt="Dee">
-    <div>
-      <div class="dp-title">Dee</div>
-      <div class="dp-sub">Your Travel OS</div>
+    <div class="dee-chat-hdr-text">
+      <div class="dee-chat-name">Dee</div>
+      <div class="dee-chat-status">● Your Travel OS</div>
     </div>
-    <button class="dp-close" onclick="toggleDeePanel()">✕</button>
+    <button id="dee-chat-close" onclick="toggleDeeChat()">✕</button>
   </div>
-  <div class="dp-body" id="dee-tips-body">
-    <!-- filled by JS based on active tab -->
-  </div>
-  <div class="dp-actions" id="dee-actions">
-    <!-- filled by JS -->
+  <div id="dee-chat-msgs"></div>
+  <div id="dee-chat-chips"></div>
+  <div id="dee-chat-input-row">
+    <input type="text" id="dee-chat-input" placeholder="Ask Dee anything…" onkeydown="if(event.key==='Enter')sendDeeMessage()">
+    <button id="dee-mic-btn" onclick="toggleDeeVoice()" title="Voice input">🎤</button>
+    <button id="dee-send-btn" onclick="sendDeeMessage()">➤</button>
   </div>
 </div>
 
@@ -523,17 +547,64 @@ hr.divider{border:none;border-top:1px solid var(--light);margin:20px 0}
 
 <!-- TAB 7: PUBLISH -->
 <div class="tab-content" id="tab-publish">
-  <div class="page-title"><h2>Preview &amp; Publish</h2><p>Readiness checks, export, and deploy</p></div>
-  <div class="dee-banner"><img src="dee_pack/dee-passport.png" alt="Dee"><div class="dee-text"><div class="dee-role">Dee — Booking</div><div class="dee-msg">Everything is ready to go.</div><div class="dee-sub">Run the readiness checklist, export the CLIENT object, and upload to GitHub to go live.</div></div></div>
-  <div class="card">
-    <h3>Page Links</h3>
-    <div class="form-group"><label>Surge Domain (e.g. ayanna-philippines.surge.sh)</label><input type="text" id="surgeDomain" placeholder="ayanna-philippines.surge.sh" oninput="updateLinks()"></div>
-    <div class="btn-row">
-      <button class="btn btn-outline" onclick="openLink('dream')">Dream Preview</button>
-      <button class="btn btn-outline" onclick="openLink('full')">Full Mode</button>
-      <button class="btn btn-outline" onclick="openLink('admin')">Admin Mode</button>
+  <div class="page-title"><h2>Preview &amp; Publish</h2><p>Generate client pages, check readiness, deploy to GitHub</p></div>
+  <div class="dee-banner"><img src="dee_pack/dee-passport.png" alt="Dee"><div class="dee-text"><div class="dee-role">Dee — Publish</div><div class="dee-msg">One click. One client page.</div><div class="dee-sub">Download a complete HTML file for this client, upload it to GitHub, and their private link is live instantly.</div></div></div>
+
+  <!-- ★ PRIMARY: DOWNLOAD CLIENT PAGE -->
+  <div class="card" style="border:2px solid var(--gold);background:linear-gradient(135deg,#fffdf5 0%,#fdf8ec 100%)">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+      <span style="font-size:22px">⬇</span>
+      <h3 style="margin:0;color:var(--dark)">Download Client Page</h3>
+      <span style="font-size:10px;background:var(--gold);color:#fff;padding:2px 8px;border-radius:20px;font-weight:700;letter-spacing:.05em">NEW</span>
     </div>
+    <p style="font-size:13px;color:var(--mid);margin-bottom:20px">Generates a complete standalone HTML file with this client's data baked in. Upload to GitHub — done. Each client gets their own permanent link.</p>
+
+    <!-- Filename field -->
+    <div class="form-group" style="margin-bottom:16px">
+      <label>Filename <span style="color:var(--mid);font-weight:400;font-size:11px">(edit before downloading)</span></label>
+      <div style="display:flex;align-items:center;gap:8px">
+        <input type="text" id="client-filename" placeholder="e.g. ayanna-philippines" style="flex:1;font-family:'Courier New',monospace;font-size:13px" oninput="refreshClientLinks()">
+        <span style="color:var(--mid);font-size:13px;white-space:nowrap;font-family:'Courier New',monospace">.html</span>
+      </div>
+    </div>
+
+    <!-- Download button -->
+    <div class="btn-row" style="margin-bottom:0">
+      <button class="btn btn-gold" style="font-size:14px;padding:12px 28px" onclick="downloadClientPage()">⬇ Download Client Page</button>
+      <button class="btn btn-outline btn-sm" onclick="refreshDefaultFilename()">↺ Reset filename</button>
+    </div>
+
+    <!-- Generated links (hidden until download) -->
+    <div id="client-links-panel" style="display:none;margin-top:20px;padding:16px;background:rgba(201,169,110,0.08);border:1px solid rgba(201,169,110,0.3);border-radius:10px">
+      <p style="font-size:11px;color:var(--gold);font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px">Your Client Links</p>
+      <div style="margin-bottom:10px">
+        <label style="font-size:11px;color:var(--mid);text-transform:uppercase;letter-spacing:.08em">Dream Preview</label>
+        <div style="display:flex;gap:6px;margin-top:4px">
+          <input type="text" id="client-dream-link" readonly style="flex:1;font-size:12px;font-family:'Courier New',monospace;background:#fff;border:1px solid var(--sand);border-radius:6px;padding:7px 10px;color:var(--dark)">
+          <button class="btn btn-outline btn-sm" onclick="copyText(document.getElementById('client-dream-link').value);showToast('Dream link copied!')">Copy</button>
+        </div>
+      </div>
+      <div>
+        <label style="font-size:11px;color:var(--mid);text-transform:uppercase;letter-spacing:.08em">Destination Unlocked (after payment)</label>
+        <div style="display:flex;gap:6px;margin-top:4px">
+          <input type="text" id="client-unlock-link" readonly style="flex:1;font-size:12px;font-family:'Courier New',monospace;background:#fff;border:1px solid var(--sand);border-radius:6px;padding:7px 10px;color:var(--dark)">
+          <button class="btn btn-outline btn-sm" onclick="copyText(document.getElementById('client-unlock-link').value);showToast('Unlock link copied!')">Copy</button>
+        </div>
+      </div>
+      <div style="margin-top:14px;padding:10px 12px;background:rgba(255,255,255,.6);border-radius:7px">
+        <p style="font-size:12px;color:var(--mid);line-height:1.65;margin:0">
+          <strong style="color:var(--dark)">Next step:</strong> Upload <code id="upload-filename-hint" style="background:var(--light);padding:1px 5px;border-radius:3px;font-size:11px"></code> to your
+          <a href="https://github.com/dejabryant28-coder/mdtw-client-pages" target="_blank" style="color:var(--gold)">GitHub repo</a> →
+          Add file → Upload files → Commit. Your client's link will be live in ~60 seconds.
+        </p>
+      </div>
+    </div>
+
+    <!-- Error panel -->
+    <div id="client-page-error" style="display:none;margin-top:14px;padding:12px;background:#fff5f5;border:1px solid #fcc;border-radius:8px;font-size:13px;color:#c00"></div>
   </div>
+
+  <!-- Readiness checks -->
   <div class="form-row cols2">
     <div class="card">
       <h3>Dream Preview Readiness</h3>
@@ -548,14 +619,16 @@ hr.divider{border:none;border-top:1px solid var(--light);margin:20px 0}
       <div class="text-sm text-mid mt-8" id="fullReadPct">0% ready</div>
     </div>
   </div>
+
+  <!-- Legacy: Export CLIENT Object -->
   <div class="card">
-    <h3>Export CLIENT Object</h3>
+    <h3>Export CLIENT Object <span style="font-size:11px;color:var(--mid);font-weight:400">(advanced — paste manually into index.html)</span></h3>
     <div class="btn-row mb-16">
-      <button class="btn btn-primary" onclick="doExport()">Refresh</button>
+      <button class="btn btn-outline" onclick="doExport()">Refresh</button>
       <button class="btn btn-outline" onclick="copyText(document.getElementById('exportArea').value)">Copy</button>
-      <button class="btn btn-outline" onclick="downloadExport()">Download</button>
+      <button class="btn btn-outline" onclick="downloadExport()">Download .js</button>
     </div>
-    <textarea id="exportArea" rows="14" style="font-family:'Courier New',monospace;font-size:12px" readonly></textarea>
+    <textarea id="exportArea" rows="10" style="font-family:'Courier New',monospace;font-size:12px" readonly></textarea>
   </div>
   <div class="card">
     <h3>Client Edit Inbox</h3>
@@ -597,111 +670,179 @@ var ADMIN_META = { status:'discovery', dreamSent:false, editsReceived:false, fin
 var INBOX_ROWS = [];
 var EXTRACTED_PREFS = {};
 
-// ── DEE HELPER PANEL ──────────────────────────────
-var deePanelOpen=false;
+// ── DEE FLOATING CHAT ─────────────────────────────
+var deeChatOpen=false;
 var currentTab='snapshot';
+var deeRecognition=null;
+var deeRecording=false;
 
-var DEE_TIPS={
-  snapshot:{
-    img:'dee-welcome.png',
-    tips:[
-      {label:'What this tab does',text:'Trip Snapshot is your <strong>status board</strong>. Set the trip stage, check off milestones, and get a quick overview before jumping into edits.'},
-      {label:'Pro tip',text:'Update the status <strong>before</strong> sending the client page — it helps you track which stage each client is at without opening every file.'},
-      {label:'No client loaded?',text:'Head to <strong>Tab 3 — Trip Builder</strong> and paste your CLIENT object. Everything else fills in from there.'}
-    ],
-    actions:['Go to Trip Builder','Go to Client Intake']
-  },
-  intake:{
-    img:'dee-concierge.png',
-    tips:[
-      {label:'How intake works',text:'Paste your client\'s form responses or notes, then hit <strong>Extract Preferences</strong>. I\'ll pull their budget, pace, hotel style, food preferences, and occasion automatically.'},
-      {label:'Pro tip',text:'The more detail in the notes field, the better the extraction. Copy from your questionnaire, emails, or DMs — I handle the messy formatting.'},
-      {label:'After extracting',text:'Hit <strong>Build My Draft</strong> to auto-generate the CLIENT object skeleton for Tab 3.'}
-    ],
-    actions:['Go to Trip Builder']
-  },
-  builder:{
-    img:'dee-desk-setup.png',
-    tips:[
-      {label:'This is the core',text:'Paste or edit your <strong>CLIENT object</strong> here. This is the single source of truth — every other tab and the client page pulls from it.'},
-      {label:'Pro tip',text:'Use the field editors below the JSON panel instead of editing raw JSON — less chance of a syntax error breaking the whole page.'},
-      {label:'Saving changes',text:'Changes update live in memory. Hit <strong>Export to Publish tab</strong> when ready to generate the client\'s page code.'}
-    ],
-    actions:['Go to Day-by-Day','Go to Publish']
-  },
-  days:{
-    img:'dee-guide.png',
-    tips:[
-      {label:'Day-by-Day builder',text:'Add, reorder, or duplicate itinerary days here. Each day has a <strong>dream teaser</strong> (client sees in preview) and a <strong>full version</strong> (unlocked after booking).'},
-      {label:'Pro tip',text:'Dream teasers should be <strong>vague but exciting</strong> — "A morning that will redefine your idea of breakfast." Save the specifics for the full guide.'},
-      {label:'Move & duplicate',text:'Use the ↑↓ arrows to reorder days. Duplicate a day to save time when two days have a similar structure.'}
-    ],
-    actions:['Go to Stays & Flights']
-  },
-  stays:{
-    img:'dee-librarian.png',
-    tips:[
-      {label:'3 columns = 3 options',text:'Each accommodation leg shows up to 3 side-by-side options. Your client picks one. The selected option updates the pricing total automatically.'},
-      {label:'Pro tip',text:'Always give at least <strong>2 options per leg</strong> — a value pick and a premium pick. Clients feel in control, and it opens upsell conversations naturally.'},
-      {label:'Flight pricing',text:'Remember: flights are shown but <strong>not counted in the total by default</strong>. The client toggles them in if they want to see the full number.'}
-    ],
-    actions:['Go to Images','Go to Publish']
-  },
-  images:{
-    img:'dee-creator.png',
-    tips:[
-      {label:'Hero photo sets the mood',text:'The hero image is the <strong>first thing your client sees</strong>. Use a stunning, accurate photo of their destination — not a generic beach.'},
-      {label:'Upload vs auto-find',text:'<strong>Upload</strong> if you have a specific photo. Use <strong>Find Photo</strong> to pull a curated Unsplash shot by destination. Hit ↺ to cycle options.'},
-      {label:'Pro tip',text:'After setting the hero, scroll down and set activity + restaurant images too. Visual richness is what makes clients say yes.'}
-    ],
-    actions:['Find Hero Photo','Go to Publish']
-  },
-  publish:{
-    img:'dee-passport.png',
-    tips:[
-      {label:'Readiness score',text:'The checklist tells you what\'s missing before you send. Don\'t send a page below 80% — an incomplete page loses trust.'},
-      {label:'How to deploy',text:'Copy the full CLIENT object from the export box, paste it into your <strong>index.html</strong> CLIENT section, then upload to GitHub Pages.'},
-      {label:'Pro tip',text:'Send the client the <strong>Dream Preview link first</strong> — no unlock param. After they say yes and pay, flip <strong>finalPaid: true</strong> and redeploy to unlock their full guide.'}
-    ],
-    actions:['Go to Images','Copy Export']
-  }
+var DEE_TAB_IMGS={snapshot:'dee-welcome.png',intake:'dee-concierge.png',builder:'dee-desk-setup.png',days:'dee-guide.png',stays:'dee-librarian.png',images:'dee-creator.png',publish:'dee-passport.png'};
+
+var DEE_CHIPS={
+  snapshot:['What do I do first?','No client loaded?','How do I track progress?'],
+  intake:['How does extraction work?','What should I paste?','Build a draft for me'],
+  builder:['What is a CLIENT object?','How do I save changes?','I have a syntax error'],
+  days:['What is a dream teaser?','How do I reorder days?','Duplicate a day'],
+  stays:['How many options per leg?','How does pricing work?','Flight pricing question'],
+  images:['Set the hero photo','Auto-find a photo','Upload my own image'],
+  publish:['Download client page','What is my readiness score?','How do I send the link?']
 };
 
-function toggleDeePanel(){
-  deePanelOpen=!deePanelOpen;
-  var panel=document.getElementById('dee-panel');
-  if(deePanelOpen){
-    panel.classList.add('open');
-    renderDeeTips(currentTab);
-    document.getElementById('dee-status-label').textContent='● Close Dee';
+var DEE_KNOWLEDGE=[
+  {keys:['hello','hi','hey','sup','hiya'],reply:function(){return 'Hey! I\'m Dee, your travel OS. '+deeClientGreet()+' What can I help with?';}},
+  {keys:['what do i do first','where do i start','getting started','first step'],reply:function(){return CLIENT?'You have '+CLIENT.firstName+' loaded! Go through tabs 1–7 in order. You\'re on '+deeTabName()+' right now. '+deeNextStep():' Start at Tab 2 — Client Intake. Paste your client\'s form answers, hit Extract Preferences, then Build My Draft. That gives you a starting CLIENT object for Tab 3.';}},
+  {keys:['no client','how do i load','load a client','paste client'],reply:function(){return 'Go to Tab 3 — Trip Builder. You\'ll see a big textarea. Paste your full CLIENT object there and hit Load. Everything else in the admin fills in from that one object.';}},
+  {keys:['what tab','which tab','current tab','where am i'],reply:function(){return 'You\'re on Tab '+deeTabNum()+': '+deeTabName()+'. '+deeTabHint();}},
+  {keys:['publish','download','export','client page','generate file'],reply:function(){return 'Head to Tab 7 — Publish. You\'ll see the big gold "⬇ Download Client Page" button at the top. It fetches the template, bakes in your CLIENT data, and downloads '+deeFilename()+' ready to upload to GitHub.';}},
+  {keys:['github','upload','deploy','go live','link'],reply:function(){return 'After downloading the client page, go to github.com/dejabryant28-coder/mdtw-client-pages → Add file → Upload files → drag the .html file → Commit. It\'s live in about 60 seconds.';}},
+  {keys:['dream preview','dream link','preview link'],reply:function(){var f=deeFilename();return 'Dream preview link: https://dejabryant28-coder.github.io/mdtw-client-pages/'+f+'\n\nSend this to your client first — they see the teaser but not the full guide yet.';}},
+  {keys:['unlock','full guide','destination unlocked','paid','payment'],reply:function(){var f=deeFilename();return 'Once your client pays, the unlock link is:\nhttps://dejabryant28-coder.github.io/mdtw-client-pages/'+f+'?unlock=1\n\nYou can also flip finalPaid: true in the CLIENT object and redeploy.';}},
+  {keys:['who is my client','client name','current client','loaded client'],reply:function(){return CLIENT?'Your current client is '+CLIENT.firstName+' — heading to '+CLIENT.destination+' on '+CLIENT.dates+'. Departing from '+CLIENT.departing+'.':'No client loaded yet. Paste a CLIENT object in Tab 3.';}},
+  {keys:['readiness','ready','checklist','score','missing'],reply:function(){return deeReadiness();}},
+  {keys:['hero photo','hero image','cover photo'],reply:function(){return 'Go to Tab 6 — Images. You\'ll see the Hero Photo builder at the top. Upload your own photo (auto-cropped to 1800×900) or hit 🔍 Find Photo to auto-pull a beautiful Unsplash shot of '+deeDestination()+'.';}},
+  {keys:['intake','questionnaire','extract','preferences','notes'],reply:function(){return 'Tab 2 — Client Intake. Paste anything: questionnaire responses, email threads, DMs, voice note transcripts. Hit Extract Preferences and I\'ll pull out budget, pace, hotel style, food preferences, and occasion. Then Build My Draft to create the CLIENT skeleton.';}},
+  {keys:['day','itinerary','schedule','add day','reorder'],reply:function(){return 'Tab 4 — Day-by-Day. Each day has a dream teaser (vague and exciting — client sees this) and a full version (unlocked after booking). Use ↑↓ to reorder, or duplicate a day to save time on similar days.';}},
+  {keys:['flight','airline','fly'],reply:function(){return 'Tab 5 — Stays & Flights. Add up to 2 flight options. Flights show on the client page but are excluded from the total by default — your client toggles them in if they want to see the full number with flights.';}},
+  {keys:['hotel','stay','accommodation','room'],reply:function(){return 'Tab 5 — Stays & Flights. Each destination leg shows up to 3 side-by-side options. Always include a value pick and a premium pick — it opens upsell conversations naturally.';}},
+  {keys:['price','pricing','total','budget','cost'],reply:function(){return CLIENT?'The current estimated total for '+CLIENT.firstName+'\'s trip is based on selected flights (if toggled in), accommodations, transport, activities, meals, and buffer. You can see the live total in Tab 7.':'Load a client to see their trip pricing breakdown.';}},
+  {keys:['dream teaser','teaser','vague'],reply:function(){return 'Dream teasers should be poetic and vague — hint at the experience without giving it away. Example: "A morning that will redefine your idea of breakfast." Save the restaurant name and booking link for the full guide.';}},
+  {keys:['help','what can you do','what do you know'],reply:function(){return 'I know everything about this admin! Ask me about: loading clients, tabs, the client page factory, publishing, GitHub, flight pricing, hero photos, dream teasers, readiness scores, or what to do next. You can also use voice 🎤.';}},
+  {keys:['voice','mic','speak','talk'],reply:function(){return 'Tap the 🎤 button and speak — I\'ll transcribe and answer. Works best in Chrome. Try: "What should I do next?" or "Who is my client?"';}},
+];
+
+function deeClientGreet(){return CLIENT?'I see you\'ve got '+CLIENT.firstName+'\'s trip loaded. ':'No client loaded yet. ';}
+function deeTabName(){var n={snapshot:'Trip Snapshot',intake:'Client Intake',builder:'Trip Builder',days:'Day-by-Day',stays:'Stays & Flights',images:'Images',publish:'Publish'};return n[currentTab]||currentTab;}
+function deeTabNum(){var n={snapshot:1,intake:2,builder:3,days:4,stays:5,images:6,publish:7};return n[currentTab]||'?';}
+function deeTabHint(){var h={snapshot:'Check the status pipeline and milestones.',intake:'Paste client notes and extract preferences.',builder:'Load or edit the CLIENT object here.',days:'Build the day-by-day itinerary.',stays:'Add accommodation and flight options.',images:'Set the hero photo and activity images.',publish:'Download the client page and get your links.'};return h[currentTab]||'';}
+function deeFilename(){if(!CLIENT)return'client-trip.html';var f=(CLIENT.firstName||'client').toLowerCase().replace(/[^a-z0-9]/g,'');var d=(CLIENT.destinationShort||CLIENT.destination||'trip').toLowerCase().replace(/[^a-z0-9\s]/g,'').trim().replace(/\s+/g,'-');return f+'-'+d+'.html';}
+function deeDestination(){return CLIENT?(CLIENT.destinationShort||CLIENT.destination||'the destination'):'the destination';}
+function deeNextStep(){
+  if(!CLIENT)return'First load a client in Tab 3.';
+  var steps=[];
+  if(!CLIENT.heroImage||CLIENT.heroImage.indexOf('[REPLACE')>-1)steps.push('set a hero photo (Tab 6)');
+  if(!CLIENT.itinerary||CLIENT.itinerary.length<3)steps.push('add more itinerary days (Tab 4)');
+  if(!CLIENT.accomGroups||CLIENT.accomGroups.length<1)steps.push('add accommodations (Tab 5)');
+  if(!CLIENT.flights||CLIENT.flights.length<1)steps.push('add flight options (Tab 5)');
+  return steps.length?'Next up: '+steps.slice(0,2).join(' and ')+'.':'Looking solid! Head to Tab 7 to download the client page.';
+}
+function deeReadiness(){
+  if(!CLIENT)return'No client loaded. Paste a CLIENT object in Tab 3 first.';
+  var issues=[];
+  if(!CLIENT.firstName)issues.push('client name');
+  if(!CLIENT.destination)issues.push('destination');
+  if(!CLIENT.dates)issues.push('travel dates');
+  if(!CLIENT.heroImage||CLIENT.heroImage.indexOf('[REPLACE')>-1)issues.push('hero photo');
+  if(!CLIENT.itinerary||CLIENT.itinerary.length<3)issues.push('itinerary days (need 3+)');
+  if(!CLIENT.flights||CLIENT.flights.length===0)issues.push('flight options');
+  if(!CLIENT.accomGroups||CLIENT.accomGroups.length===0)issues.push('accommodations');
+  if(issues.length===0)return'✅ '+CLIENT.firstName+'\'s page looks ready to go! Head to Tab 7 and hit Download Client Page.';
+  return'Still missing for '+CLIENT.firstName+': '+issues.join(', ')+'. Fix these before sending the preview link.';
+}
+
+function deeRespond(input){
+  var q=input.toLowerCase().trim();
+  for(var i=0;i<DEE_KNOWLEDGE.length;i++){
+    var rule=DEE_KNOWLEDGE[i];
+    for(var j=0;j<rule.keys.length;j++){
+      if(q.indexOf(rule.keys[j])>-1)return rule.reply();
+    }
+  }
+  // Default
+  if(CLIENT)return'Hmm, I\'m not sure about that one. You\'re working on '+CLIENT.firstName+'\'s '+deeDestination()+' trip. Try asking: "What should I do next?" or "What\'s missing?"';
+  return'I\'m not sure about that. Try: "What do I do first?" or "How do I load a client?"';
+}
+
+function toggleDeeChat(){
+  deeChatOpen=!deeChatOpen;
+  var chat=document.getElementById('dee-chat');
+  if(deeChatOpen){
+    chat.classList.add('open');
+    var msgs=document.getElementById('dee-chat-msgs');
+    if(!msgs.hasChildNodes()){
+      // opening greeting
+      setTimeout(function(){
+        deeAddMsg('dee',CLIENT?'Hey! I see you\'re working on '+CLIENT.firstName+'\'s '+deeDestination()+' trip 🌍 I\'m here to help. You\'re on '+deeTabName()+' — '+deeNextStep()+' Ask me anything or tap a suggestion below.':'Hey! I\'m Dee, your travel OS ✈ No client loaded yet. Go to Tab 3 — Trip Builder and paste your CLIENT object to get started. What do you need?');
+      },200);
+    }
+    updateDeeChips();
   } else {
-    panel.classList.remove('open');
-    document.getElementById('dee-status-label').textContent='● Ask Dee';
+    chat.classList.remove('open');
   }
 }
 
-function renderDeeTips(tab){
-  var data=DEE_TIPS[tab]||DEE_TIPS.snapshot;
-  // update panel image
-  document.querySelector('#dee-panel .dp-header img').src='dee_pack/'+data.img;
+function updateDeeChips(){
+  var chips=DEE_CHIPS[currentTab]||[];
+  document.getElementById('dee-chat-chips').innerHTML=chips.map(function(c){
+    return '<button class="dee-chip" onclick="deeChipTap(\''+c.replace(/'/g,"\\'")+'\')">'+(c.length>28?c.slice(0,26)+'…':c)+'</button>';
+  }).join('');
+  // update avatar for tab
+  var hdrImg=document.querySelector('#dee-chat-hdr img');
+  if(hdrImg)hdrImg.src='dee_pack/'+(DEE_TAB_IMGS[currentTab]||'dee-concierge.png');
+}
 
-  var body=document.getElementById('dee-tips-body');
-  body.innerHTML='<p style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#444;margin-bottom:14px">'+
-    (tab.charAt(0).toUpperCase()+tab.slice(1).replace(/([A-Z])/g,' $1'))+' · Tips</p>'+
-    data.tips.map(function(t){
-      return '<div class="dp-tip"><div class="dt-label">'+t.label+'</div><div class="dt-text">'+t.text+'</div></div>';
-    }).join('');
+function deeChipTap(text){
+  document.getElementById('dee-chat-input').value=text;
+  sendDeeMessage();
+}
 
-  var actions=document.getElementById('dee-actions');
-  actions.innerHTML='<p style="font-size:10px;color:#444;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px">Quick actions</p>'+
-    data.actions.map(function(a){
-      var tabMap={'Go to Trip Builder':'builder','Go to Client Intake':'intake','Go to Day-by-Day':'days',
-        'Go to Stays & Flights':'stays','Go to Images':'images','Go to Publish':'publish',
-        'Find Hero Photo':'images','Copy Export':'publish'};
-      var dest=tabMap[a];
-      return '<button class="dp-btn" onclick="'+
-        (dest?'goTab(\''+dest+'\');':'')+(a==='Find Hero Photo'?'autoFindHeroPhoto();':'')+(a==='Copy Export'?'doExport();':'')+'toggleDeePanel()">'+a+'</button>';
-    }).join('');
+function deeAddMsg(who,text){
+  var msgs=document.getElementById('dee-chat-msgs');
+  var row=document.createElement('div');
+  row.className='dee-msg-row '+who;
+  var avatar='';
+  if(who==='dee')avatar='<img src="dee_pack/'+(DEE_TAB_IMGS[currentTab]||'dee-concierge.png')+'" class="dee-msg-avatar" alt="Dee">';
+  row.innerHTML=avatar+'<div class="dee-msg-bubble">'+text.replace(/\n/g,'<br>')+'</div>';
+  msgs.appendChild(row);
+  msgs.scrollTop=msgs.scrollHeight;
+}
+
+function deeShowTyping(){
+  var msgs=document.getElementById('dee-chat-msgs');
+  var typing=document.createElement('div');
+  typing.className='dee-msg-row dee';typing.id='dee-typing-indicator';
+  typing.innerHTML='<img src="dee_pack/'+(DEE_TAB_IMGS[currentTab]||'dee-concierge.png')+'" class="dee-msg-avatar" alt="Dee"><div class="dee-msg-bubble dee-typing"><span></span><span></span><span></span></div>';
+  msgs.appendChild(typing);msgs.scrollTop=msgs.scrollHeight;
+}
+
+function deeHideTyping(){var t=document.getElementById('dee-typing-indicator');if(t)t.remove();}
+
+function sendDeeMessage(){
+  var input=document.getElementById('dee-chat-input');
+  var text=input.value.trim();
+  if(!text)return;
+  deeAddMsg('user',text);
+  input.value='';
+  deeShowTyping();
+  setTimeout(function(){
+    deeHideTyping();
+    deeAddMsg('dee',deeRespond(text));
+    updateDeeChips();
+  },700+Math.random()*400);
+}
+
+function toggleDeeVoice(){
+  if(!('webkitSpeechRecognition' in window||'SpeechRecognition' in window)){
+    showToast('Voice not supported in this browser. Try Chrome.');return;
+  }
+  if(deeRecording){
+    if(deeRecognition)deeRecognition.stop();
+    deeRecording=false;
+    document.getElementById('dee-mic-btn').classList.remove('recording');
+    return;
+  }
+  var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  deeRecognition=new SR();
+  deeRecognition.lang='en-US';deeRecognition.interimResults=false;deeRecognition.maxAlternatives=1;
+  deeRecognition.onstart=function(){deeRecording=true;document.getElementById('dee-mic-btn').classList.add('recording');};
+  deeRecognition.onresult=function(e){
+    var transcript=e.results[0][0].transcript;
+    document.getElementById('dee-chat-input').value=transcript;
+    deeRecording=false;document.getElementById('dee-mic-btn').classList.remove('recording');
+    sendDeeMessage();
+  };
+  deeRecognition.onerror=function(){deeRecording=false;document.getElementById('dee-mic-btn').classList.remove('recording');showToast('Voice error — try again');};
+  deeRecognition.onend=function(){deeRecording=false;document.getElementById('dee-mic-btn').classList.remove('recording');};
+  deeRecognition.start();
 }
 
 function goTab(name){
@@ -714,9 +855,9 @@ function goTab(name){
   if(idx>=0) document.querySelectorAll('#sidenav a')[idx].classList.add('active');
   if(name==='snapshot') renderSnapshot();
   if(name==='images') initHeroPhotoUI();
-  if(name==='publish'){doExport();updateReadinessScore();}
-  // update Dee panel if open
-  if(deePanelOpen) renderDeeTips(name);
+  if(name==='publish'){doExport();updateReadinessScore();refreshDefaultFilename();}
+  // update Dee chat chips if open
+  if(deeChatOpen) updateDeeChips();
 }
 
 function toast(msg){
@@ -770,6 +911,10 @@ function onClientLoaded(){
   if(!CLIENT)return;
   document.getElementById('sbName').textContent=CLIENT.firstName||'Unknown';
   document.getElementById('sbDest').textContent=CLIENT.destination||'---';
+  // Auto-populate filename in Publish tab
+  var fnEl=document.getElementById('client-filename');
+  if(fnEl&&!fnEl.value)fnEl.value=getClientFilename();
+  refreshClientLinks();
   document.getElementById('builderFields').style.display='block';
   setVal('b_firstName',CLIENT.firstName);setVal('b_destination',CLIENT.destination);
   setVal('b_dates',CLIENT.dates);setVal('b_duration',CLIENT.duration);
@@ -1307,6 +1452,91 @@ function openLink(mode){
   var sfx={dream:'?mode=dream',full:'?mode=full',admin:'?mode=admin'};
   window.open('https://'+d+(sfx[mode]||''),'_blank');
 }
+// ── CLIENT PAGE FACTORY ───────────────────────────
+var GITHUB_BASE='https://dejabryant28-coder.github.io/mdtw-client-pages/';
+
+function getClientFilename(){
+  if(!CLIENT)return'client-trip';
+  var first=(CLIENT.firstName||'client').toLowerCase().replace(/[^a-z0-9]/g,'');
+  var dest=(CLIENT.destinationShort||CLIENT.destination||'trip').toLowerCase()
+    .replace(/[^a-z0-9\s]/g,'').trim().replace(/\s+/g,'-').replace(/-+/g,'-');
+  return first+'-'+dest;
+}
+
+function refreshDefaultFilename(){
+  var el=document.getElementById('client-filename');
+  if(el)el.value=getClientFilename();
+  refreshClientLinks();
+}
+
+function refreshClientLinks(){
+  var fname=(document.getElementById('client-filename').value||getClientFilename()).trim().replace(/\.html$/i,'');
+  var dreamUrl=GITHUB_BASE+fname+'.html';
+  var unlockUrl=GITHUB_BASE+fname+'.html?unlock=1';
+  var dl=document.getElementById('client-dream-link');
+  var ul=document.getElementById('client-unlock-link');
+  var hint=document.getElementById('upload-filename-hint');
+  if(dl)dl.value=dreamUrl;
+  if(ul)ul.value=unlockUrl;
+  if(hint)hint.textContent=fname+'.html';
+}
+
+async function downloadClientPage(){
+  if(!CLIENT){showToast('Load a client first');return;}
+
+  var errEl=document.getElementById('client-page-error');
+  errEl.style.display='none';
+
+  // Auto-populate filename if empty
+  var fnEl=document.getElementById('client-filename');
+  if(!fnEl.value.trim())fnEl.value=getClientFilename();
+
+  var fname=fnEl.value.trim().replace(/\.html$/i,'').replace(/[^a-zA-Z0-9\-_]/g,'-');
+  var filename=fname+'.html';
+
+  try{
+    // 1. Fetch the index.html template from same origin
+    var res=await fetch('index.html');
+    if(!res.ok)throw new Error('Could not load index.html (status '+res.status+'). Make sure admin.html and index.html are in the same folder.');
+    var html=await res.text();
+
+    // 2. Verify markers exist
+    if(html.indexOf('@@MDTW_CLIENT_START')<0||html.indexOf('@@MDTW_CLIENT_END')<0){
+      throw new Error('index.html is missing the CLIENT block markers (@@MDTW_CLIENT_START / @@MDTW_CLIENT_END). Upload the latest index.html to GitHub first.');
+    }
+
+    // 3. Build replacement block
+    var clientJson=JSON.stringify(CLIENT,null,2);
+    var newBlock='// @@MDTW_CLIENT_START\n// ═══════════════════════════════════════════════════\n//  CLIENT DATA  ← swap this block for each new client\n// ═══════════════════════════════════════════════════\nconst CLIENT = '+clientJson+';\n// @@MDTW_CLIENT_END';
+
+    // 4. Replace
+    var output=html.replace(/\/\/ @@MDTW_CLIENT_START[\s\S]*?\/\/ @@MDTW_CLIENT_END/,newBlock);
+
+    if(output===html){
+      throw new Error('Replace failed — CLIENT block markers found but regex did not match. Check index.html for extra whitespace around markers.');
+    }
+
+    // 5. Download
+    var blob=new Blob([output],{type:'text/html;charset=utf-8'});
+    var url=URL.createObjectURL(blob);
+    var a=document.createElement('a');
+    a.href=url;a.download=filename;
+    document.body.appendChild(a);a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    // 6. Show links panel
+    refreshClientLinks();
+    document.getElementById('client-links-panel').style.display='block';
+    showToast('✓ '+filename+' downloaded! Upload it to GitHub to go live.');
+
+  }catch(e){
+    errEl.style.display='block';
+    errEl.innerHTML='<strong>Error:</strong> '+e.message+'<br><span style="font-size:11px;color:#a00;margin-top:4px;display:block">Make sure index.html is uploaded to your GitHub repo and you\'re running admin.html from the same domain.</span>';
+    showToast('Download failed — see error above');
+  }
+}
+
 function doExport(){
   var ta=document.getElementById('exportArea');
   if(!CLIENT){ta.value='// No client loaded';return;}
