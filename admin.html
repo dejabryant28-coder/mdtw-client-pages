@@ -152,6 +152,32 @@ hr.divider{border:none;border-top:1px solid var(--light);margin:20px 0}
   .hero-drop-zone{border:2px dashed #ccc;border-radius:8px;min-height:120px;display:flex;align-items:center;justify-content:center;text-align:center;cursor:pointer;padding:16px;transition:border-color .2s,background .2s;font-size:13px;color:#666;position:relative;overflow:hidden}
   .hero-drop-zone.drag-over{border-color:#C9A96E;background:rgba(201,169,110,.08)}
   .hero-drop-zone:hover{border-color:#aaa}
+
+  /* Dee Interactive Sidebar */
+  .sidebar-dee{cursor:pointer;position:relative;transition:transform .2s}
+  .sidebar-dee:hover{transform:scale(1.05)}
+  .dee-status-dot{position:absolute;bottom:8px;right:8px;width:10px;height:10px;background:#4caf50;border-radius:50%;border:2px solid #111;animation:deePulse 2s infinite}
+  @keyframes deePulse{0%,100%{box-shadow:0 0 0 0 rgba(76,175,80,.6)}50%{box-shadow:0 0 0 5px rgba(76,175,80,0)}}
+  .dee-ask-label{font-size:9px;text-align:center;color:#4caf50;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;padding-bottom:4px;margin-top:-4px}
+  .dee-ask-label:hover{color:#80e27e}
+
+  /* Dee Panel */
+  .dee-panel{position:fixed;top:0;right:-380px;width:360px;height:100vh;background:#1a1a1a;border-left:1px solid #333;z-index:9999;display:flex;flex-direction:column;transition:right .3s cubic-bezier(.4,0,.2,1);box-shadow:-4px 0 24px rgba(0,0,0,.5)}
+  .dee-panel.open{right:0}
+  .dee-overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:9998;display:none;opacity:0;transition:opacity .3s}
+  .dee-overlay.open{display:block;opacity:1}
+  .dee-panel-header{display:flex;align-items:center;justify-content:space-between;padding:20px 20px 16px;border-bottom:1px solid #2a2a2a}
+  .dee-panel-dee{display:flex;align-items:center;gap:12px}
+  .dee-panel-img{width:56px;height:auto;object-fit:contain}
+  .dee-panel-name{font-family:'DM Serif Display',serif;font-size:18px;color:#C9A96E}
+  .dee-panel-role{font-size:11px;color:#666;text-transform:uppercase;letter-spacing:1.2px;margin-top:2px}
+  .dee-close-btn{background:none;border:none;color:#555;font-size:18px;cursor:pointer;padding:6px;border-radius:4px;line-height:1;transition:color .2s}
+  .dee-close-btn:hover{color:#ccc}
+  .dee-panel-body{padding:24px 20px;flex:1;overflow-y:auto}
+  .dee-tip-msg{font-size:14px;line-height:1.7;color:#ccc;margin-bottom:20px}
+  .dee-tip-actions{display:flex;flex-direction:column;gap:8px}
+  .dee-tip-actions .dee-action-btn{background:#222;border:1px solid #333;color:#C9A96E;font-size:12px;padding:10px 14px;border-radius:8px;cursor:pointer;text-align:left;transition:background .15s,border-color .15s;font-family:inherit}
+  .dee-tip-actions .dee-action-btn:hover{background:#2a2a2a;border-color:#C9A96E}
 </style>
 </head>
 <body>
@@ -160,9 +186,11 @@ hr.divider{border:none;border-top:1px solid var(--light);margin:20px 0}
     <div class="brand">MDTW Admin</div>
     <div class="sub">Travel Builder v2</div>
   </div>
-  <div class="sidebar-dee">
+  <div class="sidebar-dee" id="dee-sidebar-btn" onclick="toggleDeePanel()" title="Ask Dee for tips">
     <img src="dee_pack/dee-wave-bust.png" alt="Dee">
+    <div class="dee-status-dot" id="dee-status-dot"></div>
   </div>
+  <div class="dee-ask-label" onclick="toggleDeePanel()">&#9679; Ask Dee</div>
   <nav id="sidenav">
     <div class="nav-section">Workflow</div>
     <a class="active" onclick="goTab('snapshot')"><span class="step">1</span> Trip Snapshot</a>
@@ -179,6 +207,26 @@ hr.divider{border:none;border-top:1px solid var(--light);margin:20px 0}
     <div class="cb-dest" id="sbDest"></div>
   </div>
 </div>
+
+<!-- DEE PANEL -->
+<div id="dee-panel" class="dee-panel">
+  <div class="dee-panel-header">
+    <div class="dee-panel-dee">
+      <img src="dee_pack/dee-wave-bust.png" alt="Dee" class="dee-panel-img">
+      <div>
+        <div class="dee-panel-name">Dee</div>
+        <div class="dee-panel-role" id="dee-panel-role">Your MDTW Guide</div>
+      </div>
+    </div>
+    <button class="dee-close-btn" onclick="toggleDeePanel()" title="Close">&#10005;</button>
+  </div>
+  <div class="dee-panel-body" id="dee-panel-body">
+    <p class="dee-tip-msg" id="dee-tip-msg"></p>
+    <div id="dee-tip-actions" class="dee-tip-actions"></div>
+  </div>
+</div>
+<div id="dee-overlay" class="dee-overlay" onclick="toggleDeePanel()"></div>
+
 <div id="main">
 <!-- TAB 1: SNAPSHOT -->
 <div class="tab-content active" id="tab-snapshot">
@@ -564,6 +612,8 @@ var INBOX_ROWS = [];
 var EXTRACTED_PREFS = {};
 
 function goTab(name){
+  _currentTab = name;
+  if(_deeOpen) renderDeeTips(name);
   document.querySelectorAll('.tab-content').forEach(function(t){t.classList.remove('active');});
   document.querySelectorAll('#sidenav a').forEach(function(a){a.classList.remove('active');});
   document.getElementById('tab-'+name).classList.add('active');
@@ -1295,6 +1345,92 @@ updateReadinessScore();
       if(prev){ prev.src = CLIENT.heroImage; prev.style.display='block'; }
       if(lbl) lbl.style.display='none';
     }
+  }
+
+  /* ===== DEE PANEL ===== */
+  let _deeOpen = false;
+  let _currentTab = 'snapshot';
+
+  const _deeTips = {
+    snapshot: {
+      role: 'Trip Overview',
+      msg: "This is your command center. When no client is loaded, head to Trip Builder and paste your CLIENT object.\n\nOnce loaded, use the status board here to track where the trip stands — set it to Draft, In Review, or Delivered.",
+      actions: [
+        {label:'→ Go to Trip Builder', fn:"goTab('builder')"},
+        {label:'→ Check Readiness Score', fn:"goTab('publish')"},
+      ]
+    },
+    intake: {
+      role: 'Client Intake',
+      msg: "Paste the raw questionnaire text and your consultation notes — then click Extract Preferences.\n\nDee reads both and builds out the CLIENT.preferences block automatically. The messier the paste, the better she handles it.",
+      actions: [
+        {label:'→ Go to Trip Builder to review', fn:"goTab('builder')"},
+      ]
+    },
+    builder: {
+      role: 'Trip Architect',
+      msg: "This is where you edit the CLIENT object directly. Load sample data to see the structure, or paste your own.\n\nTip: Always use 'Load Client Data' — do not manually type JSON here. One misplaced comma breaks everything.",
+      actions: [
+        {label:'→ Load Sample (Philippines)', fn:"document.querySelector('.btn-outline[onclick*=Sample]')&&document.querySelector('.btn-outline[onclick*=Sample]').click()"},
+        {label:'→ Go to Day-by-Day', fn:"goTab('itinerary')"},
+      ]
+    },
+    itinerary: {
+      role: 'Day Planner',
+      msg: "Build each day card here. Mark days as 'Dream Teaser' to show them in the Dream Preview — or leave them off to keep the surprise.\n\nAt least one day needs to be tagged as a teaser before you can publish the Dream Preview.",
+      actions: [
+        {label:'→ Go to Stays & Flights', fn:"goTab('stays')"},
+        {label:'→ Check Publish Readiness', fn:"goTab('publish')"},
+      ]
+    },
+    stays: {
+      role: 'Pricing Architect',
+      msg: "Set 3 accommodation tiers per leg so clients can choose their comfort level. Flight options are quoted separately — use the toggle in the client's cost estimate to include or exclude them from the total.\n\nAlways set transport and tour pricing here before publishing.",
+      actions: [
+        {label:'→ Go to Images', fn:"goTab('images')"},
+        {label:'→ Check Publish Readiness', fn:"goTab('publish')"},
+      ]
+    },
+    images: {
+      role: 'Visual Director',
+      msg: "Hero image is the first thing your client sees — make it count.\n\nDrag & drop your own photo (auto-crops to 1800×900), use the 🔍 Find Photo button to pull a beautiful Unsplash shot for their destination, or paste any direct image URL.",
+      actions: [
+        {label:'→ Find hero photo by destination', fn:"document.getElementById('dee-panel') && toggleDeePanel(); autoFindHeroPhoto && autoFindHeroPhoto()"},
+        {label:'→ Go to Publish', fn:"goTab('publish')"},
+      ]
+    },
+    publish: {
+      role: 'Launch Control',
+      msg: "Dream Preview goes live first — it's the teaser page clients see while the full itinerary is being built.\n\nOnce all readiness checks are green, export the CLIENT object, drop it in index.html, and push to surge.\n\nThe Destination Unlocked page is the full reveal — only when everything is set.",
+      actions: [
+        {label:'→ Back to Images', fn:"goTab('images')"},
+        {label:'→ Back to Trip Builder', fn:"goTab('builder')"},
+      ]
+    }
+  };
+
+  function toggleDeePanel(){
+    _deeOpen = !_deeOpen;
+    const panel = document.getElementById('dee-panel');
+    const overlay = document.getElementById('dee-overlay');
+    if(_deeOpen){
+      panel.classList.add('open');
+      overlay.classList.add('open');
+      renderDeeTips(_currentTab);
+    } else {
+      panel.classList.remove('open');
+      overlay.classList.remove('open');
+    }
+  }
+
+  function renderDeeTips(tabName){
+    const tips = _deeTips[tabName] || _deeTips.snapshot;
+    document.getElementById('dee-panel-role').textContent = tips.role;
+    document.getElementById('dee-tip-msg').textContent = tips.msg;
+    const actionsEl = document.getElementById('dee-tip-actions');
+    actionsEl.innerHTML = tips.actions.map(a =>
+      `<button class="dee-action-btn" onclick="${a.fn}">${a.label}</button>`
+    ).join('');
   }
 </script>
 </body>
