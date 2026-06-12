@@ -8,7 +8,7 @@
   @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap');
   :root{--cream:#F9F5F0;--sand:#E8DDD0;--gold:#C9A96E;--gl:#E8C98A;--charcoal:#2C2C2C;--muted:#8A8278;--green:#4A6741;--deep:#1A1A1A;--white:#FFFFFF;}
   *{margin:0;padding:0;box-sizing:border-box;}
-  body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--charcoal);overflow-x:hidden;padding-bottom:96px;}
+  body{font-family:'Inter',sans-serif;backgrhound:var(--cream);color:var(--charcoal);overflow-x:hidden;padding-bottom:96px;}
   h1,h2,h3{font-family:'DM Serif Display',serif;font-weight:400;}
   /* BANNER */
   #dream-banner{background:linear-gradient(135deg,var(--charcoal),#3D3028);color:var(--cream);text-align:center;padding:13px 20px;font-size:13px;position:sticky;top:0;z-index:1000;display:flex;align-items:center;justify-content:center;gap:10px;}
@@ -1750,7 +1750,7 @@ function renderAccoms(){
   const sf=FULL||ADMIN;
   document.getElementById('accom-sub').textContent=sf
     ?'All stays fully revealed. Select your preferred option for each destination.'
-    :'Pick one option per destination. Images are softened for privacy — full details unlock after booking.';
+    :'Pick one option per destination. Hotel photos are intentionally softened to protect property privacy — full high-res photos and exact property names unlock with your trip guide after booking. — full details unlock after booking.';
 
   const TIER_META={
     budget: {label:'Budget-Smart',cls:'tier-budget',icon:'tier-icon-budget'},
